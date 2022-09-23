@@ -2,6 +2,8 @@
 
 $action = $_GET['action'] ?? null;
 
+require "src/Views/header.php";
+
 switch ($action) {
     case 'search':
         # code...
@@ -11,3 +13,5 @@ switch ($action) {
         require "src/Views/index.php";
         break;
 }
+
+require "src/Views/footer.php";

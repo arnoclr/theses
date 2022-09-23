@@ -1,0 +1,8 @@
+.field.plain {
+    background-color: rgba(126, 126, 126, 0.05);
+    border-radius: 4rem;
+}
+
+.field.plain input {
+    border: none;
+}
