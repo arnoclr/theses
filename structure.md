@@ -26,6 +26,10 @@ Filtres detectés automatiquement
 
 date = [1950-2099]
 
+```sql
+SELECT * FROM theses WHERE MATCH (title, summary, subjects, partners, establishments) AGAINST ('ordinateurs quantique' IN NATURAL LANGUAGE MODE);
+```
+
 ## Datas a afficher :
 
 Nombre de résultats -> nombre
