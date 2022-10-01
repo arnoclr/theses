@@ -6,3 +6,57 @@
 .field.plain input {
     border: none;
 }
+
+.header-container {
+    padding-top: 80px;
+    padding-bottom: 50px;
+}
+
+.header-title {
+    display: block;
+    padding-bottom: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 260px;
+    max-width: 530px;
+    font-size: 44px;
+}
+
+.js-nav-search,
+.js-main-search {
+    transition: transform 0.1s cubic-bezier(.43, .16, .26, .97), opacity 0.1s linear;
+}
+
+.js-main-search {
+    margin: auto;
+    max-width: 640px;
+    z-index: 15;
+}
+
+.js-nav-search {
+    width: 100%;
+    max-width: 580px;
+}
+
+.js-nav-search.out {
+    transform: translateY(20px) scaleX(1.1);
+    opacity: 0;
+}
+
+.js-main-search.out {
+    transform: translateY(-20px) scaleX(0.9);
+    opacity: 0;
+}
+
+.demo-card::after {
+    content: " ";
+    position: absolute;
+    bottom: calc(100% + 8px);
+    height: 0;
+    width: 0;
+    left: calc((100% - 640px) / 2 + 24px);
+    border: solid transparent;
+    border-bottom-color: #fff;
+    border-width: 24px;
+    margin-left: 2px;
+}

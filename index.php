@@ -10,7 +10,7 @@ switch ($action) {
         break;
 
     default:
-        require "src/Views/index.php";
+        require "src/Views/home.php";
         break;
 }
 
