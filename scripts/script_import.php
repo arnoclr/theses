@@ -18,6 +18,7 @@ $pdo = Database::getPDO();
 $pdo->exec("DROP TABLE `theses_people`");
 $pdo->exec("DROP TABLE `people`");
 $pdo->exec("DROP TABLE `theses`");
+$pdo->exec("DROP TABLE `establishments`");
 
 $sqlgen = file_get_contents("init.sql");
 $pdo->exec($sqlgen);
