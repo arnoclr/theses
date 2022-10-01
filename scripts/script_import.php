@@ -22,6 +22,9 @@ $pdo->exec("DROP TABLE `theses`");
 $sqlgen = file_get_contents("init.sql");
 $pdo->exec($sqlgen);
 
+$sqlEtab = file_get_contents("establishments.sql");
+$pdo->exec($sqlEtab);
+
 // https://stackoverflow.com/a/37726178/11651419 save big files to server
 file_put_contents("data.json.tmp", fopen("https://tfressin.fr/thesesviz/extract_theses.json", 'r'));
 
