@@ -14,6 +14,14 @@ class Searcher
         $this->params = [];
     }
 
+    // SELECT
+    public function select(array $params): Searcher
+    {
+        $selectStatement = join(', ', $params);
+        $this->replaceStatement('/SELECT \*/', "SELECT $selectStatement");
+        return $this;
+    }
+
     // WHERE
     public function before(int $date): Searcher
     {
@@ -35,15 +43,18 @@ class Searcher
     }
 
     // ORDER BY
-    public function latest(): Searcher
+    public function orderBy($field, $order = 'ASC'): Searcher
     {
-        $this->replaceStatement('/(LIMIT \d+)/', 'ORDER BY date DESC $1');
+        $this->replaceStatement('/(LIMIT \d+)/', "ORDER BY $field $order $1");
         return $this;
     }
 
-    public function sortedAlphabetically(): Searcher
+    // GROUP BY
+    public function groupByRegions(): Searcher
     {
-        $this->replaceStatement('/(LIMIT \d+)/', 'ORDER BY author_lastname, author_firstname, title ASC $1');
+        // select region, count(*) from theses natural join establishments group by region;
+        $this->replaceStatement('/(SELECT.+) FROM \w+/', '$1, count(*) as total FROM theses NATURAL JOIN establishments');
+        $this->replaceStatement('/(LIMIT \d+)/', 'GROUP BY region $1');
         return $this;
     }
 
