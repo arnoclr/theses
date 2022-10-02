@@ -44,8 +44,16 @@ class Searcher
 
     public function search(string $q): Searcher
     {
+        // natural language search
         $this->addCondition("MATCH (title, summary, subjects, partners, establishments) AGAINST (:q IN NATURAL LANGUAGE MODE)");
         $this->addParam('q', $q);
+        // get all terms between quotes
+        // exact match search
+        preg_match_all('/"([^"]+)"/', $q, $results);
+        foreach ($results[1] as $i => $term) {
+            $this->addCondition("(title LIKE :q$i OR summary LIKE :q$i OR subjects LIKE :q$i)");
+            $this->addParam("q$i", "%$term%");
+        }
         return $this;
     }
 

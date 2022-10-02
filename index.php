@@ -10,7 +10,7 @@ use App\Model\Charts;
 $action = $_GET['action'] ?? null;
 $pdo = Database::getPDO();
 $searcher = new Searcher($pdo);
-$q = htmlspecialchars($_GET['q']) ?? null;
+$q = $_GET['q'] ?? null;
 
 require "src/Views/header.php";
 
