@@ -10,17 +10,18 @@ use App\Model\Charts;
 $action = $_GET['action'] ?? null;
 $pdo = Database::getPDO();
 $searcher = new Searcher($pdo);
+$q = htmlspecialchars($_GET['q']) ?? null;
 
 require "src/Views/header.php";
 
 switch ($action) {
     case 'search':
-        # code...
+        $regions = $searcher->select(['region'])->search($q)->groupByRegions()->orderBy('total', 'DESC')->get();
+        $regionalArray = Charts::getRegionalArray($regions, true);
+        require "src/Views/results.php";
         break;
 
     default:
-        $regions = $searcher->select(['region'])->groupByRegions()->orderBy('total', 'DESC')->get();
-        $regionalArray = Charts::getRegionalArray($regions, true);
         require "src/Views/home.php";
         break;
 }

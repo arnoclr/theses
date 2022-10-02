@@ -25,7 +25,7 @@
             <form method="get" action="/" class="field prefix plain js-nav-search">
                 <i>search</i>
                 <input type="hidden" name="action" value="search">
-                <input type="search" name="q" placeholder="Découvrir des thèses">
+                <input type="search" name="q" placeholder="Découvrir des thèses" value="<?= $q ?? '' ?>">
             </form>
             <div class="max"></div>
         </nav>

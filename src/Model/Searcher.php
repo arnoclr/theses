@@ -6,11 +6,12 @@ class Searcher
 {
     private $statement;
     private $pdo;
+    private $params;
 
     public function __construct($pdo)
     {
         $this->pdo = $pdo;
-        $this->statement = "SELECT * FROM theses WHERE 1 = 1 LIMIT 10";
+        $this->statement = "SELECT * FROM theses WHERE 1 = 1";
         $this->params = [];
     }
 
@@ -37,15 +38,21 @@ class Searcher
 
     public function fromAuthor(string $name): Searcher
     {
-        $this->addCondition("(author_firstname LIKE %:name% OR author_lastname LIKE %:name%)");
-        $this->params[] = ['name' => $name];
+        // TODO: join request
+        return $this;
+    }
+
+    public function search(string $q): Searcher
+    {
+        $this->addCondition("MATCH (title, summary, subjects, partners, establishments) AGAINST (:q IN NATURAL LANGUAGE MODE)");
+        $this->addParam('q', $q);
         return $this;
     }
 
     // ORDER BY
     public function orderBy($field, $order = 'ASC'): Searcher
     {
-        $this->replaceStatement('/(LIMIT \d+)/', "ORDER BY $field $order $1");
+        $this->appendRule("ORDER BY $field $order");
         return $this;
     }
 
@@ -54,14 +61,14 @@ class Searcher
     {
         // select region, count(*) from theses natural join establishments group by region;
         $this->replaceStatement('/(SELECT.+) FROM \w+/', '$1, count(*) as total FROM theses NATURAL JOIN establishments');
-        $this->replaceStatement('/(LIMIT \d+)/', 'GROUP BY region $1');
+        $this->appendRule('GROUP BY region');
         return $this;
     }
 
     // LIMIT
     public function limit(int $limit): Searcher
     {
-        $this->replaceStatement('/LIMIT \d+/', "LIMIT $limit");
+        $this->appendRule("LIMIT $limit");
         return $this;
     }
 
@@ -84,8 +91,18 @@ class Searcher
         $this->statement = preg_replace($regex, $replacement, $this->statement);
     }
 
+    private function appendRule(string $rule): void
+    {
+        $this->statement .= " $rule";
+    }
+
     private function addCondition(string $condition): void
     {
         $this->statement = preg_replace('/WHERE 1 = 1/', "WHERE 1 = 1 AND $condition", $this->statement);
+    }
+
+    private function addParam(string $key, string $value): void
+    {
+        $this->params[$key] = $value;
     }
 }
