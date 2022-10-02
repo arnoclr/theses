@@ -49,6 +49,10 @@
                 maxColor: "#0277bd"
             },
 
+            legend: {
+                enabled: false
+            },
+
             tooltip: {
                 backgroundColor: '#FFFE',
                 borderRadius: 1,
