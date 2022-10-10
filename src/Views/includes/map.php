@@ -15,7 +15,8 @@
         // Create the chart
         Highcharts.mapChart('container', {
             chart: {
-                map: topology
+                map: topology,
+                backgroundColor: null,
             },
 
             title: {

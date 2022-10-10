@@ -85,6 +85,7 @@ class Searcher
     {
         $statement = $this->pdo->prepare($this->statement);
         $statement->execute($this->params);
+        $this->statement = "SELECT * FROM theses WHERE 1 = 1";
         return $statement->fetchAll();
     }
 

@@ -18,6 +18,7 @@ switch ($action) {
     case 'search':
         $regions = $searcher->select(['region'])->search($q)->groupByRegions()->orderBy('total', 'DESC')->get();
         $regionalArray = Charts::getRegionalArray($regions, true);
+        $moreAccurate = $searcher->search($q)->limit(10)->get();
         require "src/Views/results.php";
         break;
 
