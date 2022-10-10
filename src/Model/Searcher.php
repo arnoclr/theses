@@ -75,7 +75,7 @@ class Searcher
 
     public function groupByYears(): Searcher
     {
-        $this->replaceStatement('/(SELECT.+) FROM \w+/', 'SELECT count(*) as total FROM theses');
+        $this->replaceStatement('/(SELECT.+) FROM \w+/', 'SELECT count(*) as total, date_year FROM theses');
         $this->appendRule('GROUP BY date_year');
         $this->orderBy('date_year', 'ASC');
         return $this;

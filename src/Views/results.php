@@ -1,9 +1,16 @@
 <main>
     <div class="grid">
+        <div class="s12">
+            <article class="white no-elevate">
+                <h4>Evolution dans le temps</h4>
+                <?php require "src/Views/includes/timeline.php"; ?>
+            </article>
+        </div>
+
         <div class="s5">
             <article class="white full-height no-elevate">
                 <h4>Par région</h4>
-                <?= require "src/Views/includes/map.php" ?>
+                <?= require "src/Views/includes/map.php"; ?>
             </article>
         </div>
 

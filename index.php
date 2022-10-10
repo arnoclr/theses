@@ -20,7 +20,7 @@ switch ($action) {
         $regionalArray = Charts::getRegionalArray($regions, true);
         $moreAccurate = $searcher->search($q)->limit(10)->get();
         $years = $searcher->search($q)->groupByYears()->get();
-        // dd($years);
+        $timelineData = Charts::getYearsList($years, true);
         require "src/Views/results.php";
         break;
 

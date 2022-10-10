@@ -1,13 +1,12 @@
 <div id="timeline"></div>
 
 <script>
-    window.onload = (async () => {
-        const data = <?= $regionalArray ?>;
+    document.addEventListener("DOMContentLoaded", async () => {
+        const data = <?= $timelineData ?>;
 
         // Create the chart
-        Highcharts.mapChart('timeline', {
+        Highcharts.chart('timeline', {
             chart: {
-                map: topology,
                 backgroundColor: null,
             },
 
@@ -81,5 +80,5 @@
                 }
             }]
         });
-    })();
+    });
 </script>

@@ -1,7 +1,7 @@
 <div id="map"></div>
 
 <script>
-    window.onload = (async () => {
+    document.addEventListener("DOMContentLoaded", async () => {
 
         const topology = await fetch(
             'https://code.highcharts.com/mapdata/countries/fr/fr-all.topo.json'
@@ -78,5 +78,5 @@
                 }
             }]
         });
-    })();
+    });
 </script>

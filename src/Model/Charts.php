@@ -17,4 +17,16 @@ class Charts
         }
         return $inJson ? json_encode($array) : $array;
     }
+
+    public static function getYearsList($obj, $inJson = false)
+    {
+        $currentYear = date('Y');
+        $startYear = 1985;
+        // fill all year with 0
+        $array = array_fill(0, $currentYear - $startYear, 0);
+        foreach ($obj as $item) {
+            $array[$currentYear - $item->date_year] = intval($item->total);
+        }
+        return $inJson ? json_encode($array) : $array;
+    }
 }
