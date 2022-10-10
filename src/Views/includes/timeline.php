@@ -1,19 +1,11 @@
-<div id="map"></div>
+<div id="timeline"></div>
 
 <script>
     window.onload = (async () => {
-
-        const topology = await fetch(
-            'https://code.highcharts.com/mapdata/countries/fr/fr-all.topo.json'
-        ).then(response => response.json());
-
-        // Prepare demo data. The data is joined to map using value of 'hc-key'
-        // property by default. See API docs for 'joinBy' for more info on linking
-        // data and map.
         const data = <?= $regionalArray ?>;
 
         // Create the chart
-        Highcharts.mapChart('map', {
+        Highcharts.mapChart('timeline', {
             chart: {
                 map: topology,
                 backgroundColor: null,
@@ -27,14 +19,25 @@
                 text: null
             },
 
-            mapNavigation: {
-                enabled: false,
+            yAxis: {
+                title: {
+                    text: 'Nombre de thèses'
+                }
             },
 
-            colorAxis: {
-                min: 0,
-                minColor: "#E0E0E0",
-                maxColor: "#0277bd"
+            xAxis: {
+                accessibility: {
+                    rangeDescription: 'Année'
+                }
+            },
+
+            plotOptions: {
+                series: {
+                    label: {
+                        connectorAllowed: false
+                    },
+                    pointStart: 1985
+                }
             },
 
             legend: {

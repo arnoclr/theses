@@ -19,6 +19,8 @@ switch ($action) {
         $regions = $searcher->select(['region'])->search($q)->groupByRegions()->orderBy('total', 'DESC')->get();
         $regionalArray = Charts::getRegionalArray($regions, true);
         $moreAccurate = $searcher->search($q)->limit(10)->get();
+        $years = $searcher->search($q)->groupByYears()->get();
+        // dd($years);
         require "src/Views/results.php";
         break;
 

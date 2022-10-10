@@ -39,7 +39,7 @@ foreach ($theses as $these) {
     $lang = substr($these->langue, 0, 2);
 
     // insert these
-    $pdo->prepare("INSERT INTO theses (iddoc, nnt, status, online, source, discipline, president_jury, lang, timestamp, code_etab, title, summary, subjects, partners, oai_set_specs, embargo, establishments, wip) VALUES (:iddoc, :nnt, :status, :online, :source, :discipline, :president_jury, :lang, :timestamp, :code_etab, :title, :summary, :subjects, :partners, :oai_set_specs, :embargo, :establishments, :wip)")->execute([
+    $pdo->prepare("INSERT INTO theses (iddoc, nnt, status, online, source, discipline, president_jury, lang, date_year, code_etab, title, summary, subjects, partners, oai_set_specs, embargo, establishments, wip) VALUES (:iddoc, :nnt, :status, :online, :source, :discipline, :president_jury, :lang, :date_year, :code_etab, :title, :summary, :subjects, :partners, :oai_set_specs, :embargo, :establishments, :wip)")->execute([
         'iddoc' => $these->iddoc,
         'nnt' => $these->nnt,
         'status' => $these->status,
@@ -48,7 +48,7 @@ foreach ($theses as $these) {
         'discipline' => getBetterLangageFor($these->discipline, $lang),
         'president_jury' => 0,
         'lang' => $lang,
-        'timestamp' => date('Y-m-d H:i:s', strtotime($these->{'@timestamp'})),
+        'date_year' => substr($these->nnt, 0, 4),
         'code_etab' => $these->code_etab,
         'title' => truncateForVarchar(getBetterLangageFor($these->titres, $lang)) ?? "Non renseigné",
         'summary' => getBetterLangageFor($these->resumes, $lang),

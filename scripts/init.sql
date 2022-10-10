@@ -49,7 +49,7 @@ CREATE TABLE `theses` (
   `discipline` varchar(255) NOT NULL,
   `president_jury` int(11) DEFAULT NULL,
   `lang` char(2) NOT NULL,
-  `timestamp` timestamp NOT NULL,
+  `date_year` smallint NOT NULL,
   `code_etab` char(4) NOT NULL,
   `title` varchar(255) NOT NULL,
   `summary` text,
