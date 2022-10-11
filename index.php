@@ -16,11 +16,17 @@ require "src/Views/header.php";
 
 switch ($action) {
     case 'search':
+        $startedAt = microtime(true);
         $regions = $searcher->select(['region'])->search($q)->groupByRegions()->orderBy('total', 'DESC')->get();
         $regionalArray = Charts::getRegionalArray($regions, true);
         $moreAccurate = $searcher->search($q)->limit(10)->get();
         $years = $searcher->search($q)->groupByYears()->get();
-        $timelineData = Charts::getYearsList($years, true);
+        $timelineData = Charts::getYearsList($years);
+        $endAt = microtime(true);
+        $time = $endAt - $startedAt;
+        $resultsNumber = array_reduce($timelineData, function ($a, $b) {
+            return $a + $b;
+        }, 0);
         require "src/Views/results.php";
         break;
 

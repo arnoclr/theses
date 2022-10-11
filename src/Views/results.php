@@ -1,6 +1,10 @@
 <main>
     <div class="grid">
         <div class="s12">
+            <small><?= $resultsNumber ?> résultat<?= $resultsNumber > 1 ? "s" : "" ?> en <?= number_format($time, 3) ?> secondes.</small>
+        </div>
+
+        <div class="s12">
             <article class="white no-elevate">
                 <h4>Evolution dans le temps</h4>
                 <?php require "src/Views/includes/timeline.php"; ?>

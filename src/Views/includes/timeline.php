@@ -2,7 +2,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
-        const data = <?= $timelineData ?>;
+        const data = <?= json_encode($timelineData) ?>;
 
         // Create the chart
         Highcharts.chart('timeline', {
