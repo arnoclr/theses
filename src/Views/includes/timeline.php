@@ -8,6 +8,7 @@
         Highcharts.chart('timeline', {
             chart: {
                 backgroundColor: null,
+                height: 240,
             },
 
             title: {
@@ -21,6 +22,9 @@
             yAxis: {
                 title: {
                     text: 'Nombre de thèses'
+                },
+                labels: {
+                    enabled: false
                 }
             },
 
@@ -35,6 +39,14 @@
                     label: {
                         connectorAllowed: false
                     },
+                    states: {
+                        hover: {
+                            enabled: false
+                        }
+                    },
+                    marker: {
+                        enabled: false
+                    },
                     pointStart: 1985
                 }
             },
@@ -44,18 +56,7 @@
             },
 
             tooltip: {
-                backgroundColor: '#FFFE',
-                borderRadius: 1,
-                borderWidth: 1,
-                borderColor: "#DDD",
-                followPointer: true,
-                padding: 12,
-                formatter: function() {
-                    return `<b>${this.point.name}</b><br>Nombre de thèses<br><strong class="colored">${this.point.value}</strong>`;
-                },
-                style: {
-                    fontSize: 14
-                }
+                enabled: false
             },
 
             mapView: {

@@ -6,21 +6,21 @@
 
         <div class="s12">
             <article class="white no-elevate">
-                <h4>Evolution dans le temps</h4>
+                <h5>Evolution dans le temps</h5>
                 <?php require "src/Views/includes/timeline.php"; ?>
             </article>
         </div>
 
         <div class="s5">
             <article class="white full-height no-elevate">
-                <h4>Par région</h4>
+                <h5>Par région</h5>
                 <?= require "src/Views/includes/map.php"; ?>
             </article>
         </div>
 
         <div class="s7">
             <article class="white no-padding no-elevate">
-                <h4 class="padding">Meilleurs résultats</h4>
+                <h5 class="padding">Meilleurs résultats</h5>
                 <ul>
                     <?php foreach ($moreAccurate as $these) : ?>
                         <li>
