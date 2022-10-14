@@ -142,9 +142,14 @@ a.link {
     text-decoration: underline;
 }
 
+button.link {
+    all: unset;
+}
+
 #readMoreText {
     transition: height .3s ease-in-out;
     overflow: hidden;
+    border-radius: 0px;
 }
 
 @media (max-width: 900px) {

@@ -41,7 +41,7 @@
     const defaultHeight = readMoreText.clientHeight;
 
     if (fullText.length > 500) {
-        readMoreText.innerHTML = fullText.substring(0, 300) + '... <a class="link" onclick="revealText();" href="#" rel="nofollow">voir plus</a>';
+        readMoreText.innerHTML = fullText.substring(0, 300) + '... <button class="link" onclick="revealText();">voir plus</button>';
     }
 
     function revealText() {
