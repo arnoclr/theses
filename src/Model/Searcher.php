@@ -23,6 +23,13 @@ class Searcher
         return $this;
     }
 
+    // FROM
+    public function from(string $table): Searcher
+    {
+        $this->replaceStatement('/FROM theses/', "FROM $table");
+        return $this;
+    }
+
     // WHERE
     public function before(int $date): Searcher
     {
@@ -53,6 +60,16 @@ class Searcher
         foreach ($results[1] as $i => $term) {
             $this->addCondition("(title LIKE :q$i OR summary LIKE :q$i OR subjects LIKE :q$i)");
             $this->addParam("q$i", "%$term%");
+        }
+        return $this;
+    }
+
+    public function searchByName(string $q): Searcher
+    {
+        $names = explode(' ', $q);
+        foreach ($names as $i => $name) {
+            $this->addCondition("(firstname LIKE :q$i OR lastname LIKE :q$i)");
+            $this->addParam("q$i", "%$name%");
         }
         return $this;
     }
@@ -106,6 +123,11 @@ class Searcher
     public function first(): object
     {
         return $this->limit(1)->get()[0];
+    }
+
+    public function exists(): bool
+    {
+        return count($this->limit(1)->get()) > 0;
     }
 
     // UTILS

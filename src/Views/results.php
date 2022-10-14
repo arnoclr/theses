@@ -2,6 +2,10 @@
     <div class="grid">
         <div class="s12">
             <small><?= $resultsNumber ?> résultat<?= $resultsNumber > 1 ? "s" : "" ?> en <?= number_format($time, 3) ?> secondes.</small>
+
+            <?php if ($isPerson) : ?>
+                <p>Une personne a été trouvée avec ce nom : <a class="link" href="/?action=person&q=<?= $person->firstname ?>+<?= $person->lastname ?>"><?= $person->firstname ?> <?= $person->lastname ?></a>.</p>
+            <?php endif; ?>
         </div>
 
         <div class="s12">
@@ -14,7 +18,7 @@
         <div class="s5">
             <article class="white full-height no-elevate">
                 <h5>Par région</h5>
-                <?= require "src/Views/includes/map.php"; ?>
+                <?php require "src/Views/includes/map.php"; ?>
             </article>
         </div>
 
@@ -24,7 +28,7 @@
                 <ul>
                     <?php foreach ($moreAccurate as $these) : ?>
                         <li>
-                            <a title="<?= htmlspecialchars($these->title) ?>" class="ellipsis" href="/?action=view&tid=<?= $these->iddoc ?>&q=<?= $q ?>">
+                            <a title="<?= htmlspecialchars($these->title) ?>" class="ellipsis" href="/?action=view&tid=<?= $these->iddoc ?>&q=<?= htmlspecialchars($q) ?>">
                                 <?= $these->title ?>
                             </a>
                         </li>

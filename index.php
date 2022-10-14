@@ -20,14 +20,21 @@ switch ($action) {
         $startedAt = microtime(true);
         $regions = $searcher->select(['region'])->search($q)->groupByRegions()->orderBy('total', 'DESC')->get();
         $regionalArray = Charts::getRegionalArray($regions, true);
-        $moreAccurate = $searcher->search($q)->limit(10)->get();
+        $moreAccurate = $searcher->search($q)->limit(8)->get();
         $years = $searcher->search($q)->groupByYears()->get();
         $timelineData = Charts::getYearsList($years);
-        $endAt = microtime(true);
-        $time = $endAt - $startedAt;
         $resultsNumber = array_reduce($timelineData, function ($a, $b) {
             return $a + $b;
         }, 0);
+
+        // search if people with this name exists
+        $isPerson = $searcher->from('people')->searchByName($q)->exists();
+        if ($isPerson)
+            $person = $searcher->from('people')->searchByName($q)->first();
+
+        $endAt = microtime(true);
+        $time = $endAt - $startedAt;
+
         require "src/Views/results.php";
         break;
 
@@ -39,6 +46,9 @@ switch ($action) {
         $map = These::getMap($thesis);
         $flag = These::flag($thesis);
         require "src/Views/thesis.php";
+        break;
+
+    case 'person':
         break;
 
     default:
