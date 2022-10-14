@@ -5,7 +5,7 @@
             <h1 style="font-size: 28px;"><?= $thesis->title ?></h1>
             <nav class="scroll">
                 <?php foreach ($subjects as $subject) : ?>
-                    <a href="/?action=search&q=<?= $subject ?>" class="chip fill small"><?= $subject ?></a>
+                    <a href="/?action=search&q=%22<?= $subject ?>%22" class="chip fill small"><?= $subject ?></a>
                 <?php endforeach; ?>
             </nav>
         </div>
