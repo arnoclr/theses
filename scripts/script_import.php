@@ -27,7 +27,7 @@ $sqlEtab = file_get_contents("establishments.sql");
 $pdo->exec($sqlEtab);
 
 // https://stackoverflow.com/a/37726178/11651419 save big files to server
-file_put_contents("data.json.tmp", fopen("https://tfressin.fr/thesesviz/extract_theses.json", 'r'));
+file_put_contents("data.json.tmp", fopen("https://static.data.gouv.fr/resources/theses-soutenues-en-france-depuis-1985/20220301-144759/theses-soutenues.json", 'r'));
 
 // this usually takes few kB of memory no matter the file size
 $theses = Items::fromFile('data.json.tmp');
@@ -35,7 +35,14 @@ $theses = Items::fromFile('data.json.tmp');
 // save hash of firstname and lastname linked to their auto increment id
 $processed_people = [];
 
+$i = 0;
+
 foreach ($theses as $these) {
+
+    if ($i > 10000) {
+        break;
+    }
+
     $lang = substr($these->langue, 0, 2);
 
     // insert these
@@ -103,6 +110,8 @@ foreach ($theses as $these) {
             'iddoc' => $these->iddoc
         ]);
     }
+
+    $i++;
 }
 
 // return langage based field in french if possible, english otherwise, or in default langage if not available
