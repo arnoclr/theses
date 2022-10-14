@@ -131,3 +131,29 @@ article h5 {
     padding-top: 8px;
     margin-left: 6px;
 }
+
+.flag {
+    padding-right: 8px;
+    border-radius: 2px;
+}
+
+a.link {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+#readMoreText {
+    transition: height .3s ease-in-out;
+    overflow: hidden;
+}
+
+@media (max-width: 900px) {
+    .js-nav-search {
+        width: unset;
+        max-width: 100%;
+    }
+
+    nav .max {
+        display: none;
+    }
+}

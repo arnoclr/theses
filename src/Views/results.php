@@ -24,7 +24,7 @@
                 <ul>
                     <?php foreach ($moreAccurate as $these) : ?>
                         <li>
-                            <a title="<?= htmlspecialchars($these->title) ?>" class="ellipsis" href="/?action=view&tid=<?= $these->iddoc ?>">
+                            <a title="<?= htmlspecialchars($these->title) ?>" class="ellipsis" href="/?action=view&tid=<?= $these->iddoc ?>&q=<?= $q ?>">
                                 <?= $these->title ?>
                             </a>
                         </li>

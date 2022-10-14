@@ -37,6 +37,7 @@ switch ($action) {
         $subjects = These::getSubjects($thesis);
         $establishments = These::getEstablishments($thesis);
         $map = These::getMap($thesis);
+        $flag = These::flag($thesis);
         require "src/Views/thesis.php";
         break;
 

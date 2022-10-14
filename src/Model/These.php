@@ -25,4 +25,16 @@ class These
         $establishment = urlencode(self::getEstablishments($thesis)[0]);
         return "https://dev.virtualearth.net/REST/V1/Imagery/Map/Road/{$establishment}?mapSize=420,230&key=" . BING_MAP_KEY;
     }
+
+    public static function flag($thesis)
+    {
+        $dict = [
+            "en" => "us",
+        ];
+        $lang = $thesis->lang;
+        if (isset($dict[$lang])) {
+            $lang = $dict[$lang];
+        }
+        return "https://flagcdn.com/$lang.svg";
+    }
 }
