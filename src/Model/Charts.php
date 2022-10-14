@@ -25,7 +25,9 @@ class Charts
         // fill all year with 0
         $array = array_fill(0, $currentYear - $startYear, 0);
         foreach ($obj as $item) {
-            $array[$item->date_year - $startYear] = intval($item->total);
+            $index = $item->date_year - $startYear;
+            if ($index > 0)
+                $array[$index] = intval($item->total);
         }
         return $inJson ? json_encode($array) : $array;
     }
