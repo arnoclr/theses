@@ -32,4 +32,18 @@
     </header>
 
     <div class="modal left" id="modal-navigation-drawer">
+        <header class="fixed">
+            <nav>
+                <h5 class="max">Theses</h5>
+            </nav>
+        </header>
+        <a href="/" class="row round">
+            <span>Accueil</span>
+        </a>
+        <a href="https://github.com/arnoclr/theses" class="row round">
+            <span>Code source</span>
+        </a>
+        <a href="https://www.data.gouv.fr/fr/datasets/theses-soutenues-en-france-depuis-1985/" class="row round">
+            <span>Données publiques</span>
+        </a>
     </div>
