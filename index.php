@@ -6,6 +6,7 @@ require_once 'src/utils.php';
 use App\Model\Database;
 use App\Model\Searcher;
 use App\Model\Charts;
+use App\Model\These;
 
 $action = $_GET['action'] ?? null;
 $pdo = Database::getPDO();
@@ -28,6 +29,15 @@ switch ($action) {
             return $a + $b;
         }, 0);
         require "src/Views/results.php";
+        break;
+
+    case 'view':
+        $id = intval($_GET['tid']);
+        $thesis = $searcher->byId($id)->first();
+        $subjects = These::getSubjects($thesis);
+        $establishments = These::getEstablishments($thesis);
+        $map = These::getMap($thesis);
+        require "src/Views/thesis.php";
         break;
 
     default:

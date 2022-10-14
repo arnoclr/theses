@@ -57,6 +57,12 @@ class Searcher
         return $this;
     }
 
+    public function byId(int $id): Searcher
+    {
+        $this->addCondition("iddoc = $id");
+        return $this;
+    }
+
     // ORDER BY
     public function orderBy($field, $order = 'ASC'): Searcher
     {
@@ -95,6 +101,11 @@ class Searcher
         $statement->execute($this->params);
         $this->statement = "SELECT * FROM theses WHERE 1 = 1";
         return $statement->fetchAll();
+    }
+
+    public function first(): object
+    {
+        return $this->limit(1)->get()[0];
     }
 
     // UTILS
