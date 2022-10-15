@@ -11,7 +11,7 @@ class Searcher
     public function __construct($pdo)
     {
         $this->pdo = $pdo;
-        $this->statement = "SELECT * FROM theses WHERE 1 = 1";
+        $this->statement = "SELECT * FROM `theses` WHERE 1 = 1";
         $this->params = [];
     }
 
@@ -26,7 +26,14 @@ class Searcher
     // FROM
     public function from(string $table): Searcher
     {
-        $this->replaceStatement('/FROM theses/', "FROM $table");
+        $this->replaceStatement('/FROM `theses`/', "FROM `$table`");
+        return $this;
+    }
+
+    // JOIN
+    private function naturalJoin(string $table): Searcher
+    {
+        $this->statement = str_replace('WHERE', "NATURAL JOIN `$table` WHERE", $this->statement);
         return $this;
     }
 
@@ -43,14 +50,11 @@ class Searcher
         return $this;
     }
 
-    public function fromAuthor(string $name): Searcher
-    {
-        // TODO: join request
-        return $this;
-    }
-
     public function search(string $q): Searcher
     {
+        if ($q == "") {
+            return $this;
+        }
         // natural language search
         $this->addCondition("MATCH (title, summary, subjects, partners, establishments) AGAINST (:q IN NATURAL LANGUAGE MODE)");
         $this->addParam('q', $q);
@@ -74,6 +78,17 @@ class Searcher
         return $this;
     }
 
+    public function authorIs(string $firstname, string $lastname): Searcher
+    {
+        $this->from('people');
+        $this->naturalJoin('theses_people');
+        $this->naturalJoin('theses');
+        $this->addCondition("firstname = :firstname AND lastname = :lastname AND role = 'aut'");
+        $this->addParam('firstname', $firstname);
+        $this->addParam('lastname', $lastname);
+        return $this;
+    }
+
     public function byId(int $id): Searcher
     {
         $this->addCondition("iddoc = $id");
@@ -91,14 +106,15 @@ class Searcher
     public function groupByRegions(): Searcher
     {
         // select region, count(*) from theses natural join establishments group by region;
-        $this->replaceStatement('/(SELECT.+) FROM \w+/', '$1, count(*) as total FROM theses NATURAL JOIN establishments');
+        $this->naturalJoin('establishments');
+        $this->select(['region', 'count(*) as total']);
         $this->appendRule('GROUP BY region');
         return $this;
     }
 
     public function groupByYears(): Searcher
     {
-        $this->replaceStatement('/(SELECT.+) FROM \w+/', 'SELECT count(*) as total, date_year FROM theses');
+        $this->select(['count(*) as total', 'date_year']);
         $this->appendRule('GROUP BY date_year');
         $this->orderBy('date_year', 'ASC');
         return $this;
@@ -116,7 +132,8 @@ class Searcher
     {
         $statement = $this->pdo->prepare($this->statement);
         $statement->execute($this->params);
-        $this->statement = "SELECT * FROM theses WHERE 1 = 1";
+        $this->statement = "SELECT * FROM `theses` WHERE 1 = 1";
+        $this->params = [];
         return $statement->fetchAll();
     }
 
@@ -131,9 +148,12 @@ class Searcher
     }
 
     // UTILS
-    public function _debug(): string
+    public function _debug(): array
     {
-        return $this->statement;
+        return [
+            'statement' => $this->statement,
+            'params' => $this->params,
+        ];
     }
 
     private function replaceStatement(string $regex, string $replacement): void

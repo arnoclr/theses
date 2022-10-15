@@ -10,7 +10,7 @@
                         <i class="small">close</i>
                     </a>
                 <?php elseif ($isPerson) : ?>
-                    <a class="chip border" href="/?action=search&q=<?= htmlspecialchars($q) ?>+par+<?= $person->firstname ?>+<?= $person->lastname ?>">Par <?= $person->firstname ?> <?= $person->lastname ?></a>
+                    <a class="chip border" href="/?action=search&q=par+<?= $person->firstname ?>+<?= $person->lastname ?>">par <?= $person->firstname ?> <?= $person->lastname ?></a>
                 <?php endif; ?>
                 <?php if ($dateString) : ?>
                     <a class="chip fill" href="/?action=search&q=<?= $queryWithoutDate ?>">

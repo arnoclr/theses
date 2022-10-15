@@ -37,6 +37,14 @@ class Decoder
             $searcher->before($to + 1);
         }
 
+        if ($author) {
+            $isPerson = $searcher->from('people')->searchByName($author)->exists();
+            if ($isPerson) {
+                $person = $searcher->from('people')->searchByName($author)->first();
+                $searcher->authorIs($person->firstname, $person->lastname);
+            }
+        }
+
         $searcher->search($this->filteredq);
 
         return $searcher;

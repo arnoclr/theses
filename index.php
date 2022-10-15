@@ -22,7 +22,7 @@ switch ($action) {
 
         $decoder = new Decoder($pdo, $q);
 
-        $regions = $decoder->decode()->select(['region'])->groupByRegions()->orderBy('total', 'DESC')->get();
+        $regions = $decoder->decode()->groupByRegions()->orderBy('total', 'DESC')->get();
         $regionalArray = Charts::getRegionalArray($regions, true);
         $moreAccurate = $decoder->decode()->limit(8)->get();
         $years = $decoder->decode()->groupByYears()->get();
@@ -35,13 +35,11 @@ switch ($action) {
         // get specified author name
         $by = $decoder->getAuthorString();
         $queryWithoutAuthor = $decoder->getQueryWithoutAuthor();
-        $personIsSelected = false;
 
         // search if people with this name exists
         $isPerson = $searcher->from('people')->searchByName($q)->exists();
         if ($isPerson) {
             $person = $searcher->from('people')->searchByName($q)->first();
-            $personIsSelected = true;
         }
 
         // date range
