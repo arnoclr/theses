@@ -67,14 +67,20 @@ switch ($action) {
 
     default:
         $searcher = new Searcher($pdo);
-        $regions = $searcher->groupByRegions()->orderBy('total', 'DESC')->get();
-        $regionalArray = Charts::getRegionalArray($regions, true);
-        $years = $searcher->groupByYears()->get();
-        $timelineData = Charts::getYearsList($years);
+        $regionalArray = getOrCache('home.regions', 60, function () use ($searcher) {
+            $regions = $searcher->groupByRegions()->orderBy('total', 'DESC')->get();
+            return Charts::getRegionalArray($regions, true);
+        });
+        $timelineData = getOrCache('home.timeline', 60, function () use ($searcher) {
+            $years = $searcher->groupByYears()->get();
+            return Charts::getYearsList($years);
+        });
         $thesesCount = array_reduce($timelineData, function ($a, $b) {
             return $a + $b;
         }, 0);
-        $peopleCount = $searcher->from('people')->count();
+        $peopleCount = getOrCache('home.people', 60, function () use ($searcher) {
+            return $searcher->from('people')->count();
+        });
         require "src/Views/home.php";
         break;
 }
