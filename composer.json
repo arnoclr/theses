@@ -1,6 +1,7 @@
 {
     "require": {
-        "halaxa/json-machine": "^1.1"
+        "halaxa/json-machine": "^1.1",
+        "vlucas/phpdotenv": "^5.4"
     },
     "autoload": {
         "psr-4": {

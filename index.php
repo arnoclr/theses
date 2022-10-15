@@ -9,6 +9,9 @@ use App\Model\Searcher;
 use App\Model\Charts;
 use App\Model\These;
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 $action = $_GET['action'] ?? null;
 $pdo = Database::getPDO();
 $searcher = new Searcher($pdo);
