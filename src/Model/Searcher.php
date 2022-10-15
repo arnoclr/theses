@@ -33,13 +33,13 @@ class Searcher
     // WHERE
     public function before(int $date): Searcher
     {
-        $this->addCondition("date < $date");
+        $this->addCondition("date_year < $date");
         return $this;
     }
 
     public function after(int $date): Searcher
     {
-        $this->addCondition("date > $date");
+        $this->addCondition("date_year > $date");
         return $this;
     }
 

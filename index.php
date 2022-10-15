@@ -3,6 +3,7 @@
 require_once 'vendor/autoload.php';
 require_once 'src/utils.php';
 
+use App\Controllers\Decoder;
 use App\Model\Database;
 use App\Model\Searcher;
 use App\Model\Charts;
@@ -18,19 +19,34 @@ require "src/Views/header.php";
 switch ($action) {
     case 'search':
         $startedAt = microtime(true);
-        $regions = $searcher->select(['region'])->search($q)->groupByRegions()->orderBy('total', 'DESC')->get();
+
+        $decoder = new Decoder($pdo, $q);
+
+        $regions = $decoder->decode()->select(['region'])->groupByRegions()->orderBy('total', 'DESC')->get();
         $regionalArray = Charts::getRegionalArray($regions, true);
-        $moreAccurate = $searcher->search($q)->limit(8)->get();
-        $years = $searcher->search($q)->groupByYears()->get();
+        $moreAccurate = $decoder->decode()->limit(8)->get();
+        $years = $decoder->decode()->groupByYears()->get();
+
         $timelineData = Charts::getYearsList($years);
         $resultsNumber = array_reduce($timelineData, function ($a, $b) {
             return $a + $b;
         }, 0);
 
+        // get specified author name
+        $by = $decoder->getAuthorString();
+        $queryWithoutAuthor = $decoder->getQueryWithoutAuthor();
+        $personIsSelected = false;
+
         // search if people with this name exists
         $isPerson = $searcher->from('people')->searchByName($q)->exists();
-        if ($isPerson)
+        if ($isPerson) {
             $person = $searcher->from('people')->searchByName($q)->first();
+            $personIsSelected = true;
+        }
+
+        // date range
+        $dateString = $decoder->getDateRangeString();
+        $queryWithoutDate = $decoder->getQueryWithoutDate();
 
         $endAt = microtime(true);
         $time = $endAt - $startedAt;

@@ -88,7 +88,7 @@ main {
     margin-left: 2px;
 }
 
-a:focus {
+li a:focus {
     outline: 1px dotted #333;
     outline-offset: 4px;
 }

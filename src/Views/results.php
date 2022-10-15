@@ -3,9 +3,22 @@
         <div class="s12">
             <small><?= $resultsNumber ?> résultat<?= $resultsNumber > 1 ? "s" : "" ?> en <?= number_format($time, 3) ?> secondes.</small>
 
-            <?php if ($isPerson) : ?>
-                <p>Une personne a été trouvée avec ce nom : <a class="link" href="/?action=person&q=<?= $person->firstname ?>+<?= $person->lastname ?>"><?= $person->firstname ?> <?= $person->lastname ?></a>.</p>
-            <?php endif; ?>
+            <nav class="scroll">
+                <?php if ($by) : ?>
+                    <a class="chip fill" href="/?action=search&q=<?= $queryWithoutAuthor ?>">
+                        <span><?= $by ?></span>
+                        <i class="small">close</i>
+                    </a>
+                <?php elseif ($isPerson) : ?>
+                    <a class="chip border" href="/?action=search&q=<?= htmlspecialchars($q) ?>+par+<?= $person->firstname ?>+<?= $person->lastname ?>">Par <?= $person->firstname ?> <?= $person->lastname ?></a>
+                <?php endif; ?>
+                <?php if ($dateString) : ?>
+                    <a class="chip fill" href="/?action=search&q=<?= $queryWithoutDate ?>">
+                        <span><?= $dateString ?></span>
+                        <i class="small">close</i>
+                    </a>
+                <?php endif; ?>
+            </nav>
         </div>
 
         <div class="s12">
