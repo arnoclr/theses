@@ -25,7 +25,7 @@
 
         <div class="l4 s12">
             <article class="no-padding no-elevate white">
-                <img class="responsive small" src="<?= $map ?>" alt="Map Bing">
+                <img class="responsive" src="<?= $map ?>" alt="Map Bing">
                 <div class="padding">
                     <small>Soutenu à</small>
                     <strong><?= $establishments[0] ?></strong>
