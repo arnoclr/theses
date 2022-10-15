@@ -66,6 +66,15 @@ switch ($action) {
         break;
 
     default:
+        $searcher = new Searcher($pdo);
+        $regions = $searcher->groupByRegions()->orderBy('total', 'DESC')->get();
+        $regionalArray = Charts::getRegionalArray($regions, true);
+        $years = $searcher->groupByYears()->get();
+        $timelineData = Charts::getYearsList($years);
+        $thesesCount = array_reduce($timelineData, function ($a, $b) {
+            return $a + $b;
+        }, 0);
+        $peopleCount = $searcher->from('people')->count();
         require "src/Views/home.php";
         break;
 }

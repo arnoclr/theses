@@ -147,6 +147,11 @@ class Searcher
         return count($this->limit(1)->get()) > 0;
     }
 
+    public function count(): int
+    {
+        return count($this->get());
+    }
+
     // UTILS
     public function _debug(): array
     {

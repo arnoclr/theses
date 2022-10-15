@@ -17,6 +17,8 @@
                         <span><?= $dateString ?></span>
                         <i class="small">close</i>
                     </a>
+                <?php else : ?>
+                    <a class="chip border" href="/?action=search&q=<?= htmlspecialchars($q) ?>+après+<?= date('Y') - 5 ?>">Ces 5 dernières années</a>
                 <?php endif; ?>
             </nav>
         </div>

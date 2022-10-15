@@ -75,6 +75,12 @@ main {
     opacity: 0;
 }
 
+.demo-card-inner {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+}
+
 .demo-card::after {
     content: " ";
     position: absolute;
@@ -86,6 +92,54 @@ main {
     border-bottom-color: var(--body);
     border-width: 24px;
     margin-left: 2px;
+}
+
+.example-text {
+    padding-top: 22px;
+    padding-bottom: 16px;
+    color: #777;
+    font-size: 18px;
+}
+
+.examples {
+    display: flex;
+    gap: 22px;
+}
+
+.examples article,
+.examples a {
+    width: 100%;
+}
+
+.examples img {
+    width: 100%;
+    height: auto;
+}
+
+.stats {
+    margin: 0;
+    margin-bottom: 24px;
+    padding: 0;
+    list-style: none;
+}
+
+.stats li {
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.stats span {
+    font-size: 20px;
+    color: #565656;
+}
+
+.stats .numeric {
+    font-size: 28px;
+    color: #000;
 }
 
 li a:focus {
@@ -153,6 +207,10 @@ button.link {
 }
 
 @media (max-width: 900px) {
+    .header-title {
+        font-size: 36px;
+    }
+
     .js-nav-search {
         width: unset;
         max-width: 100%;
@@ -160,5 +218,14 @@ button.link {
 
     nav .max {
         display: none;
+    }
+
+    .examples {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .demo-card-inner {
+        padding: 0 12px;
     }
 }
