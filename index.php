@@ -52,6 +52,10 @@ switch ($action) {
         $dateString = $decoder->getDateRangeString();
         $queryWithoutDate = $decoder->getQueryWithoutDate();
 
+        // establishment
+        $at = $decoder->getEstablishmentString();
+        $queryWithoutEstablishment = $decoder->getQueryWithoutEstablishment();
+
         $endAt = microtime(true);
         $time = $endAt - $startedAt;
 

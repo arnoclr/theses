@@ -21,6 +21,12 @@
                 <?php elseif ($isPerson) : ?>
                     <a class="chip border" href="/?action=search&q=par+<?= $person->firstname ?>+<?= $person->lastname ?>">par <?= $person->firstname ?> <?= $person->lastname ?></a>
                 <?php endif; ?>
+                <?php if ($at) : ?>
+                    <a class="chip fill" href="/?action=search&q=<?= $queryWithoutEstablishment ?>">
+                        <span><?= $at ?></span>
+                        <i class="small">close</i>
+                    </a>
+                <?php endif; ?>
                 <?php if ($dateString) : ?>
                     <a class="chip fill" href="/?action=search&q=<?= $queryWithoutDate ?>">
                         <span><?= $dateString ?></span>

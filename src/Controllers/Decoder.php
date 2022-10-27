@@ -29,6 +29,7 @@ class Decoder
         $to = $this->to();
         $in = $this->in();
         $author = $this->getAuthor();
+        $at = $this->at();
 
         if ($from > -1) {
             $searcher->after($from - 1);
@@ -40,6 +41,9 @@ class Decoder
 
         if ($in > -1) {
             $searcher->in($in);
+        }
+        if ($at) {
+            $searcher->at($at);
         }
 
         if ($author) {
@@ -76,6 +80,11 @@ class Decoder
         return $this->extractDateAfterKeywords(['in', 'en']);
     }
 
+    private function at(): string
+    {
+        return $this->extractStringAfterKeywords(['at', 'à']);
+    }
+
     private function extractDateAfterKeywords(array $keywords): int
     {
         $year = 0;
@@ -100,7 +109,12 @@ class Decoder
 
     private function getAuthor(): string
     {
-        $author = '';
+        return $this->extractStringAfterKeywords(['by', 'par']);
+    }
+
+    private function extractStringAfterKeywords(array $stopwords): string
+    {
+        $res = '';
         $appendable = false;
         $words = explode(' ', $this->q);
         foreach ($words as $i => $word) {
@@ -108,15 +122,17 @@ class Decoder
                 $appendable = false;
             }
             if ($appendable) {
-                $author .= " $word";
+                $res .= " $word";
             }
-            if (in_array($word, ['by', 'par'])) {
+            if (in_array($word, $stopwords)) {
                 $appendable = true;
             }
         }
-        $this->filteredq = str_replace($author, '', $this->filteredq);
-        $this->filteredq = preg_replace('/(par|by)(\W|$)/i', '', $this->filteredq);
-        return substr($author, 1);
+        $stopwordsString = implode('|', $stopwords);
+        $regex = "/({$stopwordsString})(\W|$)/i";
+        $this->filteredq = str_replace($res, '', $this->filteredq);
+        $this->filteredq = preg_replace($regex, '', $this->filteredq);
+        return substr($res, 1);
     }
 
     // Front end data
@@ -145,6 +161,12 @@ class Decoder
         return $author ? "par $author" : '';
     }
 
+    public function getEstablishmentString(): string
+    {
+        $at = $this->at();
+        return $at ? "à $at" : '';
+    }
+
     public function getFilteredQuery(): string
     {
         return $this->filteredq;
@@ -159,6 +181,13 @@ class Decoder
 
     public function getQueryWithoutDate(): string
     {
-        return preg_replace('/\s+/', ' ', $this->filteredq . ' ' . $this->getAuthorString());
+        return preg_replace('/\s+/', ' ', $this->filteredq . ' ' . $this->getAuthorString() . ' ' . $this->getEstablishmentString());
+    }
+
+    public function getQueryWithoutEstablishment(): string
+    {
+        $at = $this->at();
+        $out = $at ? str_replace('à ' . $at, '', $this->q) : $this->q;
+        return preg_replace('/\s+/', ' ', $out);
     }
 }

@@ -101,6 +101,18 @@ class Searcher
         return $this;
     }
 
+    public function at(string $establishmentNameOrCode): Searcher
+    {
+        // if name is 4 letters UPPEr
+        $code_etab = $establishmentNameOrCode;
+        if (strlen($establishmentNameOrCode) != 4 || !ctype_upper($establishmentNameOrCode)) {
+            $code_etab = $this->getEstablishmentCode($establishmentNameOrCode);
+        }
+        $this->addCondition("code_etab = :code_etab");
+        $this->addParam('code_etab', $code_etab);
+        return $this;
+    }
+
     // ORDER BY
     public function orderBy($field, $order = 'ASC'): Searcher
     {
@@ -185,5 +197,12 @@ class Searcher
     private function addParam(string $key, string $value): void
     {
         $this->params[$key] = $value;
+    }
+
+    private function getEstablishmentCode(string $establishment)
+    {
+        $statement = $this->pdo->prepare("SELECT code_etab FROM `establishments` WHERE name = :name");
+        $statement->execute(['name' => $establishment]);
+        return $statement->fetch()->code_etab ?? "";
     }
 }

@@ -28,7 +28,9 @@
                 <img class="responsive" src="<?= $map ?>" alt="Map Bing">
                 <div class="padding">
                     <small>Soutenu à</small>
-                    <strong><?= $establishments[0] ?></strong>
+                    <a href="/?action=search&q=à+<?= $thesis->code_etab ?>">
+                        <strong><?= $establishments[0] ?></strong>
+                    </a>
 
                     <p><img class="flag" src="<?= $flag ?>" width="30" alt="Drapeau <?= $thesis->lang ?>"> Langue originale de la thèse</p>
                 </div>
