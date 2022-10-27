@@ -25,7 +25,14 @@
                         textOutline: 0,
                         fontWeigth: 400,
                     }
-                }
+                },
+                point: {
+                    events: {
+                        click: function(event) {
+                            window.location.href = `/?action=search&q="${event.point.name}"+<?= htmlspecialchars($_GET['q']) ?>`;
+                        }
+                    },
+                },
             }],
 
             colorAxis: {
