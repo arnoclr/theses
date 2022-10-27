@@ -31,4 +31,17 @@ class Charts
         }
         return $inJson ? json_encode($array) : $array;
     }
+
+    public static function getSubjectsSeries($obj, $inJson = false)
+    {
+        $array = [];
+        foreach ($obj as $subject => $count) {
+            $array[] = [
+                'name' => $subject,
+                'value' => intval($count),
+                'colorValue' => intval($count)
+            ];
+        }
+        return $inJson ? json_encode($array) : $array;
+    }
 }

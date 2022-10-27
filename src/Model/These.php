@@ -10,23 +10,23 @@ class These
 {
     // add here static methods for a thesis
 
-    public static function getSubjects($thesis)
+    public static function getSubjects(object $thesis): array
     {
         return explode(DB_SEPARATOR, $thesis->subjects);
     }
 
-    public static function getEstablishments($thesis)
+    public static function getEstablishments(object $thesis): array
     {
         return explode(DB_SEPARATOR, $thesis->establishments);
     }
 
-    public static function getMap($thesis)
+    public static function getMap(object $thesis): string
     {
         $establishment = urlencode(self::getEstablishments($thesis)[0]);
         return "https://dev.virtualearth.net/REST/V1/Imagery/Map/Road/{$establishment}?mapSize=420,230&key=" . BING_MAP_KEY;
     }
 
-    public static function flag($thesis)
+    public static function flag(object $thesis): string
     {
         $dict = [
             "en" => "us",
@@ -36,5 +36,21 @@ class These
             $lang = $dict[$lang];
         }
         return "https://flagcdn.com/$lang.svg";
+    }
+
+    public static function subjectsCount(array $theses, int $length = 8): array
+    {
+        $subjects = [];
+        foreach ($theses as $thesis) {
+            foreach (self::getSubjects($thesis) as $subject) {
+                if (isset($subjects[$subject]) && !in_array($subject, ["", "..."])) {
+                    $subjects[$subject]++;
+                } else {
+                    $subjects[$subject] = 1;
+                }
+            }
+        }
+        arsort($subjects);
+        return array_slice($subjects, 0, $length);
     }
 }

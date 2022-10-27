@@ -51,5 +51,12 @@
                 </ul>
             </article>
         </div>
+
+        <div class="s12">
+            <article class="white no-elevate">
+                <h5>Sujets les plus mentionnés</h5>
+                <?php require "src/Views/includes/subjects.php"; ?>
+            </article>
+        </div>
     </div>
 </main>
