@@ -7,7 +7,7 @@ use App\Model\Searcher;
 class Decoder
 {
     private $pdo;
-    private $stopwords = ['by', 'par', 'from', 'depuis', 'after', 'après', 'before', 'avant', 'entre', 'à'];
+    private $stopwords = ['by', 'par', 'from', 'depuis', 'after', 'après', 'before', 'avant', 'entre', 'à', 'et'];
     private $q;
     private $filteredq;
     private $searcher;
@@ -38,9 +38,10 @@ class Decoder
         }
 
         if ($author) {
-            $isPerson = $searcher->from('people')->searchByName($author)->exists();
+            $searcherAlt = new Searcher($this->pdo);
+            $isPerson = $searcherAlt->from('people')->searchByName($author)->exists();
             if ($isPerson) {
-                $person = $searcher->from('people')->searchByName($author)->first();
+                $person = $searcherAlt->from('people')->searchByName($author)->first();
                 $searcher->authorIs($person->firstname, $person->lastname);
             }
         }
