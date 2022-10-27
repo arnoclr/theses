@@ -7,7 +7,7 @@ use App\Model\Searcher;
 class Decoder
 {
     private $pdo;
-    private $stopwords = ['by', 'par', 'from', 'depuis', 'after', 'après', 'before', 'avant', 'entre', 'à', 'et'];
+    private $stopwords = ['by', 'par', 'from', 'depuis', 'after', 'après', 'before', 'avant', 'entre', 'à', 'et', 'en', 'in'];
     private $q;
     private $filteredq;
     private $searcher;
@@ -27,6 +27,7 @@ class Decoder
 
         $from = $this->from();
         $to = $this->to();
+        $in = $this->in();
         $author = $this->getAuthor();
 
         if ($from > -1) {
@@ -35,6 +36,10 @@ class Decoder
 
         if ($to > -1) {
             $searcher->before($to + 1);
+        }
+
+        if ($in > -1) {
+            $searcher->in($in);
         }
 
         if ($author) {
@@ -64,6 +69,11 @@ class Decoder
     private function to(): int
     {
         return $this->extractDateAfterKeywords(['to', 'à', 'before', 'avant', 'et']);
+    }
+
+    private function in(): int
+    {
+        return $this->extractDateAfterKeywords(['in', 'en']);
     }
 
     private function extractDateAfterKeywords(array $keywords): int
@@ -115,12 +125,16 @@ class Decoder
     {
         $from = $this->from();
         $to = $this->to();
+        $in = $this->in();
         $dateRangeString = '';
         if ($from > 0) {
             $dateRangeString .= "depuis $from";
         }
         if ($to > 0) {
             $dateRangeString .= " jusqu'à $to";
+        }
+        if ($in > 0) {
+            $dateRangeString = "en $in";
         }
         return $dateRangeString;
     }
