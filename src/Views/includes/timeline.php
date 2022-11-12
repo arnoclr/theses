@@ -6,6 +6,10 @@
 
         // Create the chart
         Highcharts.chart('timeline', {
+            credits: {
+                enabled: false
+            },
+
             chart: {
                 backgroundColor: null,
                 height: 240,

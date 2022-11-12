@@ -46,14 +46,14 @@
                 </article>
             </div>
 
-            <div class="s5">
+            <div class="s12 l5">
                 <article class="white full-height no-elevate">
                     <h5>Par région</h5>
                     <?php require "src/Views/includes/map.php"; ?>
                 </article>
             </div>
 
-            <div class="s7">
+            <div class="s12 l7">
                 <article class="white no-padding no-elevate">
                     <h5 class="padding">Meilleurs résultats</h5>
                     <ul>

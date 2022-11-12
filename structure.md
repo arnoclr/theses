@@ -53,3 +53,8 @@ https://jsfiddle.net/gh/get/jquery/1.11.0/highslide-software/highcharts.com/tree
 
 exemples de 3 requetes à l'entrée du site
 https://trends.google.fr/trends/explore?geo=FR&q=php,javascript
+
+## To do
+
+- [ ] Recherches tendances (demander accord rgpd, stocker pendant max 30j)
+- [ ] thèmes tendances (basés sur les recherches tendances)

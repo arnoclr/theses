@@ -48,6 +48,8 @@ switch ($action) {
             $person = $searcher->from('people')->searchByName($q)->first();
         }
 
+        // TODO: error with http://theses.arno.cl/?action=search&q=par+Francisco+Acosta
+
         // date range
         $dateString = $decoder->getDateRangeString();
         $queryWithoutDate = $decoder->getQueryWithoutDate();

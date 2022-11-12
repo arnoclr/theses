@@ -14,6 +14,10 @@
 
         // Create the chart
         Highcharts.mapChart('map', {
+            credits: {
+                enabled: false
+            },
+
             chart: {
                 map: topology,
                 backgroundColor: null,

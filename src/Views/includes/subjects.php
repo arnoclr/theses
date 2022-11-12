@@ -3,6 +3,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
         Highcharts.chart('subjects', {
+            credits: {
+                enabled: false
+            },
+
             chart: {
                 type: 'treemap',
                 backgroundColor: null,

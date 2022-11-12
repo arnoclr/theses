@@ -49,6 +49,11 @@ main {
     font-size: 44px;
 }
 
+input[type=search] {
+    appearance: none;
+    -webkit-appearance: none;
+}
+
 .js-nav-search,
 .js-main-search {
     transition: transform 0.1s cubic-bezier(.43, .16, .26, .97), opacity 0.1s linear;
@@ -60,8 +65,20 @@ main {
     z-index: 15;
 }
 
+header nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header nav button {
+    position: absolute;
+    left: 0;
+}
+
 .js-nav-search {
-    width: 100%;
+    width: calc(100% - 48px);
     max-width: 580px;
 }
 
@@ -211,13 +228,8 @@ button.link {
         font-size: 36px;
     }
 
-    .js-nav-search {
-        width: unset;
-        max-width: 100%;
-    }
-
-    nav .max {
-        display: none;
+    header nav {
+        justify-content: flex-end;
     }
 
     .examples {
