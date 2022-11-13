@@ -33,9 +33,7 @@
                 point: {
                     events: {
                         click: function(event) {
-                            // TODO: fix XSS 
-                            // `.substr(0, 0) + `maria` .substr(0) + `https://www.youtube.com/watch?v=dQw4w9WgXcQ
-                            // window.location.href = `/?action=search&q="${event.point.name}"+<?= htmlspecialchars($_GET['q']) ?>`;
+                            window.location.href = `/?action=search&q="${event.point.name}"+<?= str_replace('`', '', $_GET['q']) ?>`;
                         }
                     },
                 },
