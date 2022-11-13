@@ -105,7 +105,7 @@ class Searcher
     {
         // if name is 4 letters UPPEr
         $code_etab = $establishmentNameOrCode;
-        if (strlen($establishmentNameOrCode) != 4 || !ctype_upper($establishmentNameOrCode)) {
+        if (!preg_match('/^[A-Z0-9]{4}$/', $establishmentNameOrCode)) {
             $code_etab = $this->getEstablishmentCode($establishmentNameOrCode);
         }
         $this->addCondition("code_etab = :code_etab");
