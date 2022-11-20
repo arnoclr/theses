@@ -25,6 +25,28 @@ main {
     max-width: 1200px;
 }
 
+main.loading {
+    animation: twinkle .6s infinite;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 1;
+    }
+
+    30% {
+        opacity: 0.5;
+    }
+
+    60% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 .field.plain {
     background-color: rgba(126, 126, 126, 0.05);
     border-radius: 4rem;

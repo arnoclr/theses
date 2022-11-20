@@ -13,11 +13,13 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 $action = $_GET['action'] ?? null;
+$headless = $_GET['headless'] ?? false;
 $pdo = Database::getPDO();
 $searcher = new Searcher($pdo);
 $q = $_GET['q'] ?? null;
 
-require "src/Views/header.php";
+if (!$headless)
+    require "src/Views/header.php";
 
 switch ($action) {
     case 'search':
@@ -97,4 +99,5 @@ switch ($action) {
         break;
 }
 
-require "src/Views/footer.php";
+if (!$headless)
+    require "src/Views/footer.php";
