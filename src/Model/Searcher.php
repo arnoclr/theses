@@ -129,6 +129,13 @@ class Searcher
         return $this;
     }
 
+    public function randomOne(): Searcher
+    {
+        $this->appendRule("ORDER BY RAND()");
+        $this->limit(1);
+        return $this;
+    }
+
     // GROUP BY
     public function groupByRegions(): Searcher
     {

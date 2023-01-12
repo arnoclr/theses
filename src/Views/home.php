@@ -36,6 +36,8 @@
                 </article>
             </a>
         </div>
+        <br><br>
+        <a href="/?action=search&q=<?= $randomTitle ?>" class="button">J'ai de la chance</a>
 
         <h4 style="margin-top: 42px; margin-bottom: 32px;">Stats globales</h4>
 

@@ -95,6 +95,7 @@ switch ($action) {
         $peopleCount = getOrCache('home.people', 60, function () use ($searcher) {
             return $searcher->from('people')->count();
         });
+        $randomTitle = $searcher->randomOne()->get()[0]->title;
         require "src/Views/home.php";
         break;
 }
