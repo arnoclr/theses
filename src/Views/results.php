@@ -60,6 +60,7 @@
                         <?php foreach ($moreAccurate as $these) : ?>
                             <li>
                                 <a title="<?= htmlspecialchars($these->title) ?>" class="ellipsis" href="/?action=view&tid=<?= $these->iddoc ?>&q=<?= htmlspecialchars($q) ?>">
+                                    <span style="opacity: 0.6; margin-right: 12px;"><?= $these->date_year ?></span>
                                     <?= $these->title ?>
                                 </a>
                             </li>
