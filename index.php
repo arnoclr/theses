@@ -29,7 +29,7 @@ switch ($action) {
 
         $regions = $decoder->decode()->groupByRegions()->orderBy('total', 'DESC')->get();
         $regionalArray = Charts::getRegionalArray($regions, true);
-        $moreAccurate = $decoder->decode()->limit(8)->get();
+        $moreAccurate = $decoder->decodeAndOrder()->limit(8)->get();
         $years = $decoder->decode()->groupByYears()->get();
         $subjectsCount = These::subjectsCount($decoder->decode()->get());
 

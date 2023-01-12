@@ -7,7 +7,7 @@ use App\Model\Searcher;
 class Decoder
 {
     private $pdo;
-    private $stopwords = ['by', 'par', 'from', 'depuis', 'after', 'après', 'before', 'avant', 'entre', 'à', 'et', 'en', 'in'];
+    private $stopwords = ['by', 'par', 'from', 'depuis', 'after', 'après', 'before', 'avant', 'entre', 'à', 'et', 'en', 'in', 'les plus récentes', 'les plus anciennes', 'latest', 'oldest'];
     private $q;
     private $filteredq;
     private $searcher;
@@ -57,12 +57,28 @@ class Decoder
 
         $searcher->search($this->filteredq);
 
+        // dd($searcher->_debug());
+
         return $searcher;
     }
 
     public function decode(): Searcher
     {
         return clone $this->searcher;
+    }
+
+    public function decodeAndOrder(): Searcher
+    {
+        $searcher = clone $this->searcher;
+
+        $order = $this->getOrder();
+        if ($order === 1) {
+            $searcher->orderBy('date_year', 'DESC');
+        } else if ($order === -1) {
+            $searcher->orderBy('date_year', 'ASC');
+        }
+
+        return $searcher;
     }
 
     private function from(): int
@@ -83,6 +99,19 @@ class Decoder
     private function at(): string
     {
         return $this->extractStringAfterKeywords(['at', 'à']);
+    }
+
+    private function getOrder(): int
+    {
+        if (preg_match('/les plus récentes|latest/i', $this->q)) {
+            $this->filteredq = str_replace(['les plus récentes', 'latest'], '', $this->filteredq);
+            return 1;
+        }
+        if (preg_match('/les plus anciennes|oldest/i', $this->q)) {
+            $this->filteredq = str_replace(['les plus anciennes', 'oldest'], '', $this->filteredq);
+            return -1;
+        }
+        return 0;
     }
 
     private function extractDateAfterKeywords(array $keywords): int

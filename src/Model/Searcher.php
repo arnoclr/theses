@@ -114,8 +114,17 @@ class Searcher
     }
 
     // ORDER BY
+    private function isOrdered(): bool
+    {
+        return preg_match('/ORDER BY/', $this->statement);
+    }
+
     public function orderBy($field, $order = 'ASC'): Searcher
     {
+        if ($this->isOrdered()) {
+            $this->replaceStatement('/ORDER BY \S+ \S+/', "ORDER BY $field $order");
+            return $this;
+        }
         $this->appendRule("ORDER BY $field $order");
         return $this;
     }
