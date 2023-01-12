@@ -62,6 +62,11 @@ const detectLinksAndAttachEvents = () => {
 
     as.forEach(a => {
         const href = a.getAttribute('href');
+        const hostname = new URL(href || "").hostname;
+        const sameSite = hostname == window.location.hostname;
+
+        if (!sameSite) return;
+
         a.addEventListener('click', async e => {
             if (href == undefined) return;
             e.preventDefault();

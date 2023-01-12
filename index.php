@@ -73,6 +73,7 @@ switch ($action) {
         $establishments = These::getEstablishments($thesis);
         $map = These::getMap($thesis);
         $flag = These::flag($thesis);
+        $onlineLink = These::getOnlineLink($thesis);
         require "src/Views/thesis.php";
         break;
 

@@ -26,6 +26,11 @@ class These
         return "https://dev.virtualearth.net/REST/V1/Imagery/Map/Road/{$establishment}?mapSize=420,230&key=" . BING_MAP_KEY;
     }
 
+    public static function getOnlineLink(object $thesis): string
+    {
+        return "https://theses.fr/{$thesis->nnt}/document";
+    }
+
     public static function flag(object $thesis): string
     {
         $dict = [

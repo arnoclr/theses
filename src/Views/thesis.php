@@ -1,6 +1,6 @@
 <main>
     <div class="grid">
-        <div class="s12">
+        <div class="s12 m10">
             <p style="margin-top: 22px;"><?= $thesis->date_year ?></p>
             <h1 style="font-size: 28px;"><?= $thesis->title ?></h1>
             <?php if (strlen($subjects[0]) > 0) : ?>
@@ -9,6 +9,15 @@
                         <a href="/?action=search&q=%22<?= $subject ?>%22" class="chip fill small"><?= $subject ?></a>
                     <?php endforeach; ?>
                 </nav>
+            <?php endif; ?>
+        </div>
+
+        <div class="s12 m2">
+            <div class="m l" style="height: 32px;"></div>
+            <a target="_blank" href="<?= $onlineLink ?>" class="button" <?= $thesis->online ? "" : "disabled" ?>>Lire en ligne</a>
+            <?php if (!$thesis->online) : ?>
+                <br>
+                <small>Cette thèse n'est pas publiée sur internet</small>
             <?php endif; ?>
         </div>
 
