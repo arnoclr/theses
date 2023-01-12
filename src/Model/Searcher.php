@@ -101,6 +101,12 @@ class Searcher
         return $this;
     }
 
+    public function online(): Searcher
+    {
+        $this->addCondition("online = 1");
+        return $this;
+    }
+
     public function at(string $establishmentNameOrCode): Searcher
     {
         // if name is 4 letters UPPEr

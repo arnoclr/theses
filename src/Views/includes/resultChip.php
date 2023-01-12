@@ -3,7 +3,7 @@
         <span><?= $filterTerm ?></span>
         <i class="small">close</i>
     </a>
-<?php elseif (!preg_match("/$exclude/i", $q)) : ?>
+<?php elseif ($exclude == false || !preg_match("/$exclude/i", $q)) : ?>
     <a class="chip border" href="/?action=search&q=<?= htmlspecialchars($q) ?>+<?= $filterTerm ?>">
         <span><?= $filterTerm ?></span>
     </a>

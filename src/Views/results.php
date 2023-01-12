@@ -43,6 +43,10 @@
                 $filterTerm = "les plus anciennes";
                 $exclude = "les plus récentes";
                 include "src/Views/includes/resultChip.php"; ?>
+                <?php
+                $filterTerm = "en ligne";
+                $exclude = false;
+                include "src/Views/includes/resultChip.php"; ?>
             </nav>
         </div>
 

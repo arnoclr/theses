@@ -7,7 +7,7 @@ use App\Model\Searcher;
 class Decoder
 {
     private $pdo;
-    private $stopwords = ['by', 'par', 'from', 'depuis', 'after', 'après', 'before', 'avant', 'entre', 'à', 'et', 'en', 'in', 'les plus récentes', 'les plus anciennes', 'latest', 'oldest'];
+    private $stopwords = ['by', 'par', 'from', 'depuis', 'after', 'après', 'before', 'avant', 'entre', 'à', 'et', 'en', 'in', 'les plus récentes', 'les plus anciennes', 'latest', 'oldest', 'en ligne', 'online'];
     private $q;
     private $filteredq;
     private $searcher;
@@ -30,6 +30,7 @@ class Decoder
         $in = $this->in();
         $author = $this->getAuthor();
         $at = $this->at();
+        $online = $this->getOnlineFilter();
 
         if ($from > -1) {
             $searcher->after($from - 1);
@@ -53,6 +54,10 @@ class Decoder
                 $person = $searcherAlt->from('people')->searchByName($author)->first();
                 $searcher->authorIs($person->firstname, $person->lastname);
             }
+        }
+
+        if ($online) {
+            $searcher->online();
         }
 
         $searcher->search($this->filteredq);
@@ -112,6 +117,15 @@ class Decoder
             return -1;
         }
         return 0;
+    }
+
+    private function getOnlineFilter(): bool
+    {
+        if (preg_match('/en ligne|online/i', $this->q)) {
+            $this->filteredq = str_replace(['en ligne', 'online'], '', $this->filteredq);
+            return true;
+        }
+        return false;
     }
 
     private function extractDateAfterKeywords(array $keywords): int
