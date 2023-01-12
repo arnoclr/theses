@@ -325,5 +325,12 @@ button.link {
 
     .demo-card-inner {
         padding: 0 12px;
+        max-width: 700px;
+    }
+}
+
+@media (max-width: 1300px) {
+    main {
+        max-width: 900px;
     }
 }
