@@ -35,6 +35,14 @@
                 <?php else : ?>
                     <a class="chip border" href="/?action=search&q=<?= htmlspecialchars($q) ?>+après+<?= date('Y') - 5 ?>">Ces 5 dernières années</a>
                 <?php endif; ?>
+                <?php
+                $filterTerm = "les plus récentes";
+                $exclude = "les plus anciennes";
+                include "src/Views/includes/resultChip.php"; ?>
+                <?php
+                $filterTerm = "les plus anciennes";
+                $exclude = "les plus récentes";
+                include "src/Views/includes/resultChip.php"; ?>
             </nav>
         </div>
 
