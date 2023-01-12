@@ -86,7 +86,3 @@
         <?php endif; ?>
     </div>
 </main>
-
-<?php if (!$headless) : ?>
-    <script src="/public/js/includes/results.js"></script>
-<?php endif; ?>

@@ -29,13 +29,30 @@ const getQueryStringFromUrl = (/** @type {string} */ url) => {
     return urlParams.get("q") || "";
 };
 
-const updateResultsUI = async (/** @type {string} */ href) => {
+const updateResultsUI = async (/** @type {string} */ href, /** @type {boolean} */ isBack) => {
     if (main == undefined) return;
-    main.classList.add("loading");
+    const samePage = new URLSearchParams(href.split("?")[1]).get("action") == new URLSearchParams(window.location.href.split("?")[1]).get("action");
+
+    const [onAnimationStart, onAnimationEnd] = isBack ? ["backwards", "isbackwards"] : ["forwards", "isforwards"];
+
+    if (samePage) {
+        main.classList.add("loading");
+    } else {
+        main.classList.remove(onAnimationEnd);
+        main.classList.add(onAnimationStart);
+    }
+
     const resultBody = await fetch(href + "&headless=1").then(x => x.text());
     window.history.pushState({}, "", href);
     setInnerHTML(main, resultBody);
-    main.classList.remove("loading");
+
+    if (samePage) {
+        main.classList.remove("loading");
+    } else {
+        main.classList.remove(onAnimationStart);
+        main.classList.add(onAnimationEnd);
+    }
+
     navSearch && (navSearch.value = getQueryStringFromUrl(href));
     detectLinksAndAttachEvents();
 };
@@ -48,14 +65,14 @@ const detectLinksAndAttachEvents = () => {
         a.addEventListener('click', async e => {
             if (href == undefined) return;
             e.preventDefault();
-            await updateResultsUI(href);
+            await updateResultsUI(href, false);
         });
     });
 };
 
 window.onpopstate = function (e) {
     if (e.state) {
-        updateResultsUI(window.location.href);
+        updateResultsUI(window.location.href, false);
     }
 };
 

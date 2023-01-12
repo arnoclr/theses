@@ -29,6 +29,22 @@ main.loading {
     animation: twinkle .6s infinite;
 }
 
+main.forwards {
+    animation: forwards .3s ease-in forwards;
+}
+
+main.isforwards {
+    animation: isforwards .2s ease-out forwards;
+}
+
+main.backwards {
+    animation: backwards .3s ease-in;
+}
+
+main.isbackwards {
+    animation: isbackwards .2s ease-out;
+}
+
 @keyframes twinkle {
     0% {
         opacity: 1;
@@ -43,6 +59,54 @@ main.loading {
     }
 
     100% {
+        opacity: 1;
+    }
+}
+
+@keyframes forwards {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-20%);
+        opacity: 0;
+    }
+}
+
+@keyframes isforwards {
+    0% {
+        transform: translateX(20%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes backwards {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(20%);
+        opacity: 0;
+    }
+}
+
+@keyframes isbackwards {
+    0% {
+        transform: translateX(-20%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
         opacity: 1;
     }
 }
