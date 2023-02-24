@@ -80,6 +80,19 @@ switch ($action) {
     case 'person':
         break;
 
+    case 'embed':
+        $graph = $_GET['graph'] ?? 'timeline';
+        $version = intval($_GET['v']) ?? 1;
+        switch ($graph) {
+            case 'value':
+                # code...
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
     default:
         $searcher = new Searcher($pdo);
         $regionalArray = getOrCache('home.regions', 60, function () use ($searcher) {

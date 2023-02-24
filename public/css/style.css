@@ -303,6 +303,98 @@ button.link {
     all: unset;
 }
 
+.searchResults {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.searchResults li {
+    padding: 0;
+    border: none;
+}
+
+.searchResult {
+    all: unset;
+    display: block;
+}
+
+.searchResult header {
+    padding: 0;
+    margin: 0;
+    color: #444;
+}
+
+.searchResult a {
+    color: #1a0dab;
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    flex-direction: column;
+}
+
+.searchResult a:visited {
+    color: #551A8B;
+}
+
+.searchResult a:hover h3 {
+    text-decoration: underline;
+}
+
+.searchResult h3 {
+    margin: 0;
+    color: inherit;
+    display: block;
+    font-size: 22px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -webkit-line-clamp: 1;
+}
+
+.searchResult kbd {
+    padding: 0px 3px;
+    border: 1px solid grey;
+    border-radius: 3px;
+}
+
+.searchResult .date {
+    opacity: 0.8;
+}
+
+.searchResult .subjects {
+    margin-left: 12px;
+    margin-top: 16px;
+    list-style: none;
+    display: flex;
+    gap: 18px;
+}
+
+.searchResult .subjects li {
+    padding: 0;
+    margin: 0;
+    color: inherit;
+}
+
+.searchResult .subjects span {
+    color: inherit;
+}
+
+.searchResult .subjects a:hover span {
+    text-decoration: underline;
+}
+
+.searchResult.big {
+    padding-bottom: 22px;
+    border-bottom: 1px solid lightgray;
+}
+
+.searchResult.big .text {
+    font-size: 22px;
+}
+
 #readMoreText {
     transition: height .3s ease-in-out;
     overflow: hidden;

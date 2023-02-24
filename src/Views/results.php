@@ -51,37 +51,36 @@
         </div>
 
         <?php if ($resultsNumber > 0) : ?>
-            <div class="s12">
+            <div class="s12 l7">
+                <ul class="searchResults">
+                    <?php foreach ($moreAccurate as $pos => $these) : ?>
+                        <li>
+                            <?php if ($pos === 0 && \App\Model\These::isCloseMatch($these, $q)) : ?>
+                                <?php require "src/Views/includes/bigSearchResult.php"; ?>
+                            <?php else : ?>
+                                <!-- 
+                        Gros résultat si on a un match exact de la recherche dans le résumé de la these
+                        Affiche une carte si on recherche un établissement.
+                        Si on cherche un auteur, afficher un résumé wikipedia si c dispo OU ALORS afficher un encadré spécial avec les thèses qu'il a ecrit 
+                        -->
+                                <?php require "src/Views/includes/searchResult.php"; ?>
+                            <?php endif; ?>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+
+            <div class="s12 l5">
                 <article class="white no-elevate">
                     <h5>Evolution dans le temps</h5>
                     <?php require "src/Views/includes/timeline.php"; ?>
                 </article>
-            </div>
 
-            <div class="s12 l5">
-                <article class="white full-height no-elevate">
+                <article class="white no-elevate">
                     <h5>Par région</h5>
                     <?php require "src/Views/includes/map.php"; ?>
                 </article>
-            </div>
 
-            <div class="s12 l7">
-                <article class="white no-padding no-elevate">
-                    <h5 class="padding">Meilleurs résultats</h5>
-                    <ul>
-                        <?php foreach ($moreAccurate as $these) : ?>
-                            <li>
-                                <a title="<?= htmlspecialchars($these->title) ?>" class="ellipsis" href="/?action=view&tid=<?= $these->iddoc ?>&q=<?= htmlspecialchars($q) ?>">
-                                    <span style="opacity: 0.6; margin-right: 12px;"><?= $these->date_year ?></span>
-                                    <?= $these->title ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </article>
-            </div>
-
-            <div class="s12">
                 <article class="white no-elevate">
                     <h5>Sujets les plus mentionnés</h5>
                     <?php require "src/Views/includes/subjects.php"; ?>

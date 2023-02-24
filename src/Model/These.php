@@ -58,4 +58,42 @@ class These
         arsort($subjects);
         return array_slice($subjects, 0, $length);
     }
+
+    public static function getCommonSubjects(object $these, array $subjectCount, int $max = 4): array
+    {
+        $selfSubjects = self::getSubjects($these);
+        $subjects = [];
+        foreach ($selfSubjects as $subject) {
+            if (isset($subjectCount[$subject]) && $subjectCount[$subject] > 1) {
+                $subjects[] = $subject;
+            }
+        }
+        return array_slice($subjects, 0, $max);
+    }
+
+    public static function isCloseMatch(object $these, string $query): bool
+    {
+        $wordsNumber = explode(" ", $query);
+        if (count($wordsNumber) < 2) {
+            return false;
+        }
+        $query = strtolower($query);
+        $summary = strtolower($these->summary);
+        return strpos($summary, $query) !== false;
+    }
+
+    public static function highlightSummaryWith(string $summary, string $query, int $maxLength = 280): string
+    {
+        $query = strtolower($query);
+        $summary = strtolower($summary);
+        $pos = strpos($summary, $query);
+        if ($pos === false) {
+            return $summary;
+        }
+        $start = max(0, $pos - $maxLength);
+        $end = min(strlen($summary), $pos + $maxLength);
+        $summary = substr($summary, $start, $end - $start);
+        $summary = str_replace($query, "<strong>$query</strong>", $summary);
+        return $summary;
+    }
 }
