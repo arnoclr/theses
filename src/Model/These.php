@@ -96,4 +96,17 @@ class These
         $summary = str_replace($query, "<strong>$query</strong>", $summary);
         return $summary;
     }
+
+    public static function getEstabShortName(object $thesis): string
+    {
+        $pdo = Database::getPDO();
+        $searcher = new Searcher($pdo);
+        $estab = $searcher->from('establishments')
+            ->where('identifiant_idref', '=', $thesis->etab_id_ref)
+            ->first();
+        if ($estab === NULL) {
+            return "";
+        }
+        return $estab->{'Libellé'} ?? $estab->nom_court;
+    }
 }

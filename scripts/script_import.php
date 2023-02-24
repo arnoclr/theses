@@ -31,7 +31,7 @@ $pdo->exec($sqlEtab);
 
 // https://stackoverflow.com/a/37726178/11651419 save big files to server
 // https://www.data.gouv.fr/fr/datasets/r/d4f0a317-4fd7-4850-bfa2-829a2a4a21df
-file_put_contents("data.json.tmp", fopen("https://tfressin.fr/thesesviz/extract_theses.json", 'r'));
+file_put_contents("data.json.tmp", fopen("https://www.data.gouv.fr/fr/datasets/r/d4f0a317-4fd7-4850-bfa2-829a2a4a21df", 'r'));
 
 // this usually takes few kB of memory no matter the file size
 $theses = Items::fromFile('data.json.tmp');
@@ -43,7 +43,7 @@ $i = 0;
 
 foreach ($theses as $these) {
 
-    if ($i > 1000) {
+    if ($i > 10000) {
         break;
     }
 

@@ -47,6 +47,14 @@ class Searcher
     }
 
     // WHERE
+    public function where(string $col, string $op, string $val): Searcher
+    {
+        $randomBind = uniqid();
+        $this->addCondition("`$col` $op :$randomBind");
+        $this->addParam($randomBind, $val);
+        return $this;
+    }
+
     public function before(int $year): Searcher
     {
         $this->addCondition("date_year < $year");

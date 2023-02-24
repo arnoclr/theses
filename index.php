@@ -52,7 +52,7 @@ switch ($action) {
             $establishmentData = $searcher->getEstablishment($q);
 
             if ($establishmentData) {
-                $moreAccurate[] = $searcher->from('theses')->fromEstablishment($establishmentData)->limit(8)->get();
+                $moreAccurate[$pos] = $searcher->from('theses')->fromEstablishment($establishmentData)->limit(8)->get();
             }
 
             $regionalArray[] = Charts::getRegionalArray($regions[$pos], true);

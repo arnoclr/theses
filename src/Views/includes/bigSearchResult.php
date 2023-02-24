@@ -5,7 +5,7 @@
     </p>
     <a title="<?= htmlspecialchars($these->title) ?>" href="/?action=view&tid=<?= $these->iddoc ?>&q=<?= htmlspecialchars($q) ?>">
         <header>
-            <small>https://theses.fr/<?= $these->nnt ?></small>
+            <small><?= \App\Model\These::getEstabShortName($these) ?></small>
             <?php if ($these->online) : ?>
                 <kbd>PDF</kbd>
             <?php endif; ?>
