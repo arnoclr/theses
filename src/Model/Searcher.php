@@ -152,8 +152,8 @@ class Searcher
     {
         // select region, count(*) from theses natural join establishments group by region;
         $this->leftJoin('establishments', 'establishments.identifiant_idref = theses.etab_id_ref');
-        $this->select(['`Code Région`', 'count(*) as total']);
-        $this->appendRule('GROUP BY `Code Région`');
+        $this->select(['`Code région`', 'count(*) as total']);
+        $this->appendRule('GROUP BY `Code région`');
         return $this;
     }
 

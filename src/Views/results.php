@@ -46,7 +46,7 @@
                 <header class="establishment">
                     <div>
                         <h2><?= $establishmentData->{'Libellé'} ?></h2>
-                        <small><?= str_replace('>', ', ', $establishmentData->localisation) ?></small>
+                        <small><?= $establishmentData->Commune ?>, <?= $establishmentData->Département ?></small>
                         <a href="<?= $establishmentData->{"Page Wikipédia en français"} ?>"><?= $establishmentData->{"Page Wikipédia en français"} ?></a>
                         <?php if ($at === "") : ?>
                             <form class="snippet" action="/" method="get" id="estabSearchForm">

@@ -4,6 +4,30 @@ namespace App\Model;
 
 class Charts
 {
+    private static function regionalCodeToISO(string $code)
+    {
+        $map = [
+            "11" => "FR-IDF",
+            "24" => "FR-CVL",
+            "27" => "FR-BFC",
+            "28" => "FR-NOR",
+            "32" => "FR-HDF",
+            "44" => "FR-GES",
+            "52" => "FR-PDL",
+            "53" => "FR-BRE",
+            "75" => "FR-NAQ",
+            "76" => "FR-OCC",
+            "84" => "FR-ARA",
+            "93" => "FR-PAC",
+            "94" => "FR-20R",
+            "01" => "FR-GP",
+            "02" => "FR-MQ",
+            "03" => "FR-GF",
+            "04" => "FR-RE",
+            "06" => "FR-YT",
+        ];
+        return $map[substr($code, 1, 2)];
+    }
 
     /**
      * Convert a PDO list of objects that contain region code and value to an array of array (region, value)
@@ -13,7 +37,10 @@ class Charts
     {
         $array = [];
         foreach ($obj as $item) {
-            $array[] = [strtolower($item->{"Code Région"}), intval($item->total)];
+            if ($item->{"Code région"} === NULL) {
+                continue;
+            }
+            $array[] = [strtolower(self::regionalCodeToISO($item->{"Code région"})), intval($item->total)];
         }
         return $inJson ? json_encode($array) : $array;
     }
