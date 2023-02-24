@@ -9,8 +9,13 @@
         <h3><?= $these->title ?></h3>
     </a>
     <p>
-        <span class="date"><?= $these->date_year ?> —</span>
-        <span class="summary"><?= mb_substr($these->summary, 0, 160, "UTF-8") ?>...</span>
+        <span class="date">
+            <?= $these->date_year ?>
+            <?= $these->lang === "en" ? "(Traduit de l'anglais)" : "" ?> —
+        </span>
+        <span class="summary">
+            <?= mb_substr($these->summary, 0, 160, "UTF-8") ?>...
+        </span>
     </p>
     <ul class="subjects">
         <?php foreach (\App\Model\These::getCommonSubjects($these, $subjectsCount) as $subject) : ?>

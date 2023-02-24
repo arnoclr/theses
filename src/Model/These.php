@@ -92,7 +92,7 @@ class These
         }
         $start = max(0, $pos - $maxLength);
         $end = min(strlen($summary), $pos + $maxLength);
-        $summary = substr($summary, $start, $end - $start);
+        $summary = mb_substr($summary, $start, $end - $start, "UTF-8");
         $summary = str_replace($query, "<strong>$query</strong>", $summary);
         return $summary;
     }

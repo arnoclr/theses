@@ -1,11 +1,4 @@
 <main>
-    <?php if ($resultsNumber == 0) : ?>
-        <div>
-            <h2>Oups</h2>
-            <p>Aucun résultat d'a été trouvé pour <?= htmlspecialchars($_GET['q']) ?></p>
-            <p><b>Essayez de retirer certains filtres ou d'élargir votre recherche</b></p>
-        </div>
-    <?php endif; ?>
     <div class="grid">
         <div class="s12">
             <?php if ($resultsNumber > 0) : ?>
@@ -48,7 +41,43 @@
                 $exclude = false;
                 include "src/Views/includes/resultChip.php"; ?>
             </nav>
+
+            <?php if ($establishmentData) : ?>
+                <header class="establishment">
+                    <div>
+                        <h2><?= $establishmentData->{'Libellé'} ?></h2>
+                        <small><?= str_replace('>', ', ', $establishmentData->localisation) ?></small>
+                        <a href="<?= $establishmentData->{"Page Wikipédia en français"} ?>"><?= $establishmentData->{"Page Wikipédia en français"} ?></a>
+                        <?php if ($at === "") : ?>
+                            <form class="snippet" action="/" method="get" id="estabSearchForm">
+                                <input id="estabSearchInput" type="search" name="q" placeholder="Chercher des thèses soutenues à <?= $establishmentData->{'Libellé'} ?>">
+                                <input type="hidden" name="action" value="search">
+                                <input type="submit" value="Rechercher">
+                            </form>
+                            <script>
+                                const f = document.getElementById('estabSearchForm');
+                                f.addEventListener('submit', (e) => {
+                                    e.preventDefault();
+                                    const i = document.getElementById('estabSearchInput');
+                                    i.value = i.value + " à <?= $establishmentData->{'Libellé'} ?>";
+                                    f.submit();
+                                });
+                            </script>
+                        <?php endif; ?>
+                    </div>
+
+                    <img height="200" src="https://dev.virtualearth.net/REST/v1/Imagery/Map/Road/<?= $establishmentData->{"Géolocalisation"} ?>/16?mapSize=1200,200&pp=<?= $establishmentData->{"Géolocalisation"} ?>;66&mapLayer=Basemap,Buildings&key=AiSO_FZNso9JJnrkixZ6T3d142q2DnTBLhQDVuZXeGFAI_gcnTD11M7JwvhevmzA" alt="">
+                </header>
+            <?php endif; ?>
         </div>
+
+        <?php if ($resultsNumber == 0) : ?>
+            <div>
+                <h2>Oups</h2>
+                <p>Aucun résultat d'a été trouvé pour <?= htmlspecialchars($_GET['q']) ?></p>
+                <p><b>Essayez de retirer certains filtres ou d'élargir votre recherche</b></p>
+            </div>
+        <?php endif; ?>
 
         <?php if ($resultsNumber > 0) : ?>
             <div class="s12 l7">
@@ -67,6 +96,8 @@
                             <?php endif; ?>
                         </li>
                     <?php endforeach; ?>
+
+                    <a class="showMoreResults" href="#">Afficher plus de résultats</a>
                 </ul>
             </div>
 

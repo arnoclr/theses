@@ -37,6 +37,15 @@ class Searcher
         return $this;
     }
 
+    private function leftJoin(string $table, string $on): Searcher
+    {
+        if (strpos($this->statement, "LEFT JOIN `$table`") !== false) {
+            return $this;
+        }
+        $this->statement = str_replace('WHERE', "LEFT JOIN `$table` ON $on WHERE", $this->statement);
+        return $this;
+    }
+
     // WHERE
     public function before(int $year): Searcher
     {
@@ -107,15 +116,11 @@ class Searcher
         return $this;
     }
 
-    public function at(string $establishmentNameOrCode): Searcher
+    public function at(string $establishmentName): Searcher
     {
-        // if name is 4 letters UPPEr
-        $code_etab = $establishmentNameOrCode;
-        if (!preg_match('/^[A-Z0-9]{4}$/', $establishmentNameOrCode)) {
-            $code_etab = $this->getEstablishmentCode($establishmentNameOrCode);
-        }
-        $this->addCondition("code_etab = :code_etab");
-        $this->addParam('code_etab', $code_etab);
+        $this->leftJoin('establishments', 'establishments.identifiant_idref = theses.etab_id_ref');
+        $this->addCondition("Libellé = :establishmentName");
+        $this->addParam('establishmentName', $establishmentName);
         return $this;
     }
 
@@ -146,9 +151,9 @@ class Searcher
     public function groupByRegions(): Searcher
     {
         // select region, count(*) from theses natural join establishments group by region;
-        $this->naturalJoin('establishments');
-        $this->select(['region', 'count(*) as total']);
-        $this->appendRule('GROUP BY region');
+        $this->leftJoin('establishments', 'establishments.identifiant_idref = theses.etab_id_ref');
+        $this->select(['`Code Région`', 'count(*) as total']);
+        $this->appendRule('GROUP BY `Code Région`');
         return $this;
     }
 
@@ -177,9 +182,9 @@ class Searcher
         return $statement->fetchAll();
     }
 
-    public function first(): object
+    public function first(): ?object
     {
-        return $this->limit(1)->get()[0];
+        return $this->limit(1)->get()[0] ?? null;
     }
 
     public function exists(): bool
@@ -226,5 +231,21 @@ class Searcher
         $statement = $this->pdo->prepare("SELECT code_etab FROM `establishments` WHERE name = :name");
         $statement->execute(['name' => $establishment]);
         return $statement->fetch()->code_etab ?? "";
+    }
+
+    public function getEstablishment(string $q): ?object
+    {
+        $this->from('establishments');
+        $this->addCondition("Libellé LIKE :q OR nom_court LIKE :q");
+        $this->addParam('q', "%$q%");
+        return $this->first();
+    }
+
+    public function fromEstablishment(object $establishmentData): Searcher
+    {
+        $this->from('theses');
+        $this->addCondition("etab_id_ref = :identifiant_idref");
+        $this->addParam('identifiant_idref', $establishmentData->identifiant_idref);
+        return $this;
     }
 }

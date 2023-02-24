@@ -9,6 +9,9 @@ const DB_SEPARATOR = ";";
 
 require "../vendor/autoload.php";
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
+$dotenv->load();
+
 use \JsonMachine\Items;
 use \App\Model\Database;
 
@@ -27,7 +30,8 @@ $sqlEtab = file_get_contents("establishments.sql");
 $pdo->exec($sqlEtab);
 
 // https://stackoverflow.com/a/37726178/11651419 save big files to server
-file_put_contents("data.json.tmp", fopen("https://static.data.gouv.fr/resources/theses-soutenues-en-france-depuis-1985/20220301-144759/theses-soutenues.json", 'r'));
+// https://www.data.gouv.fr/fr/datasets/r/d4f0a317-4fd7-4850-bfa2-829a2a4a21df
+file_put_contents("data.json.tmp", fopen("https://tfressin.fr/thesesviz/extract_theses.json", 'r'));
 
 // this usually takes few kB of memory no matter the file size
 $theses = Items::fromFile('data.json.tmp');
@@ -39,14 +43,14 @@ $i = 0;
 
 foreach ($theses as $these) {
 
-    if ($i > 10000) {
+    if ($i > 1000) {
         break;
     }
 
     $lang = substr($these->langue, 0, 2);
 
     // insert these
-    $pdo->prepare("INSERT INTO theses (iddoc, nnt, status, online, source, discipline, president_jury, lang, date_year, code_etab, title, summary, subjects, partners, oai_set_specs, embargo, establishments, wip) VALUES (:iddoc, :nnt, :status, :online, :source, :discipline, :president_jury, :lang, :date_year, :code_etab, :title, :summary, :subjects, :partners, :oai_set_specs, :embargo, :establishments, :wip)")->execute([
+    $pdo->prepare("INSERT INTO theses (iddoc, nnt, status, online, source, discipline, president_jury, lang, date_year, code_etab, title, summary, subjects, partners, oai_set_specs, embargo, establishments, etab_id_ref, wip) VALUES (:iddoc, :nnt, :status, :online, :source, :discipline, :president_jury, :lang, :date_year, :code_etab, :title, :summary, :subjects, :partners, :oai_set_specs, :embargo, :establishments, :etab_id_ref, :wip)")->execute([
         'iddoc' => $these->iddoc,
         'nnt' => $these->nnt,
         'status' => $these->status,
@@ -68,6 +72,7 @@ foreach ($theses as $these) {
         'establishments' => truncateForVarchar(implodeWithSeparator(array_map(function ($etablissement) {
             return $etablissement->nom;
         }, $these->etablissements_soutenance ?? []))),
+        'etab_id_ref' => $these->etablissements_soutenance[0]->idref ?? "",
         'wip' => $these->these_sur_travaux == "oui" ? 1 : 0,
     ]);
 

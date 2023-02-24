@@ -1,7 +1,7 @@
 <article class="searchResult big">
     <p class="text">
         <span class="date"><?= $these->date_year ?> —</span>
-        <span class="summary"><?= App\Model\These::highlightSummaryWith($these->summary, $q) ?>...</span>
+        <span class="summary"><?= \App\Model\These::highlightSummaryWith($these->summary, $q) ?>...</span>
     </p>
     <a title="<?= htmlspecialchars($these->title) ?>" href="/?action=view&tid=<?= $these->iddoc ?>&q=<?= htmlspecialchars($q) ?>">
         <header>
@@ -13,9 +13,12 @@
         <h3><?= $these->title ?></h3>
     </a>
     <nav>
-        <p>Sujets mentionnés</p>
+        <?php $subjects = \App\Model\These::getCommonSubjects($these, $subjectsCount); ?>
+        <?php if (count($subjects) > 0) : ?>
+            <p>Sujets mentionnés</p>
+        <?php endif; ?>
         <ul class="subjects">
-            <?php foreach (\App\Model\These::getCommonSubjects($these, $subjectsCount) as $subject) : ?>
+            <?php foreach ($subjects as $subject) : ?>
                 <a href="/?action=search&q=%22<?= $subject ?>%22">
                     <li>
                         <span><?= $subject ?></span>

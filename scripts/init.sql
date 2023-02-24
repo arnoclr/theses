@@ -6,23 +6,22 @@
 -- Généré le : jeu. 29 sep. 2022 à 14:37
 -- Version du serveur : 5.7.33
 -- Version de PHP : 7.4.19
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */
+;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */
+;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */
+;
+/*!40101 SET NAMES utf8mb4 */
+;
 --
 -- Base de données : `theses`
 --
 
 -- --------------------------------------------------------
-
 --
 -- Structure de la table `people`
 --
@@ -32,10 +31,8 @@ CREATE TABLE `people` (
   `idref` varchar(255) DEFAULT NULL,
   `firstname` varchar(255) NOT NULL,
   `lastname` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 -- --------------------------------------------------------
-
 --
 -- Structure de la table `theses`
 --
@@ -58,12 +55,17 @@ CREATE TABLE `theses` (
   `oai_set_specs` varchar(255) NOT NULL,
   `embargo` date DEFAULT NULL,
   `establishments` varchar(255) NOT NULL,
+  `etab_id_ref` varchar(255) NOT NULL,
   `wip` tinyint(1) NOT NULL,
-  FULLTEXT `search_content` (`title`,`summary`,`subjects`,`partners`,`establishments`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+  FULLTEXT `search_content` (
+    `title`,
+    `summary`,
+    `subjects`,
+    `partners`,
+    `establishments`
+  )
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 -- --------------------------------------------------------
-
 --
 -- Structure de la table `theses_people`
 --
@@ -72,8 +74,7 @@ CREATE TABLE `theses_people` (
   `iddoc` int(10) UNSIGNED NOT NULL,
   `id` int(11) NOT NULL,
   `role` char(3) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 --
 -- Index pour les tables déchargées
 --
@@ -82,22 +83,19 @@ CREATE TABLE `theses_people` (
 -- Index pour la table `people`
 --
 ALTER TABLE `people`
-  ADD PRIMARY KEY (`id`);
-
+ADD PRIMARY KEY (`id`);
 --
 -- Index pour la table `theses`
 --
 ALTER TABLE `theses`
-  ADD PRIMARY KEY (`iddoc`);
-
+ADD PRIMARY KEY (`iddoc`);
 --
 -- Index pour la table `theses_people`
 --
 ALTER TABLE `theses_people`
-  ADD KEY `iddoc` (`iddoc`,`id`),
+ADD KEY `iddoc` (`iddoc`, `id`),
   ADD KEY `id` (`id`),
   ADD KEY `field` (`role`);
-
 --
 -- AUTO_INCREMENT pour les tables déchargées
 --
@@ -106,8 +104,7 @@ ALTER TABLE `theses_people`
 -- AUTO_INCREMENT pour la table `people`
 --
 ALTER TABLE `people`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Contraintes pour les tables déchargées
 --
@@ -116,10 +113,12 @@ ALTER TABLE `people`
 -- Contraintes pour la table `theses_people`
 --
 ALTER TABLE `theses_people`
-  ADD CONSTRAINT `theses_people_ibfk_1` FOREIGN KEY (`iddoc`) REFERENCES `theses` (`iddoc`),
+ADD CONSTRAINT `theses_people_ibfk_1` FOREIGN KEY (`iddoc`) REFERENCES `theses` (`iddoc`),
   ADD CONSTRAINT `theses_people_ibfk_2` FOREIGN KEY (`id`) REFERENCES `people` (`id`);
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */
+;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */
+;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */
+;

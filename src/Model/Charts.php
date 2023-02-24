@@ -13,7 +13,7 @@ class Charts
     {
         $array = [];
         foreach ($obj as $item) {
-            $array[] = [strtolower($item->region), intval($item->total)];
+            $array[] = [strtolower($item->{"Code Région"}), intval($item->total)];
         }
         return $inJson ? json_encode($array) : $array;
     }

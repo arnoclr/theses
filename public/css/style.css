@@ -321,6 +321,7 @@ button.link {
 }
 
 .searchResult header {
+    all: unset;
     padding: 0;
     margin: 0;
     color: #444;
@@ -369,7 +370,9 @@ button.link {
     margin-top: 16px;
     list-style: none;
     display: flex;
-    gap: 18px;
+    flex-flow: row wrap;
+    row-gap: 6px;
+    column-gap: 18px;
 }
 
 .searchResult .subjects li {
@@ -393,6 +396,73 @@ button.link {
 
 .searchResult.big .text {
     font-size: 22px;
+}
+
+.establishment {
+    height: auto;
+    all: unset;
+    display: block;
+    padding-bottom: 32px;
+    display: grid;
+    grid-template-columns: 540px 1fr;
+    gap: 32px;
+}
+
+.establishment h2 {
+    margin-top: 32px;
+    font-size: 26px;
+}
+
+.establishment small {
+    display: block;
+    margin-top: 8px;
+    font-size: 18px;
+    color: #777;
+}
+
+.establishment img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.establishment a {
+    margin-bottom: 22px;
+}
+
+.showMoreResults {
+    width: fit-content;
+    padding: 12px 32px;
+    background-color: lightgray;
+    text-decoration: underline;
+    border-radius: 6px;
+}
+
+form.snippet {
+    display: flex;
+    gap: 4px;
+}
+
+form.snippet input[type=submit] {
+    appearance: none;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+    min-width: 105px;
+    max-width: 100%;
+    line-height: 30px;
+    padding: 0 15px;
+    display: inline-block;
+    font-size: inherit;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+form.snippet input[type="search"] {
+    padding-left: 11px;
+    border: 1px solid #919191;
+    width: 100%;
 }
 
 #readMoreText {

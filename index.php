@@ -60,6 +60,12 @@ switch ($action) {
         $at = $decoder->getEstablishmentString();
         $queryWithoutEstablishment = $decoder->getQueryWithoutEstablishment();
 
+        $establishmentData = $searcher->getEstablishment($q);
+
+        if ($establishmentData) {
+            $moreAccurate = $searcher->from('theses')->fromEstablishment($establishmentData)->limit(8)->get();
+        }
+
         $endAt = microtime(true);
         $time = $endAt - $startedAt;
 
