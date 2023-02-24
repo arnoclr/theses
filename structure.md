@@ -17,18 +17,19 @@ Parse la recherche
 
 ## Recherches
 
-Filtres detectés automatiquement
+Chaine de recherche <Filtres?> 
 
-"PHP avant 2003"
-"Javascript 2015"
-"Javascript 2015 - 2016" "entre 2020 et 2021" -> detecter quand il y a 2 dates
-"Javascript après 2017"
+filtre:valeur / :valeur
 
-date = [1950-2099]
-
-```sql
-SELECT * FROM theses WHERE MATCH (title, summary, subjects, partners, establishments) AGAINST ('ordinateurs quantique' IN NATURAL LANGUAGE MODE);
-```
+| Clé   | Valeurs possibles  |
+|-------|--------------------|
+| avant | <number>           |
+| apres | <number>           |
+| en    | <number>           |
+| à     | <string>           |
+| par   | <string>           |
+| tri   | "recent", "ancien" |
+|       | "enligne"          |
 
 ## Datas a afficher :
 

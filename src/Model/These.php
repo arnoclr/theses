@@ -82,10 +82,10 @@ class These
         return strpos($summary, $query) !== false;
     }
 
-    public static function highlightSummaryWith(string $summary, string $query, int $maxLength = 280): string
+    public static function highlightSummaryWith(string $summary, string $query, int $maxLength = 220): string
     {
-        $query = strtolower($query);
-        $summary = strtolower($summary);
+        $query = mb_strtolower($query, "UTF-8");
+        $summary = mb_strtolower($summary, "UTF-8");
         $pos = strpos($summary, $query);
         if ($pos === false) {
             return $summary;

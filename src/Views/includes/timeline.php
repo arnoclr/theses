@@ -3,9 +3,6 @@
 <script>
     (function() {
         const init = async () => {
-            const data = <?= json_encode($timelineData) ?>;
-
-            // Create the chart
             Highcharts.chart('timeline', {
                 credits: {
                     enabled: false
@@ -70,21 +67,26 @@
                     }
                 },
 
-                series: [{
-                    data: data,
-                    name: 'Nombre de thèses',
-                    borderColor: '#FFF',
-                    nullColor: "#E0E0E0",
-                    states: {
-                        hover: {
-                            color: null,
-                            brightness: 0
-                        }
-                    },
-                    dataLabels: {
-                        enabled: false
-                    }
-                }]
+                colors: <?= App\Model\Charts::highchartsSeriesColors() ?>,
+
+                series: [
+                    <?php foreach ($timelineData as $data) : ?> {
+                            data: <?= json_encode($data) ?>,
+                            name: 'Nombre de thèses',
+                            borderColor: '#FFF',
+                            nullColor: "#E0E0E0",
+                            states: {
+                                hover: {
+                                    color: null,
+                                    brightness: 0
+                                }
+                            },
+                            dataLabels: {
+                                enabled: false
+                            }
+                        },
+                    <?php endforeach; ?>
+                ]
             });
         };
 

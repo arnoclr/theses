@@ -1,4 +1,21 @@
+<?php if (count($comparisons) > 1) : ?>
+    <header class="comparisons">
+        <h4>Comparer les résultats</h4>
+        <ul>
+            <?php foreach ($comparisons as $pos => $q) : ?>
+                <li>
+                    <a href="/?action=search&q=<?= urlencode($q) ?>">
+                        <i class="circle" style="background-color: <?= \App\Model\Charts::getColorAt($pos) ?>;"></i>
+                        <span><?= htmlspecialchars($q) ?></span>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </header>
+<?php endif; ?>
+
 <main>
+
     <div class="grid">
         <div class="s12">
             <?php if ($resultsNumber > 0) : ?>
@@ -6,40 +23,7 @@
             <?php endif; ?>
 
             <nav class="scroll">
-                <?php if ($by) : ?>
-                    <a class="chip fill" href="/?action=search&q=<?= $queryWithoutAuthor ?>">
-                        <span><?= $by ?></span>
-                        <i class="small">close</i>
-                    </a>
-                <?php elseif ($isPerson) : ?>
-                    <a class="chip border" href="/?action=search&q=par+<?= $person->firstname ?>+<?= $person->lastname ?>">par <?= $person->firstname ?> <?= $person->lastname ?></a>
-                <?php endif; ?>
-                <?php if ($at) : ?>
-                    <a class="chip fill" href="/?action=search&q=<?= $queryWithoutEstablishment ?>">
-                        <span><?= $at ?></span>
-                        <i class="small">close</i>
-                    </a>
-                <?php endif; ?>
-                <?php if ($dateString) : ?>
-                    <a class="chip fill" href="/?action=search&q=<?= $queryWithoutDate ?>">
-                        <span><?= $dateString ?></span>
-                        <i class="small">close</i>
-                    </a>
-                <?php else : ?>
-                    <a class="chip border" href="/?action=search&q=<?= htmlspecialchars($q) ?>+après+<?= date('Y') - 5 ?>">Ces 5 dernières années</a>
-                <?php endif; ?>
-                <?php
-                $filterTerm = "les plus récentes";
-                $exclude = "les plus anciennes";
-                include "src/Views/includes/resultChip.php"; ?>
-                <?php
-                $filterTerm = "les plus anciennes";
-                $exclude = "les plus récentes";
-                include "src/Views/includes/resultChip.php"; ?>
-                <?php
-                $filterTerm = "en ligne";
-                $exclude = false;
-                include "src/Views/includes/resultChip.php"; ?>
+
             </nav>
 
             <?php if ($establishmentData) : ?>
@@ -82,22 +66,20 @@
         <?php if ($resultsNumber > 0) : ?>
             <div class="s12 l7">
                 <ul class="searchResults">
-                    <?php foreach ($moreAccurate as $pos => $these) : ?>
-                        <li>
-                            <?php if ($pos === 0 && \App\Model\These::isCloseMatch($these, $q)) : ?>
-                                <?php require "src/Views/includes/bigSearchResult.php"; ?>
-                            <?php else : ?>
-                                <!-- 
-                        Gros résultat si on a un match exact de la recherche dans le résumé de la these
-                        Affiche une carte si on recherche un établissement.
-                        Si on cherche un auteur, afficher un résumé wikipedia si c dispo OU ALORS afficher un encadré spécial avec les thèses qu'il a ecrit 
-                        -->
-                                <?php require "src/Views/includes/searchResult.php"; ?>
-                            <?php endif; ?>
-                        </li>
+                    <?php foreach ($moreAccurate as $pos => $query) : ?>
+                        <?php foreach ($query as $i => $these) : ?>
+                            <?php $color = count($moreAccurate) > 1 ? App\Model\Charts::getColorAt($pos) . "15" : "transparent" ?>
+                            <li style="background-color: <?= $color ?>; box-shadow: 0 0 0 10px <?= $color ?>">
+                                <?php if ($i === 0 && \App\Model\These::isCloseMatch($these, $q)) : ?>
+                                    <?php require "src/Views/includes/bigSearchResult.php"; ?>
+                                <?php else : ?>
+                                    <?php require "src/Views/includes/searchResult.php"; ?>
+                                <?php endif; ?>
+                            </li>
+                        <?php endforeach; ?>
                     <?php endforeach; ?>
 
-                    <a class="showMoreResults" href="#">Afficher plus de résultats</a>
+                    <!-- <a class="showMoreResults" href="#">Afficher plus de résultats</a> -->
                 </ul>
             </div>
 

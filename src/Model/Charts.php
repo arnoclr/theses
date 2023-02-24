@@ -4,6 +4,21 @@ namespace App\Model;
 
 class Charts
 {
+    private static function seriesColors(): array
+    {
+        return ["#2196f3", "#e53935", "#4caf50", "#fdd835"];
+    }
+
+    public static function highchartsSeriesColors(): string
+    {
+        return json_encode(self::seriesColors());
+    }
+
+    public static function getColorAt(int $pos): string
+    {
+        return self::seriesColors()[$pos];
+    }
+
     private static function regionalCodeToISO(string $code)
     {
         $map = [
@@ -26,7 +41,7 @@ class Charts
             "04" => "FR-RE",
             "06" => "FR-YT",
         ];
-        return $map[substr($code, 1, 2)];
+        return $map[substr($code, 1, 2)] ?? "FR-NAN";
     }
 
     /**

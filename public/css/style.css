@@ -12,6 +12,7 @@
 
 :root {
     --body: #F7F7F7;
+    --body-width: 1200px;
 }
 
 body {
@@ -22,7 +23,7 @@ body {
 main {
     margin: 0 auto;
     padding: 16px 8px;
-    max-width: 1200px;
+    max-width: var(--body-width);
 }
 
 main.loading {
@@ -463,6 +464,60 @@ form.snippet input[type="search"] {
     padding-left: 11px;
     border: 1px solid #919191;
     width: 100%;
+}
+
+.comparisons {
+    margin: 0;
+    padding: 0;
+}
+
+.comparisons ul {
+    margin: 0 auto;
+    padding: 0;
+    padding-bottom: 8px;
+    max-width: var(--body-width);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+}
+
+.comparisons h4 {
+    margin: 0 auto;
+    padding-top: 22px;
+    max-width: var(--body-width);
+    font-size: 22px;
+}
+
+.comparisons li {
+    padding: 18px 0;
+    border: none;
+    width: 100%;
+}
+
+.comparisons li:not(:last-child) {
+    border-right: 1px solid lightgray;
+}
+
+.comparisons .circle {
+    user-select: none;
+    border-radius: 50px;
+    width: 28px;
+    height: 28px;
+}
+
+.comparisons span {
+    font-size: 24px;
+    text-transform: capitalize;
+    color: #434343;
+}
+
+.comparisons a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 22px;
 }
 
 #readMoreText {

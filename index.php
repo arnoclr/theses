@@ -25,45 +25,47 @@ switch ($action) {
     case 'search':
         $startedAt = microtime(true);
 
-        $decoder = new Decoder($pdo, $q);
+        $comparisons = explode(',', $_GET['q']);
 
-        $regions = $decoder->decode()->groupByRegions()->orderBy('total', 'DESC')->get();
-        $regionalArray = Charts::getRegionalArray($regions, true);
-        $moreAccurate = $decoder->decodeAndOrder()->limit(8)->get();
-        $years = $decoder->decode()->groupByYears()->get();
-        $subjectsCount = These::subjectsCount($decoder->decode()->get());
+        $regions = [];
+        $years = [];
+        $subjectsCount = [];
+        $regionalArray = [];
+        $subjectsArray = [];
+        $timelineData = [];
+        $moreAccurate = [];
 
-        $subjectsArray = Charts::getSubjectsSeries($subjectsCount, true);
+        $resultsNumberForComparison = floor(8 / count($comparisons));
 
-        $timelineData = Charts::getYearsList($years);
-        $resultsNumber = array_reduce($timelineData, function ($a, $b) {
-            return $a + $b;
-        }, 0);
-
-        // get specified author name
-        $by = $decoder->getAuthorString();
-        $queryWithoutAuthor = $decoder->getQueryWithoutAuthor();
-
-        // search if people with this name exists
-        $isPerson = $searcher->from('people')->searchByName($q)->exists();
-        if ($isPerson) {
-            $person = $searcher->from('people')->searchByName($q)->first();
+        if (count($comparisons) > 4) {
+            die('4 comparaisons maximum');
         }
 
-        // TODO: error with http://theses.arno.cl/?action=search&q=par+Francisco+Acosta
+        foreach ($comparisons as $pos => $q) {
+            $decoder = new Decoder($pdo, $q);
 
-        // date range
-        $dateString = $decoder->getDateRangeString();
-        $queryWithoutDate = $decoder->getQueryWithoutDate();
+            $regions[] = $decoder->decode()->groupByRegions()->orderBy('total', 'DESC')->get();
+            $moreAccurate[] = $decoder->decodeAndOrder()->limit($resultsNumberForComparison)->get();
+            $years[] = $decoder->decode()->groupByYears()->get();
+            $subjectsCount[] = These::subjectsCount($decoder->decode()->get());
 
-        // establishment
-        $at = $decoder->getEstablishmentString();
-        $queryWithoutEstablishment = $decoder->getQueryWithoutEstablishment();
+            $establishmentData = $searcher->getEstablishment($q);
 
-        $establishmentData = $searcher->getEstablishment($q);
+            if ($establishmentData) {
+                $moreAccurate[] = $searcher->from('theses')->fromEstablishment($establishmentData)->limit(8)->get();
+            }
 
-        if ($establishmentData) {
-            $moreAccurate = $searcher->from('theses')->fromEstablishment($establishmentData)->limit(8)->get();
+            $regionalArray[] = Charts::getRegionalArray($regions[$pos], true);
+            $subjectsArray[] = Charts::getSubjectsSeries($subjectsCount[$pos], true);
+            $timelineData[] = Charts::getYearsList($years[$pos]);
+        }
+
+        $resultsNumber = 0;
+
+        foreach ($timelineData as $timeline) {
+            $resultsNumber += array_reduce($timeline, function ($a, $b) {
+                return $a + $b;
+            }, 0);
         }
 
         $endAt = microtime(true);
