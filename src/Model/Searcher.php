@@ -119,7 +119,7 @@ class Searcher
     public function at(string $establishmentName): Searcher
     {
         $this->leftJoin('establishments', 'establishments.identifiant_idref = theses.etab_id_ref');
-        $this->addCondition("Libellé = :establishmentName");
+        $this->addCondition("nom_court = :establishmentName");
         $this->addParam('establishmentName', $establishmentName);
         return $this;
     }

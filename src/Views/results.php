@@ -59,7 +59,7 @@
                                 f.addEventListener('submit', (e) => {
                                     e.preventDefault();
                                     const i = document.getElementById('estabSearchInput');
-                                    i.value = i.value + " à <?= $establishmentData->{'Libellé'} ?>";
+                                    i.value = i.value + " à <?= $establishmentData->{'nom_court'} ?>";
                                     f.submit();
                                 });
                             </script>
