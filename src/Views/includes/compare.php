@@ -3,11 +3,15 @@
     <ul>
         <?php foreach ($comparisons as $pos => $q) : ?>
             <li>
-                <a href="/?action=search&q=<?= urlencode($q) ?>">
+                <a class="query" href="/?action=search&q=<?= urlencode($q) ?>">
                     <i class="circle" style="background-color: <?= \App\Model\Charts::getColorAt($pos) ?>;"></i>
                     <span><?= $decoders[$pos]->displayableQuery() ?></span>
                     <?php if ($decoders[$pos]->queryContainExactMatchExpression()) : ?>
-                        <small>Contient une correspondance exacte</small>
+                        <?php if (count($comparisons) < 3) : ?>
+                            <small>Contient une correspondance exacte</small>
+                        <?php else : ?>
+                            <small>cor. exacte</small>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </a>
 

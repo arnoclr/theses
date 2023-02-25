@@ -518,10 +518,13 @@ form.snippet input[type="search"] {
 
 .comparisons .filters {
     padding-left: 52px;
-    padding-top: 18px;
     display: flex;
     flex-direction: column;
     gap: 4px;
+}
+
+.comparisons .filters li:first-child {
+    padding-top: 18px;
 }
 
 .comparisons .filters li {
