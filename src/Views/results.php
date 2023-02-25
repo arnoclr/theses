@@ -1,17 +1,5 @@
 <?php if (count($comparisons) > 1) : ?>
-    <header class="comparisons">
-        <h4>Comparer les résultats</h4>
-        <ul>
-            <?php foreach ($comparisons as $pos => $q) : ?>
-                <li>
-                    <a href="/?action=search&q=<?= urlencode($q) ?>">
-                        <i class="circle" style="background-color: <?= \App\Model\Charts::getColorAt($pos) ?>;"></i>
-                        <span><?= htmlspecialchars($q) ?></span>
-                    </a>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    </header>
+    <?php require "src/Views/includes/compare.php"; ?>
 <?php endif; ?>
 
 <main>

@@ -474,7 +474,7 @@ form.snippet input[type="search"] {
     max-width: var(--body-width);
     list-style: none;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 22px;
 }
@@ -514,6 +514,20 @@ form.snippet input[type="search"] {
     align-items: center;
     justify-content: flex-start;
     gap: 22px;
+}
+
+.comparisons .filters {
+    padding-left: 52px;
+    padding-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.comparisons .filters li {
+    padding: 0;
+    border: none;
+    opacity: 0.7;
 }
 
 #readMoreText {

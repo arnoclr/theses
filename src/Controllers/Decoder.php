@@ -119,4 +119,48 @@ class Decoder
     {
         return $year >= 1985 && $year <= date('Y');
     }
+
+    public function displayableQuery(): string
+    {
+        return htmlspecialchars($this->filteredq);
+    }
+
+    public function queryContainExactMatchExpression(): bool
+    {
+        return preg_match('/"[\s\S]+"/', $this->filteredq);
+    }
+
+    public function displayableFilters(): array
+    {
+        $filters = [];
+        if ($this->getFilter('tri')) {
+            switch ($this->getFilter('tri')) {
+                case 'recent':
+                    $filters[] = "Triés par plus récents d'abord";
+                    break;
+                case 'ancien':
+                    $filters[] = "Triés par plus anciens d'abord";
+                    break;
+            }
+        }
+        if ($this->getFilter('enligne')) {
+            $filters[] = "Uniquement les thèses disponibles en ligne";
+        }
+        if ($this->getFilter('par')) {
+            $filters[] = "Par " . $this->getFilter('par');
+        }
+        if ($this->getFilter('avant')) {
+            $filters[] = "Avant " . $this->getFilter('avant');
+        }
+        if ($this->getFilter('apres')) {
+            $filters[] = "Après " . $this->getFilter('apres');
+        }
+        if ($this->getFilter('en')) {
+            $filters[] = "En " . $this->getFilter('en');
+        }
+        if ($this->getFilter('a')) {
+            $filters[] = "À " . $this->getFilter('a');
+        }
+        return $filters;
+    }
 }

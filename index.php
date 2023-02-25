@@ -34,6 +34,7 @@ switch ($action) {
         $subjectsArray = [];
         $timelineData = [];
         $moreAccurate = [];
+        $decoders = [];
 
         $resultsNumberForComparison = floor(8 / count($comparisons));
 
@@ -58,6 +59,8 @@ switch ($action) {
             $regionalArray[] = Charts::getRegionalArray($regions[$pos], false);
             $subjectsArray[] = Charts::getSubjectsSeries($subjectsCount[$pos], false);
             $timelineData[] = Charts::getYearsList($years[$pos]);
+
+            $decoders[] = $decoder;
         }
 
         $resultsNumber = 0;
