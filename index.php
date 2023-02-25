@@ -51,16 +51,18 @@ switch ($action) {
 
             $establishmentData = $searcher->getEstablishment($q);
 
-            if ($establishmentData) {
+            if (false) { // $at
                 $moreAccurate[$pos] = $searcher->from('theses')->fromEstablishment($establishmentData)->limit(8)->get();
             }
 
-            $regionalArray[] = Charts::getRegionalArray($regions[$pos], true);
-            $subjectsArray[] = Charts::getSubjectsSeries($subjectsCount[$pos], true);
+            $regionalArray[] = Charts::getRegionalArray($regions[$pos], false);
+            $subjectsArray[] = Charts::getSubjectsSeries($subjectsCount[$pos], false);
             $timelineData[] = Charts::getYearsList($years[$pos]);
         }
 
         $resultsNumber = 0;
+
+        // dd($subjectsArray[0]);
 
         foreach ($timelineData as $timeline) {
             $resultsNumber += array_reduce($timeline, function ($a, $b) {

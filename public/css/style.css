@@ -246,11 +246,6 @@ header nav button {
     color: #000;
 }
 
-li a:focus {
-    outline: 1px dotted #333;
-    outline-offset: 4px;
-}
-
 ul {
     margin: 0;
     padding: 0;
@@ -345,11 +340,12 @@ button.link {
 }
 
 .searchResult h3 {
+    display: block;
     margin: 0;
     color: inherit;
     display: block;
     font-size: 22px;
-    max-width: 100%;
+    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -526,6 +522,39 @@ form.snippet input[type="search"] {
     border-radius: 0px;
 }
 
+input:focus {
+    outline: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: auto;
+}
+
+.searchContent {
+    width: 100%;
+    display: grid;
+    grid-template-columns: calc(var(--body-width) - 440px - 32px) 440px;
+    align-items: start;
+    gap: 32px;
+}
+
+aside.graphs {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: 22px;
+}
+
+aside.graphs article {
+    border-radius: 0px;
+    background-color: white;
+    box-shadow: 0 0 0 10px white;
+    padding: 2px;
+}
+
 @media (max-width: 900px) {
     .header-title {
         font-size: 36px;
@@ -544,10 +573,14 @@ form.snippet input[type="search"] {
         padding: 0 12px;
         max-width: 700px;
     }
+
+    .searchContent {
+        grid-template-columns: var(--body-width);
+    }
 }
 
 @media (max-width: 1300px) {
-    main {
-        max-width: 900px;
+    :root {
+        --body-width: min(900px, calc(100% - 22px));
     }
 }

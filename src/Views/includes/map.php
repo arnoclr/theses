@@ -11,7 +11,6 @@
             // Prepare demo data. The data is joined to map using value of 'hc-key'
             // property by default. See API docs for 'joinBy' for more info on linking
             // data and map.
-            const data = <?= $regionalArray ?>;
 
             // Create the chart
             Highcharts.mapChart('map', {
@@ -67,21 +66,26 @@
                     }
                 },
 
-                series: [{
-                    data: data,
-                    name: 'Nombre de thèses',
-                    borderColor: '#FFF',
-                    nullColor: "#E0E0E0",
-                    states: {
-                        hover: {
-                            color: null,
-                            brightness: 0
-                        }
-                    },
-                    dataLabels: {
-                        enabled: false
-                    }
-                }]
+                colors: <?= App\Model\Charts::highchartsSeriesColors() ?>,
+
+                series: [
+                    <?php foreach ($regionalArray as $data) : ?> {
+                            data: <?= json_encode($data) ?>,
+                            name: 'Nombre de thèses',
+                            borderColor: '#FFF',
+                            nullColor: "#E0E0E0",
+                            states: {
+                                hover: {
+                                    color: null,
+                                    brightness: 0
+                                }
+                            },
+                            dataLabels: {
+                                enabled: false
+                            }
+                        },
+                    <?php endforeach; ?>
+                ]
             });
         };
 
