@@ -81,7 +81,7 @@
                         <p>Comparer avec</p>
                         <nav class="scroll">
                             <?php foreach ($subjectsArray[0] as $subject) : ?>
-                                <a href="/?action=search&q=<?= urlencode($q) ?>,<?= urlencode($subject["name"]) ?>" class="chip border"><?= htmlspecialchars($subject["name"]) ?></a>
+                                <a href="/?action=search&q=<?= urlencode($q) ?>, %22<?= urlencode($subject["name"]) ?>%22" class="chip border"><?= htmlspecialchars($subject["name"]) ?></a>
                             <?php endforeach; ?>
                         </nav>
                     <?php endif; ?>

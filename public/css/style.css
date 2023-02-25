@@ -511,9 +511,13 @@ form.snippet input[type="search"] {
 
 .comparisons a {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     gap: 22px;
+}
+
+.comparisons a small {
+    padding-top: 6px;
 }
 
 .comparisons .filters {
