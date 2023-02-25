@@ -50,8 +50,6 @@ switch ($action) {
             $years[] = $decoder->decode()->groupByYears()->get();
             $subjectsCount[] = These::subjectsCount($decoder->decode()->get());
 
-            $establishmentData = $searcher->getEstablishment($q);
-
             if (false) { // $at
                 $moreAccurate[$pos] = $searcher->from('theses')->fromEstablishment($establishmentData)->limit(8)->get();
             }
@@ -61,6 +59,11 @@ switch ($action) {
             $timelineData[] = Charts::getYearsList($years[$pos]);
 
             $decoders[] = $decoder;
+        }
+
+        $establishmentData = null;
+        if (count($comparisons) === 1 && $decoder->getFilter('a') === false) {
+            $establishmentData = $searcher->getEstablishment($q);
         }
 
         $resultsNumber = 0;

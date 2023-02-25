@@ -19,9 +19,11 @@
                     <h2><?= $establishmentData->{'Libellé'} ?></h2>
                     <small><?= $establishmentData->Commune ?>, <?= $establishmentData->Département ?></small>
                     <a href="<?= $establishmentData->{"Page Wikipédia en français"} ?>"><?= $establishmentData->{"Page Wikipédia en français"} ?></a>
-                    <?php if ($at === "") : ?>
+
+                    <?php if ($establishmentData->{'nom_court'} !== "" || $establishmentData->{'Libellé'} !== "") : ?>
                         <form class="snippet" action="/" method="get" id="estabSearchForm">
-                            <input id="estabSearchInput" type="search" name="q" placeholder="Chercher des thèses soutenues à <?= $establishmentData->{'Libellé'} ?>">
+                            <input id="estabSearchInput" type="search" placeholder="Chercher des thèses soutenues à <?= $establishmentData->{'Libellé'} ?>">
+                            <input id="estabHiddenInput" type="hidden" name="q" value="">
                             <input type="hidden" name="action" value="search">
                             <input type="submit" value="Rechercher">
                         </form>
@@ -30,7 +32,8 @@
                             f.addEventListener('submit', (e) => {
                                 e.preventDefault();
                                 const i = document.getElementById('estabSearchInput');
-                                i.value = i.value + " à <?= $establishmentData->{'nom_court'} ?>";
+                                const h = document.getElementById('estabHiddenInput');
+                                h.value = i.value + ` a:"<?= $establishmentData->{'nom_court'} !== "" ? $establishmentData->{'nom_court'} : $establishmentData->{'Libellé'} ?>"`;
                                 f.submit();
                             });
                         </script>
