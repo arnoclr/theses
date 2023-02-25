@@ -7,16 +7,16 @@ use App\Model\Searcher;
 class Decoder
 {
     private $pdo;
-    private $stopwords = ['by', 'par', 'from', 'depuis', 'after', 'après', 'before', 'avant', 'entre', 'à', 'et', 'en', 'in', 'les plus récentes', 'les plus anciennes', 'latest', 'oldest', 'en ligne', 'online'];
     private $q;
     private $filteredq;
     private $searcher;
+    private $filters;
 
     public function __construct($pdo, $q)
     {
         $this->pdo = $pdo;
         $this->q = $q;
-        $this->filteredq = $q;
+        $this->filteredq = "";
         $this->searcher = $this->initSearcher();
     }
 
@@ -25,42 +25,57 @@ class Decoder
     {
         $searcher = new Searcher($this->pdo);
 
-        $from = $this->from();
-        $to = $this->to();
-        $in = $this->in();
-        $author = $this->getAuthor();
-        $at = $this->at();
-        $online = $this->getOnlineFilter();
+        // request can be "formed like this" tri:recent :enligne par:"Jean Dupont" avant:2019
 
-        if ($from > -1) {
-            $searcher->after($from - 1);
-        }
+        // cut spaces and keep words between quotes
+        $queryParts = preg_split('/\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/', $this->q);
+        $notExactMatchSentence = "";
 
-        if ($to > -1) {
-            $searcher->before($to + 1);
-        }
+        foreach ($queryParts as $queryPart) {
+            if ($this->isFilter($queryPart)) {
+                $this->addFilter($queryPart);
+            } else {
+                $this->filteredq .= $queryPart . " ";
 
-        if ($in > -1) {
-            $searcher->in($in);
-        }
-        if ($at) {
-            $searcher->at($at);
-        }
-
-        if ($author) {
-            $searcherAlt = new Searcher($this->pdo);
-            $isPerson = $searcherAlt->from('people')->searchByName($author)->exists();
-            if ($isPerson) {
-                $person = $searcherAlt->from('people')->searchByName($author)->first();
-                $searcher->authorIs($person->firstname, $person->lastname);
+                if ($this->isQuoted($queryPart)) {
+                    $searcher->exactMatch($this->removeQuotes($queryPart));
+                } else {
+                    $notExactMatchSentence .= $queryPart . " ";
+                }
             }
         }
 
-        if ($online) {
+        if ($this->getFilter('tri') === 'recent') {
+            $searcher->orderBy('date_year', 'DESC');
+        }
+        if ($this->getFilter('tri') === 'ancien') {
+            $searcher->orderBy('date_year', 'ASC');
+        }
+        if ($this->getFilter('enligne') === true) {
             $searcher->online();
         }
+        if ($this->getFilter('par')) {
+            $searcherAlt = new Searcher($this->pdo);
+            $isPerson = $searcherAlt->from('people')->searchByName($this->getFilter('par'))->exists();
+            if ($isPerson) {
+                $person = $searcherAlt->from('people')->searchByName($this->getFilter('par'))->first();
+                $searcher->authorIs($person->firstname, $person->lastname);
+            }
+        }
+        if ($this->getFilter('avant')) {
+            $searcher->before($this->getFilter('avant'));
+        }
+        if ($this->getFilter('apres')) {
+            $searcher->after($this->getFilter('apres'));
+        }
+        if ($this->getFilter('en')) {
+            $searcher->in($this->getFilter('en'));
+        }
+        if ($this->getFilter('a')) {
+            $searcher->at($this->getFilter('a'));
+        }
 
-        $searcher->search($this->filteredq);
+        $searcher->search($notExactMatchSentence);
 
         // dd($searcher->_debug());
 
@@ -72,165 +87,36 @@ class Decoder
         return clone $this->searcher;
     }
 
-    public function decodeAndOrder(): Searcher
+    public function getFilter(string $key)
     {
-        $searcher = clone $this->searcher;
-
-        $order = $this->getOrder();
-        if ($order === 1) {
-            $searcher->orderBy('date_year', 'DESC');
-        } else if ($order === -1) {
-            $searcher->orderBy('date_year', 'ASC');
-        }
-
-        return $searcher;
+        return $this->filters[$key] ?? false;
     }
 
-    private function from(): int
+    private function isQuoted(string $str): bool
     {
-        return $this->extractDateAfterKeywords(['from', 'depuis', 'after', 'après', 'entre']);
+        return strpos($str, '"') !== false;
     }
 
-    private function to(): int
+    private function removeQuotes(string $str): string
     {
-        return $this->extractDateAfterKeywords(['to', 'à', 'before', 'avant', 'et']);
+        return str_replace('"', '', $str);
     }
 
-    private function in(): int
+    private function isFilter(string $queryPart): bool
     {
-        return $this->extractDateAfterKeywords(['in', 'en']);
+        return strpos($queryPart, ':') !== false;
     }
 
-    private function at(): string
+    private function addFilter(string $queryPart): void
     {
-        return $this->extractStringAfterKeywords(['at', 'à']);
-    }
-
-    private function getOrder(): int
-    {
-        if (preg_match('/les plus récentes|latest/i', $this->q)) {
-            $this->filteredq = str_replace(['les plus récentes', 'latest'], '', $this->filteredq);
-            return 1;
-        }
-        if (preg_match('/les plus anciennes|oldest/i', $this->q)) {
-            $this->filteredq = str_replace(['les plus anciennes', 'oldest'], '', $this->filteredq);
-            return -1;
-        }
-        return 0;
-    }
-
-    private function getOnlineFilter(): bool
-    {
-        if (preg_match('/en ligne|online/i', $this->q)) {
-            $this->filteredq = str_replace(['en ligne', 'online'], '', $this->filteredq);
-            return true;
-        }
-        return false;
-    }
-
-    private function extractDateAfterKeywords(array $keywords): int
-    {
-        $year = 0;
-        $words = explode(' ', $this->q);
-        foreach ($words as $i => $word) {
-            if (in_array($word, $keywords)) {
-                $year = intval($words[$i + 1]);
-                if ($this->isValidYear($year)) {
-                    // remove terms from query
-                    $this->filteredq = str_replace("$word $year", '', $this->filteredq);
-                    break;
-                }
-            }
-        }
-        return $this->isValidYear($year) ? $year : -1;
+        $filter = explode(':', $queryPart);
+        $key = $filter[0] === "" ? $filter[1] : $filter[0];
+        $val = $filter[0] === "" ? true : $this->removeQuotes($filter[1]);
+        $this->filters[$key] = $val;
     }
 
     private function isValidYear(int $year): bool
     {
         return $year >= 1985 && $year <= date('Y');
-    }
-
-    private function getAuthor(): string
-    {
-        return $this->extractStringAfterKeywords(['by', 'par']);
-    }
-
-    private function extractStringAfterKeywords(array $stopwords): string
-    {
-        $res = '';
-        $appendable = false;
-        $words = explode(' ', $this->q);
-        foreach ($words as $i => $word) {
-            if (in_array($word, $this->stopwords)) {
-                $appendable = false;
-            }
-            if ($appendable) {
-                $res .= " $word";
-            }
-            if (in_array($word, $stopwords)) {
-                $appendable = true;
-            }
-        }
-        $stopwordsString = implode('|', $stopwords);
-        $regex = "/({$stopwordsString})(\W|$)/i";
-        $this->filteredq = str_replace($res, '', $this->filteredq);
-        $this->filteredq = preg_replace($regex, '', $this->filteredq);
-        return substr($res, 1);
-    }
-
-    // Front end data
-    // return a string displayed on interface
-    public function getDateRangeString(): string
-    {
-        $from = $this->from();
-        $to = $this->to();
-        $in = $this->in();
-        $dateRangeString = '';
-        if ($from > 0) {
-            $dateRangeString .= "depuis $from";
-        }
-        if ($to > 0) {
-            $dateRangeString .= " jusqu'à $to";
-        }
-        if ($in > 0) {
-            $dateRangeString = "en $in";
-        }
-        return $dateRangeString;
-    }
-
-    public function getAuthorString(): string
-    {
-        $author = $this->getAuthor();
-        return $author ? "par $author" : '';
-    }
-
-    public function getEstablishmentString(): string
-    {
-        $at = $this->at();
-        return $at ? "à $at" : '';
-    }
-
-    public function getFilteredQuery(): string
-    {
-        return $this->filteredq;
-    }
-
-    public function getQueryWithoutAuthor(): string
-    {
-        $author = $this->getAuthor();
-        $out = $author ? str_replace('par ' . $author, '', $this->q) : $this->q;
-        return preg_replace('/\s+/', ' ', $out);
-    }
-
-    public function getQueryWithoutDate(): string
-    {
-        return preg_replace('/\s+/', ' ', $this->filteredq . ' ' . $this->getAuthorString() . ' ' . $this->getEstablishmentString());
-    }
-
-    public function getQueryWithoutEstablishment(): string
-    {
-        $at = $this->at();
-        $out = $at ? str_replace('à ' . $at, '', $this->q) : $this->q;
-        return preg_replace('/\s+/', ' ', $out);
     }
 }

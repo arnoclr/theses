@@ -42,10 +42,10 @@ switch ($action) {
         }
 
         foreach ($comparisons as $pos => $q) {
-            $decoder = new Decoder($pdo, $q);
+            $decoder = new Decoder($pdo, trim($q));
 
-            $regions[] = $decoder->decode()->groupByRegions()->orderBy('total', 'DESC')->get();
-            $moreAccurate[] = $decoder->decodeAndOrder()->limit($resultsNumberForComparison)->get();
+            $regions[] = $decoder->decode()->groupByRegions()->get();
+            $moreAccurate[] = $decoder->decode()->limit($resultsNumberForComparison)->get();
             $years[] = $decoder->decode()->groupByYears()->get();
             $subjectsCount[] = These::subjectsCount($decoder->decode()->get());
 

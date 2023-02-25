@@ -81,13 +81,14 @@ class Searcher
         // natural language search
         $this->addCondition("MATCH (title, summary, subjects, partners, establishments) AGAINST (:q IN NATURAL LANGUAGE MODE)");
         $this->addParam('q', $q);
-        // get all terms between quotes
-        // exact match search
-        preg_match_all('/"([^"]+)"/', $q, $results);
-        foreach ($results[1] as $i => $term) {
-            $this->addCondition("(title LIKE :q$i OR summary LIKE :q$i OR subjects LIKE :q$i)");
-            $this->addParam("q$i", "%$term%");
-        }
+        return $this;
+    }
+
+    public function exactMatch(string $terms): Searcher
+    {
+        $i = uniqid();
+        $this->addCondition("(title LIKE :q$i OR summary LIKE :q$i OR subjects LIKE :q$i)");
+        $this->addParam("q$i", "%$terms%");
         return $this;
     }
 
@@ -148,6 +149,12 @@ class Searcher
         return $this;
     }
 
+    public function removeOrderBy(): Searcher
+    {
+        $this->replaceStatement('/ORDER BY \S+ \S+/', "");
+        return $this;
+    }
+
     public function randomOne(): Searcher
     {
         $this->appendRule("ORDER BY RAND()");
@@ -156,20 +163,27 @@ class Searcher
     }
 
     // GROUP BY
+    public function groupBy(string $field): Searcher
+    {
+        $this->appendRule("GROUP BY `$field`");
+        return $this;
+    }
+
     public function groupByRegions(): Searcher
     {
         // select region, count(*) from theses natural join establishments group by region;
         $this->leftJoin('establishments', 'establishments.identifiant_idref = theses.etab_id_ref');
         $this->select(['`Code région`', 'count(*) as total']);
-        $this->appendRule('GROUP BY `Code région`');
+        $this->groupBy('Code région');
+        $this->removeOrderBy();
         return $this;
     }
 
     public function groupByYears(): Searcher
     {
         $this->select(['count(*) as total', 'date_year']);
-        $this->appendRule('GROUP BY date_year');
-        $this->orderBy('date_year', 'ASC');
+        $this->groupBy('date_year');
+        $this->removeOrderBy();
         return $this;
     }
 
