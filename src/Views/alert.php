@@ -1,6 +1,6 @@
 <div class="_a">
-    <h5><?= $success ? 'Parfait !' : 'Erreur lors de la confirmation' ?></h5>
-    <p><?= $hint ?? "Vous êtes maintenant abonné(e) à l'alerte" ?></p>
+    <h5><?= $title ?></h5>
+    <p><?= $hint ?></p>
 </div>
 
 <style>

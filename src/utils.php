@@ -26,7 +26,7 @@ function sendEmail($to, $subject, $HTML)
 {
     $url = "https://delivery.omsistuff.fr";
     $data = array(
-        "authorization" => "",
+        "authorization" => $_ENV['EMAIL_SENDER_BEARER'],
         "to" => $to,
         "subject" => $subject,
         "HTML" => $HTML
@@ -42,6 +42,8 @@ function sendEmail($to, $subject, $HTML)
 
     $context = stream_context_create($options);
     $result = file_get_contents($url, false, $context);
+
+    return json_decode($result);
 }
 
 function dd($obj)
