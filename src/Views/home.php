@@ -2,7 +2,7 @@
     <h2 class="header-title">Cherchez parmi l'ensemble des <b class="bold">thèses de doctorat</b> soutenues en France depuis 1985</h2>
     <form method="get" action="/" class="field suffix extra plain js-main-search out">
         <input type="hidden" name="action" value="search">
-        <input name="q" type="search" placeholder="Saisir un terme de recherche ou un thème">
+        <input name="q" type="search" spellcheck="false" placeholder="Saisir un terme de recherche ou un thème">
         <i>search</i>
     </form>
 </header>

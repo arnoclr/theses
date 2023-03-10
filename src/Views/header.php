@@ -24,7 +24,7 @@
             <form method="get" action="/" class="field prefix plain js-nav-search">
                 <i>search</i>
                 <input type="hidden" name="action" value="search">
-                <input type="search" name="q" placeholder="Découvrir des thèses" value="<?= htmlspecialchars($q ?? '') ?>">
+                <input type="search" name="q" spellcheck="false" placeholder="Découvrir des thèses" value="<?= htmlspecialchars($q ?? '') ?>">
             </form>
         </nav>
     </header>
