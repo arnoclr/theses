@@ -6,12 +6,37 @@
 
     <div class="context">
         <?php if ($resultsNumber > 0) : ?>
-            <small><?= $resultsNumber ?> résultat<?= $resultsNumber > 1 ? "s" : "" ?> en <?= number_format($time, 3) ?> secondes.</small>
+            <small><?= $resultsNumber ?> résultat<?= $resultsNumber > 1 ? "s" : "" ?> en <?= number_format($time, 3) ?> secondes.
+                <a href="javascript:void(0);" onclick="document.getElementById('createAlert').showModal();">Créer une alerte</a>
+            </small>
         <?php endif; ?>
 
-        <nav class="scroll">
+        <hr style="opacity: 0; padding-top: 32px;">
 
-        </nav>
+        <dialog id="createAlert">
+            <h5>Créer une alerte</h5>
+            <p>Activez une alerte pour être prévenu de l'existence de nouveaux résultats pour une recherche donnée.</p>
+
+            <form method="post" action="/?action=submitAlert" style="display: flex; flex-direction: column; gap: 22px; margin-top: 42px;">
+                <div class="field label fill large" style="margin: 0">
+                    <input spellcheck="false" name="q" type="text" value="<?= htmlspecialchars($q) ?>" required>
+                    <label>Recherche</label>
+                </div>
+
+                <div class=" field label fill large" style="margin: 0">
+                    <input name="email" type="email" autofocus autocomplete="email" required>
+                    <label>Adresse email</label>
+                </div>
+
+                <small>Vous recevrez un mail de confirmation pour activer votre alerte.</small>
+
+
+                <nav class="right-align small-space" style="gap: 6px">
+                    <button type="button" class="border" onclick="document.getElementById('createAlert').close();">Annuler</button>
+                    <button>Activer l'alerte</button>
+                </nav>
+            </form>
+        </dialog>
 
         <?php if ($establishmentData) : ?>
             <header class="establishment">

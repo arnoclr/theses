@@ -18,6 +18,8 @@ $pdo = Database::getPDO();
 $searcher = new Searcher($pdo);
 $q = $_GET['q'] ?? null;
 
+session_start();
+
 if (!$headless)
     require "src/Views/header.php";
 
@@ -91,6 +93,57 @@ switch ($action) {
         $flag = These::flag($thesis);
         $onlineLink = These::getOnlineLink($thesis);
         require "src/Views/thesis.php";
+        break;
+
+    case 'submitAlert':
+        $q = $_POST['q'];
+        $email = $_POST['email'];
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            die('Email invalide');
+        }
+
+        $_SESSION['alertToken_' . $email] = [
+            "_token" => bin2hex(random_bytes(32)),
+            "q" => $q,
+        ];
+
+        dd($_SESSION);
+
+        break;
+
+    case 'confirmAlert':
+        $success = false;
+        $email = $_GET['email'];
+        $token = $_GET['token'];
+        $sessionData = $_SESSION['alertToken_' . $email] ?? false;
+
+        if ($sessionData === false) {
+            $hint = "Essayez d'ouvrir le lien dans le même navigateur que celui utilisé pour créer l'alerte. Si cela ne fonctionne pas, alors le mail de confirmation a expiré.";
+            require "src/Views/alert.php";
+            exit;
+        }
+
+        if ($sessionData['_token'] !== $token) {
+            $hint = "Le lien de confirmation est invalide.";
+            require "src/Views/alert.php";
+            exit;
+        }
+
+        $q = $sessionData['q'];
+
+        $pdo->prepare('INSERT INTO alerts (email, q, created_at) VALUES (:email, :q, NOW())')
+            ->execute([
+                'email' => $email,
+                'q' => $q,
+            ]);
+
+        unset($_SESSION['alertToken_' . $email]);
+
+        $success = true;
+
+        require "src/Views/alert.php";
+
         break;
 
     case 'person':

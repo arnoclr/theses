@@ -22,12 +22,16 @@ $pdo->exec("DROP TABLE `theses_people`");
 $pdo->exec("DROP TABLE `people`");
 $pdo->exec("DROP TABLE `theses`");
 $pdo->exec("DROP TABLE `establishments`");
+$pdo->exec("DROP TABLE `alerts`");
 
 $sqlgen = file_get_contents("init.sql");
 $pdo->exec($sqlgen);
 
 $sqlEtab = file_get_contents("establishments.sql");
 $pdo->exec($sqlEtab);
+
+$sqlAlerts = file_get_contents("alerts.sql");
+$pdo->exec($sqlAlerts);
 
 // https://stackoverflow.com/a/37726178/11651419 save big files to server
 // https://www.data.gouv.fr/fr/datasets/r/d4f0a317-4fd7-4850-bfa2-829a2a4a21df
