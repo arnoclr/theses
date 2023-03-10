@@ -132,10 +132,11 @@ switch ($action) {
 
         $q = $sessionData['q'];
 
-        $pdo->prepare('INSERT INTO alerts (email, q, created_at) VALUES (:email, :q, NOW())')
+        $pdo->prepare('INSERT INTO alerts (email, q, unsubscribe_token, created_at) VALUES (:email, :q, :token, NOW())')
             ->execute([
                 'email' => $email,
                 'q' => $q,
+                'token' => bin2hex(random_bytes(32)),
             ]);
 
         unset($_SESSION['alertToken_' . $email]);

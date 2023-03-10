@@ -22,6 +22,28 @@ function getOrCache($key, $ttl = 60, $closure)
     return $data;
 }
 
+function sendEmail($to, $subject, $HTML)
+{
+    $url = "https://delivery.omsistuff.fr";
+    $data = array(
+        "authorization" => "",
+        "to" => $to,
+        "subject" => $subject,
+        "HTML" => $HTML
+    );
+
+    $options = array(
+        "http" => array(
+            "header" => "Content-type: application/json",
+            "method" => "POST",
+            "content" => json_encode($data)
+        )
+    );
+
+    $context = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+}
+
 function dd($obj)
 {
     echo '<pre>';

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : ven. 10 mars 2023 à 10:51
+-- Généré le : ven. 10 mars 2023 à 11:22
 -- Version du serveur : 5.7.33
 -- Version de PHP : 7.4.19
 
@@ -31,6 +31,7 @@ CREATE TABLE `alerts` (
   `id` int(11) NOT NULL,
   `q` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `unsubscribe_token` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
