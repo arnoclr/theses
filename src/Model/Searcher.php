@@ -133,6 +133,38 @@ class Searcher
         return $this;
     }
 
+    public function near(float $lat, float $lon, int $radiusKm = 25): Searcher
+    {
+        $this->leftJoin('establishments', 'establishments.identifiant_idref = theses.etab_id_ref');
+        $LAT = "SUBSTRING_INDEX(Géolocalisation, ',', 1)";
+        $LON = "SUBSTRING_INDEX(Géolocalisation, ',', -1)";
+        // $this->select(["*", "$LAT AS lat", "$LON AS lon"]);
+        $this->addCondition("SQRT(POW(69.1 * ($LAT - :lat), 2) + POW(69.1 * (:lon - $LON) * COS($LAT / 57.3), 2)) < $radiusKm");
+        $this->addParam('lat', $lat);
+        $this->addParam('lon', $lon);
+        return $this;
+    }
+
+    public function nearCity(string $city, int $radiusKm = 25): Searcher
+    {
+        $url = "https://nominatim.openstreetmap.org/search?format=json&email=webmaster.theses@arno.cl&q=" . urlencode($city);
+        $content = getOrCache($url, 60 * 24 * 7, function () use ($url) {
+            return @file_get_contents($url);
+        });
+        if ($content != false) {
+            $json = json_decode($content, true);
+            if (empty($json)) {
+                throw new \Exception("No results for $city");
+            } else {
+                $best_match = $json[0];
+                $lat = $best_match['lat'];
+                $lon = $best_match['lon'];
+                $this->near($lat, $lon, $radiusKm);
+            }
+        }
+        return $this;
+    }
+
     // ORDER BY
     private function isOrdered(): bool
     {

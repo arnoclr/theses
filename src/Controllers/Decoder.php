@@ -74,6 +74,9 @@ class Decoder
         if ($this->getFilter('a')) {
             $searcher->at($this->getFilter('a'));
         }
+        if ($this->getFilter('vers')) {
+            $searcher->nearCity($this->getFilter('vers'));
+        }
 
         $searcher->search($notExactMatchSentence);
 
@@ -160,6 +163,9 @@ class Decoder
         }
         if ($this->getFilter('a')) {
             $filters[] = "À " . $this->getFilter('a');
+        }
+        if ($this->getFilter('vers')) {
+            $filters[] = "Vers " . $this->getFilter('vers');
         }
         return $filters;
     }
