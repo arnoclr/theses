@@ -82,6 +82,14 @@ class These
         return strpos($summary, $query) !== false;
     }
 
+    public static function containExactMatch(string $haystack, string $needle): bool
+    {
+        $haystack = mb_strtolower($haystack, "UTF-8");
+        $needle = mb_strtolower($needle, "UTF-8");
+        // dd([$haystack, $needle]);
+        return strpos($haystack, $needle) !== false;
+    }
+
     public static function highlightSummaryWith(string $summary, string $query, int $maxLength = 220): string
     {
         $query = mb_strtolower($query, "UTF-8");

@@ -6,7 +6,7 @@
                 <kbd>PDF</kbd>
             <?php endif; ?>
         </header>
-        <h3><?= $these->title ?></h3>
+        <h3 class="<?= \App\Model\These::containExactMatch($these->title, $q) ? '' : 'ellipsis' ?>"><?= \App\Model\These::highlightSummaryWith($these->title, $q) ?></h3>
     </a>
     <p>
         <span class="date">

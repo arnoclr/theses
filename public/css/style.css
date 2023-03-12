@@ -346,6 +346,9 @@ button.link {
     display: block;
     font-size: 22px;
     width: 100%;
+}
+
+.searchResult h3.ellipsis {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

@@ -10,7 +10,7 @@
                 <kbd>PDF</kbd>
             <?php endif; ?>
         </header>
-        <h3><?= $these->title ?></h3>
+        <h3 class="ellipsis"><?= $these->title ?></h3>
     </a>
     <nav>
         <?php $subjects = \App\Model\These::getCommonSubjects($these, $subjectsCount); ?>
