@@ -84,9 +84,9 @@ class These
 
     public static function containExactMatch(string $haystack, string $needle): bool
     {
+        $haystack = trim($haystack);
         $haystack = mb_strtolower($haystack, "UTF-8");
         $needle = mb_strtolower($needle, "UTF-8");
-        // dd([$haystack, $needle]);
         return strpos($haystack, $needle) !== false;
     }
 
@@ -132,6 +132,7 @@ class These
 
     private static function getBestMatchingSentence(array $sentences, string $query): string
     {
+        $query = trim($query);
         $words = explode(" ", $query);
         $bestSentence = "";
         $bestCount = 0;
