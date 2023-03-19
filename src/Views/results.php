@@ -85,7 +85,7 @@
                     <?php foreach ($query as $i => $these) : ?>
                         <?php $color = count($moreAccurate) > 1 ? App\Model\Charts::getColorAt($pos) . "15" : "transparent" ?>
                         <li style="background-color: <?= $color ?>; box-shadow: 0 0 0 10px <?= $color ?>">
-                            <?php if ($i === 0 && \App\Model\These::isCloseMatch($these, $q)) : ?>
+                            <?php if ($i === 0) : ?>
                                 <?php require "src/Views/includes/bigSearchResult.php"; ?>
                             <?php else : ?>
                                 <?php require "src/Views/includes/searchResult.php"; ?>

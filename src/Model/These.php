@@ -92,17 +92,18 @@ class These
 
     public static function highlightSummaryWith(string $summary, string $query, int $maxLength = 220): string
     {
-        $query = mb_strtolower($query, "UTF-8");
-        $summary = mb_strtolower($summary, "UTF-8");
-        $pos = strpos($summary, $query);
-        if ($pos === false) {
-            return $summary;
-        }
-        $start = max(0, $pos - $maxLength);
-        $end = min(strlen($summary), $pos + $maxLength);
-        $summary = mb_substr($summary, $start, $end - $start, "UTF-8");
-        $summary = str_replace($query, "<strong>$query</strong>", $summary);
-        return $summary;
+        $sentences = explode(".", $summary);
+        $sentence = self::getBestMatchingSentence($sentences, $query);
+        return self::highlightWords($sentence, $query);
+    }
+
+    public static function highlightWords(string $text, string $query): string
+    {
+        $words = explode(" ", $query);
+        $wordsGroup = implode("|", $words);
+        $regex = "/(({$wordsGroup})[ |\w{1,3}]*({$wordsGroup})|\b({$wordsGroup})\b)/iu";
+        $text = preg_replace($regex, "<mark>$1</mark>", $text);
+        return $text;
     }
 
     public static function getEstabShortName(object $thesis): string
@@ -116,5 +117,31 @@ class These
             return "";
         }
         return $estab->{'Libellé'} ?? $estab->nom_court;
+    }
+
+    private static function getWordsCountInSentence(array $words, string $sentence): int
+    {
+        $count = 0;
+        foreach ($words as $word) {
+            if (self::containExactMatch($sentence, $word)) {
+                $count++;
+            }
+        }
+        return $count;
+    }
+
+    private static function getBestMatchingSentence(array $sentences, string $query): string
+    {
+        $words = explode(" ", $query);
+        $bestSentence = "";
+        $bestCount = 0;
+        foreach ($sentences as $sentence) {
+            $count = self::getWordsCountInSentence($words, $sentence);
+            if ($count > $bestCount) {
+                $bestSentence = $sentence;
+                $bestCount = $count;
+            }
+        }
+        return $bestSentence;
     }
 }

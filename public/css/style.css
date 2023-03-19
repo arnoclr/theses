@@ -394,8 +394,17 @@ button.link {
     border-bottom: 1px solid lightgray;
 }
 
+.searchResult.big mark {
+    background-color: var(--secondary-container);
+    color: #000;
+}
+
+.searchResult mark {
+    background-color: transparent;
+}
+
 .searchResult.big .text {
-    font-size: 22px;
+    font-size: 26px;
 }
 
 .establishment {
