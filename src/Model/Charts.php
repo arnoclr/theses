@@ -4,7 +4,7 @@ namespace App\Model;
 
 class Charts
 {
-    private static function seriesColors(): array
+    public static function seriesColors(): array
     {
         return ["#2196f3", "#e53935", "#4caf50", "#fdd835"];
     }

@@ -25,6 +25,8 @@ if (file_exists("src/Controllers/$action.php"))
         require "src/Controllers/$action.php";
     } catch (Exception $e) {
         require "src/Views/errors/500.php";
+        if ($_SERVER['HOST'] === 'localhost')
+            dd($e);
     }
 elseif ($action === null)
     require "src/Controllers/home.php";

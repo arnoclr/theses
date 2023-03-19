@@ -100,6 +100,9 @@ class These
     public static function highlightWords(string $text, string $query): string
     {
         $words = explode(" ", $query);
+        $words = array_filter($words, function ($word) {
+            return strlen($word) > 2;
+        });
         $wordsGroup = implode("|", $words);
         $regex = "/(({$wordsGroup})[ |\w{1,3}]*({$wordsGroup})|\b({$wordsGroup})\b)/iu";
         $text = preg_replace($regex, "<mark>$1</mark>", $text);
