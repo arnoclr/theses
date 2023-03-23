@@ -325,6 +325,22 @@ button.link {
     font-size: 26px;
 }
 
+.moreSearches {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.moreSearches a {
+    display: block;
+    padding: 12px 16px;
+    border-radius: 4px;
+    background-color: var(--secondary-container);
+    color: #000;
+    font-size: 18px;
+    text-decoration: underline;
+}
+
 .establishment {
     height: auto;
     all: unset;

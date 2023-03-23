@@ -18,27 +18,30 @@
                     text: "",
                 },
 
-                series: [{
-                    type: 'treemap',
-                    layoutAlgorithm: 'squarified',
-                    data: <?= $subjectsArray ?>,
-                    dataLabels: {
-                        style: {
-                            fontFamily: 'Roboto',
-                            fontSize: '16px',
-                            color: '#fff',
-                            textOutline: 0,
-                            fontWeigth: 400,
-                        }
-                    },
-                    point: {
-                        events: {
-                            click: function(event) {
-                                window.location.href = `/?action=search&q="${event.point.name}"+<?= str_replace('`', '', $_GET['q']) ?>`;
-                            }
+                series: [
+                    <?php foreach ($subjectsArray as $data) : ?> {
+                            type: 'treemap',
+                            layoutAlgorithm: 'squarified',
+                            data: <?= json_encode($data) ?>,
+                            dataLabels: {
+                                style: {
+                                    fontFamily: 'Roboto',
+                                    fontSize: '16px',
+                                    color: '#fff',
+                                    textOutline: 0,
+                                    fontWeigth: 400,
+                                }
+                            },
+                            point: {
+                                events: {
+                                    click: function(event) {
+                                        window.location.href = `/?action=search&q="${event.point.name}"+<?= str_replace('`', '', $_GET['q']) ?>`;
+                                    }
+                                },
+                            },
                         },
-                    },
-                }],
+                    <?php endforeach; ?>
+                ],
 
                 colorAxis: {
                     min: 0,

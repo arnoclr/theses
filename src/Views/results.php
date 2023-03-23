@@ -120,6 +120,15 @@
                         </script>
                     </section>
                 <?php endif; ?>
+
+                <h6>Recherches associées</h6>
+                <section class="moreSearches">
+                    <?php foreach ($subjectsArray as $data) : ?>
+                        <?php foreach (array_slice($data, 0, $resultsNumberForComparison) as $subject) : ?>
+                            <a href="/?action=search&q=%22<?= htmlspecialchars($subject["name"]) ?>%22"><?= htmlspecialchars($subject["name"]) ?></a>
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </section>
             </ul>
 
             <aside class="graphs">
