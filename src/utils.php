@@ -23,26 +23,27 @@ function getOrCache($key, $minutes = 60, $closure)
 
 function sendEmail($to, $subject, $HTML)
 {
-    $url = "https://delivery.omsistuff.fr";
-    $data = array(
-        "authorization" => $_ENV['EMAIL_SENDER_BEARER'],
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_URL, $_ENV['EMAIL_API_URL']);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
         "to" => $to,
         "subject" => $subject,
-        "HTML" => $HTML
-    );
+        "HTML" => $HTML,
+        "name" => "Information Thèses",
+        "from" => "informationtheses",
+    ]));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "Authorization: Bearer " . $_ENV['EMAIL_BEARER'],
+    ]);
+    // FIXME: Trouver un moyen de faire sans
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-    $options = array(
-        "http" => array(
-            "header" => "Content-type: application/json",
-            "method" => "POST",
-            "content" => json_encode($data)
-        )
-    );
+    $content = curl_exec($ch);
+    curl_close($ch);
 
-    $context = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
-
-    return json_decode($result);
+    return json_decode($content, false);
 }
 
 function dd($obj)
