@@ -4,6 +4,7 @@
 <script src="https://cdn.jsdelivr.net/npm/highcharts@10.2.1/modules/map.js" integrity="sha256-mtScLQfuCFAJx+PowDDuMp0CXwmoE7d3IvdZX3fHeZI=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/highcharts@10.2.1/modules/treemap.js" integrity="sha256-j2e9AEDzc8/OqAsv+iN9+e67ShJHPQDG4aIY72UUlV0=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/highcharts@10.2.1/modules/accessibility.js" integrity="sha256-g/1GLtH375t2ujOxbduirT8QY45oJ4d742NfV337KE8=" crossorigin="anonymous"></script>
+<script src="https://captcheck.netsyms.com/captcheck.min.js"></script>
 <!-- Cloudflare Web Analytics -->
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "47bf47ac7b664839bafa450605bf1741"}'></script>
 <!-- End Cloudflare Web Analytics -->

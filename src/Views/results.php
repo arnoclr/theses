@@ -28,6 +28,8 @@
                     <label>Adresse email</label>
                 </div>
 
+                <div class="captcheck_container"></div>
+
                 <small>Vous recevrez un mail de confirmation pour activer votre alerte.</small>
 
 

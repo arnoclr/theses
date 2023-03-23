@@ -5,6 +5,8 @@ $email = $_POST['email'];
 $token = bin2hex(random_bytes(32));
 $title = "Erreur";
 
+require "src/utils/verifyCaptcha.php";
+
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $hint = "L'adresse email n'est pas valide.";
     require "src/Views/alert.php";
