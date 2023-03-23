@@ -92,6 +92,8 @@ class These
 
     public static function highlightSummaryWith(string $summary, string $query, int $maxLength = 220): string
     {
+        $query = trim($query);
+        $query = str_replace('"', "", $query);
         $sentences = explode(".", $summary);
         $sentence = self::getBestMatchingSentence($sentences, $query);
         return self::highlightWords($sentence, $query);
