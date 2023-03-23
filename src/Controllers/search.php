@@ -26,10 +26,25 @@ if (count($comparisons) > 4) {
 foreach ($comparisons as $pos => $q) {
     $decoder = new Decoder($pdo, trim($q));
 
-    $regions[] = $decoder->decode()->groupByRegions()->get();
     $moreAccurate[] = $decoder->decode()->limit($resultsNumberForComparison)->get();
-    $years[] = $decoder->decode()->groupByYears()->get();
-    $subjectsCount[] = These::subjectsCount($decoder->decode()->get());
+
+    try {
+        $regions[] = $decoder->decode()->groupByRegions()->get();
+    } catch (\Exception $e) {
+        $regions[] = [];
+    }
+
+    try {
+        $years[] = $decoder->decode()->groupByYears()->get();
+    } catch (\Exception $e) {
+        $years[] = [];
+    }
+
+    try {
+        $subjectsCount[] = These::subjectsCount($decoder->decode()->get());
+    } catch (\Exception $e) {
+        $subjectsCount[] = [];
+    }
 
     if (false) { // $at
         $moreAccurate[$pos] = $searcher->from('theses')->fromEstablishment($establishmentData)->limit(8)->get();

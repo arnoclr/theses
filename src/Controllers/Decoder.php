@@ -86,8 +86,6 @@ class Decoder
 
         $searcher->search($notExactMatchSentence);
 
-        // dd($searcher->_debug());
-
         return $searcher;
     }
 
