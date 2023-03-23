@@ -77,6 +77,12 @@ class Decoder
         if ($this->getFilter('vers')) {
             $searcher->nearCity($this->getFilter('vers'));
         }
+        if ($this->getFilter('lat') && $this->getFilter('lon')) {
+            $lat = $this->getFilter('lat');
+            $lon = $this->getFilter('lon');
+            $radiusKm = $this->getRadiusKm();
+            $searcher->near($lat, $lon, $radiusKm);
+        }
 
         $searcher->search($notExactMatchSentence);
 
@@ -123,6 +129,11 @@ class Decoder
         return $year >= 1985 && $year <= date('Y');
     }
 
+    private function getRadiusKm(): int
+    {
+        return $this->getFilter('rayon') !== false ? $this->getFilter('rayon') : 80;
+    }
+
     public function displayableQuery(): string
     {
         return htmlspecialchars($this->filteredq);
@@ -167,6 +178,28 @@ class Decoder
         if ($this->getFilter('vers')) {
             $filters[] = "Vers " . $this->getFilter('vers');
         }
+        if ($this->getFilter('lat') && $this->getFilter('lon')) {
+            $lat = $this->getFilter('lat');
+            $lon = $this->getFilter('lon');
+            $radiusKm = $this->getRadiusKm();
+            $filter = "À $radiusKm km autour de $lat, $lon";
+
+            $url = "https://nominatim.openstreetmap.org/reverse?lat={$lat}&lon={$lon}&format=json&email=webmaster.theses@arno.cl";
+            $content = getOrCache($url, 60 * 24 * 7, function () use ($url) {
+                return @file_get_contents($url);
+            });
+            if ($content != false) {
+                $json = json_decode($content, true);
+                if (empty($json)) {
+                    throw new \Exception("No results for $lat, $lon");
+                } else {
+                    $filter = "à {$radiusKm} km autour de " . $json['address']['municipality'] . ", " . $json['address']['state'];
+                }
+            }
+
+            $filters[] = $filter;
+        }
+
         return $filters;
     }
 }

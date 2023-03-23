@@ -14,10 +14,6 @@
     });
 </script>
 
-<?php if (!$headless) : ?>
-    <script src="/public/js/includes/spa.js?arno=cl<?= sha1_file("public/js/includes/spa.js") ?>"></script>
-<?php endif; ?>
-
 </body>
 
 </html>

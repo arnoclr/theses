@@ -1,4 +1,4 @@
-<?php if (count($comparisons) > 1) : ?>
+<?php if (count($comparisons) > 1 || count($decoders[0]->displayableFilters()) > 0) : ?>
     <?php require "src/Views/includes/compare.php"; ?>
 <?php endif; ?>
 
@@ -95,6 +95,29 @@
                 <?php endforeach; ?>
 
                 <!-- <a class="showMoreResults" href="#">Afficher plus de résultats</a> -->
+                <?php if ($resultsNumber > 50) : ?>
+                    <section>
+                        <h5>Trop de résultats ?</h5>
+                        <p>Localisez les thèses qui ont été soutenues près de chez vous.</p>
+                        <button style="margin: 16px 0" onclick="addGeoOnSearch()" class="chip border">Localiser les résultats <i>my_location</i></button>
+
+                        <script>
+                            function addGeoOnSearch() {
+                                // request permission to access user location
+                                if (navigator.geolocation) {
+                                    navigator.geolocation.getCurrentPosition(function(position) {
+                                        const lat = position.coords.latitude;
+                                        const lon = position.coords.longitude;
+                                        const q = "<?= $q ?>"
+                                        window.location.href = `/?action=search&q=${q} lat:${lat} lon:${lon}`;
+                                    });
+                                } else {
+                                    alert("Votre navigateur ne supporte pas la géolocalisation");
+                                }
+                            }
+                        </script>
+                    </section>
+                <?php endif; ?>
             </ul>
 
             <aside class="graphs">

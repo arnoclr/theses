@@ -498,6 +498,10 @@ form.snippet input[type="search"] {
     font-size: 22px;
 }
 
+.comparisons.noDots h4 {
+    display: none;
+}
+
 .comparisons li {
     padding: 18px 0;
     border: none;
@@ -513,6 +517,10 @@ form.snippet input[type="search"] {
     border-radius: 50px;
     width: 28px;
     height: 28px;
+}
+
+.comparisons.noDots .circle {
+    display: none;
 }
 
 .comparisons span {
@@ -533,10 +541,13 @@ form.snippet input[type="search"] {
 }
 
 .comparisons .filters {
-    padding-left: 52px;
     display: flex;
     flex-direction: column;
     gap: 4px;
+}
+
+.comparisons.withDot .filters {
+    padding-left: 22px;
 }
 
 .comparisons .filters li:first-child {

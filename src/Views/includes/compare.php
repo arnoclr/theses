@@ -1,4 +1,4 @@
-<header class="comparisons">
+<header class="comparisons <?= count($comparisons) > 1 ? "withDots" : "noDots" ?>">
     <h4>Comparer les résultats</h4>
     <ul>
         <?php foreach ($comparisons as $pos => $q) : ?>
