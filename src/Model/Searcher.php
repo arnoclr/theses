@@ -295,6 +295,22 @@ class Searcher
         return $this;
     }
 
+    public function getPeopleList(string $q): array
+    {
+        $names = explode(' ', $q);
+        if (count($names) < 2) {
+            return [];
+        }
+        $this->from('people');
+        foreach ($names as $name) {
+            $id = sha1($name);
+            $this->addCondition("(firstname LIKE :$id OR lastname LIKE :$id)");
+            $this->addParam($id, "%$name%");
+        }
+        // dd($this->_debug());
+        return $this->get();
+    }
+
     private function getEstablishmentCode(string $establishment)
     {
         $statement = $this->pdo->prepare("SELECT code_etab FROM `establishments` WHERE name = :name");

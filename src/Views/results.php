@@ -62,6 +62,13 @@
                 <?php foreach ($moreAccurate as $pos => $query) : ?>
                     <?php foreach ($query as $i => $these) : ?>
                         <?php $color = count($moreAccurate) > 1 ? App\Model\Charts::getColorAt($pos) . "15" : "transparent" ?>
+
+                        <?php if ($decoders[$pos]->authorName() !== null) : ?>
+                            <article class="searchResult big">
+                                <p class="text">Thèses de <mark><?= $decoders[$pos]->authorName() ?></mark></p>
+                            </article>
+                        <?php endif; ?>
+
                         <li style="background-color: <?= $color ?>; box-shadow: 0 0 0 10px <?= $color ?>">
                             <?php if ($i === 0 && count($comparisons) === 1 && \App\Model\These::canBeDisplayedHasBigResult($these->summary, $q)) : ?>
                                 <?php require "src/Views/includes/bigSearchResult.php"; ?>

@@ -12,6 +12,7 @@ class Decoder
     private $notExactMatchSentence;
     private $searcher;
     private $filters;
+    private $peoples;
     private $autoLocalized = false;
 
     public function __construct($pdo, $q)
@@ -91,6 +92,13 @@ class Decoder
             $lon = $this->getFilter('lon');
             $radiusKm = $this->getRadiusKm();
             $searcher->near($lat, $lon, $radiusKm);
+        }
+
+        $this->peoples = (new Searcher($this->pdo))->getPeopleList($this->filteredq);
+
+        if (count($this->peoples) === 1) {
+            $searcher->authorIs($this->peoples[0]->firstname, $this->peoples[0]->lastname);
+            return $searcher;
         }
 
         $searcher->search($this->notExactMatchSentence);
@@ -180,6 +188,14 @@ class Decoder
     public function isAutolocalizedQuery(): bool
     {
         return $this->autoLocalized === true;
+    }
+
+    public function authorName(): ?string
+    {
+        if (count($this->peoples) === 1) {
+            return $this->peoples[0]->firstname . ' ' . $this->peoples[0]->lastname;
+        }
+        return null;
     }
 
     public function displayableFilters(): array
