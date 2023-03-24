@@ -11,6 +11,7 @@ class Decoder
     private $filteredq;
     private $searcher;
     private $filters;
+    private $autoLocalized = false;
 
     public function __construct($pdo, $q)
     {
@@ -44,6 +45,8 @@ class Decoder
                 }
             }
         }
+
+        $this->addLocationIfOneIsInRequest();
 
         if ($this->getFilter('tri') === 'recent') {
             $searcher->orderBy('date_year', 'DESC');
@@ -97,6 +100,44 @@ class Decoder
     public function getFilter(string $key)
     {
         return $this->filters[$key] ?? false;
+    }
+
+    private function addLocationIfOneIsInRequest(): void
+    {
+        $url = "https://nominatim.openstreetmap.org/search?format=json&email=webmaster.theses@arno.cl&q=" . urlencode($this->filteredq);
+        $content = getOrCache($url, 60 * 24 * 7, function () use ($url) {
+            return @file_get_contents($url);
+        });
+        if ($content != false) {
+            $json = json_decode($content, true);
+            if (empty($json)) {
+                return;
+            } else {
+                $best_match = $json[0];
+                if ($best_match['importance'] > 0.5) {
+                    $bounds = $best_match['boundingbox'];
+                    $this->filters['lat'] = $best_match['lat'];
+                    $this->filters['lon'] = $best_match['lon'];
+                    $this->filters['rayon'] = $this->getRadiusKmFromBoundaries($bounds[0], $bounds[2], $bounds[1], $bounds[3]);
+                    $this->autoLocalized = true;
+                }
+            }
+        }
+    }
+
+    private function getRadiusKmFromBoundaries($lata, $lona, $latb, $lonb): int
+    {
+        $earth_radius = 6371;
+        $lat1 = deg2rad($lata);
+        $lon1 = deg2rad($lona);
+        $lat2 = deg2rad($latb);
+        $lon2 = deg2rad($lonb);
+        $dlat = $lat2 - $lat1;
+        $dlon = $lon2 - $lon1;
+        $a = sin($dlat / 2) * sin($dlat / 2) + cos($lat1) * cos($lat2) * sin($dlon / 2) * sin($dlon / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        $d = $earth_radius * $c;
+        return $d;
     }
 
     private function isQuoted(string $str): bool
@@ -176,7 +217,7 @@ class Decoder
         if ($this->getFilter('vers')) {
             $filters[] = "Vers " . $this->getFilter('vers');
         }
-        if ($this->getFilter('lat') && $this->getFilter('lon')) {
+        if ($this->autoLocalized === false && $this->getFilter('lat') && $this->getFilter('lon')) {
             $lat = $this->getFilter('lat');
             $lon = $this->getFilter('lon');
             $radiusKm = $this->getRadiusKm();
@@ -196,6 +237,9 @@ class Decoder
             }
 
             $filters[] = $filter;
+        }
+        if ($this->autoLocalized === true) {
+            $filters[] = "{$this->filteredq} ~{$this->getRadiusKm()} km";
         }
 
         return $filters;
