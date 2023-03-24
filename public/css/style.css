@@ -285,7 +285,7 @@ button.link {
 
 .searchResult .subjects {
     margin-left: 12px;
-    margin-top: 16px;
+    margin-top: 8px;
     list-style: none;
     display: flex;
     flex-flow: row wrap;
@@ -293,8 +293,8 @@ button.link {
     column-gap: 18px;
 }
 
-.subjects+.subjects {
-    margin-top: 8px;
+.subjects:last-child {
+    margin-bottom: 12px;
 }
 
 .searchResult .subjects li {
@@ -327,6 +327,15 @@ button.link {
 
 .searchResult.big .text {
     font-size: 26px;
+}
+
+.locateResults {
+    padding: 12px 22px;
+    background: rgb(240, 240, 192);
+}
+
+.locateResults a {
+    text-decoration: underline;
 }
 
 .moreSearches {

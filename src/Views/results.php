@@ -98,10 +98,10 @@
 
                 <!-- <a class="showMoreResults" href="#">Afficher plus de résultats</a> -->
                 <?php if ($resultsNumber > 50) : ?>
-                    <section>
-                        <h5>Trop de résultats ?</h5>
+                    <section class="locateResults">
+                        <h6>Trop de résultats ?</h6>
                         <p>Localisez les thèses qui ont été soutenues près de chez vous.</p>
-                        <button style="margin: 16px 0" onclick="addGeoOnSearch()" class="chip border">Localiser les résultats <i>my_location</i></button>
+                        <a style="margin: 16px 0" onclick="addGeoOnSearch()">Localiser les résultats</a>
 
                         <script>
                             function addGeoOnSearch() {
