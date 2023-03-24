@@ -18,12 +18,22 @@
         </span>
     </p>
     <ul class="subjects">
-        <?php foreach (\App\Model\These::getCommonSubjects($these, $subjectsCount) as $subject) : ?>
+        <?php foreach (\App\Model\These::getCommonSubjects($these, $subjectsCount[$pos]) as $k => $subject) : ?>
+            <?php if ($k === 0) : ?>
+                <span>Voir aussi :</span>
+            <?php endif; ?>
             <a href="/?action=search&q=%22<?= $subject ?>%22">
                 <li>
                     <span><?= $subject ?></span>
                 </li>
             </a>
         <?php endforeach; ?>
+    </ul>
+    <ul class="subjects">
+        <?php if ($these->online) : ?>
+            <a href="<?= \App\Model\These::getOnlineLink($these) ?>">
+                <li>Lire en ligne</li>
+            </a>
+        <?php endif; ?>
     </ul>
 </article>

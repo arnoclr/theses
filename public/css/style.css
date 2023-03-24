@@ -241,7 +241,7 @@ button.link {
     color: #444;
 }
 
-.searchResult a {
+.searchResult>a {
     color: #1a0dab;
     display: flex;
     align-items: flex-start;
@@ -249,11 +249,11 @@ button.link {
     flex-direction: column;
 }
 
-.searchResult a:visited {
+.searchResult>a:visited {
     color: #551A8B;
 }
 
-.searchResult a:hover h3 {
+.searchResult>a:hover h3 {
     text-decoration: underline;
 }
 
@@ -291,6 +291,10 @@ button.link {
     flex-flow: row wrap;
     row-gap: 6px;
     column-gap: 18px;
+}
+
+.subjects+.subjects {
+    margin-top: 8px;
 }
 
 .searchResult .subjects li {
