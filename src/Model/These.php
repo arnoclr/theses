@@ -98,6 +98,18 @@ class These
         return strpos($haystack, $needle) !== false;
     }
 
+    public static function containSubject(object $these, string $subject): bool
+    {
+        $subject = self::removeSpecialChars($subject);
+        $subjects = self::getSubjects($these);
+        foreach ($subjects as $s) {
+            if (self::containExactMatch($s, $subject)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function removeSpecialChars($string): string
     {
         return str_replace('"', "", $string);

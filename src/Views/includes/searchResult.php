@@ -14,7 +14,23 @@
             <?= $these->lang === "en" ? "(Traduit de l'anglais)" : "" ?> —
         </span>
         <span class="summary">
-            <?= mb_substr($these->summary, 0, 160, "UTF-8") ?>...
+            <!-- TODO: Si la requete est un des sujets, on affiche la liste des sujets avec en gras le sujet en question -->
+            <?php if (\App\Model\These::containSubject($these, $q)) : ?>
+                Sujets mentionnés :
+                <ul class="subjects">
+                    <?php foreach (\App\Model\These::getSubjects($these) as $subject) : ?>
+                        <li>
+                            <?php if (\App\Model\These::containExactMatch($q, $subject)) : ?>
+                                <b><?= $subject ?></b>
+                            <?php else : ?>
+                                <span><?= $subject ?></span>
+                            <?php endif; ?>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else : ?>
+                <?= mb_substr($these->summary, 0, 160, "UTF-8") ?>...
+            <?php endif; ?>
         </span>
     </p>
     <ul class="subjects">
