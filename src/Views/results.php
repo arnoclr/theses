@@ -11,6 +11,13 @@
             </small>
         <?php endif; ?>
 
+        <?php if ($decoders[0]->isAutolocalizedQuery()) : ?>
+            <p style="font-style: italic; font-size: 18px; color: #1a0dab">
+                <span style="color: red;">Résulats localisés. </span>
+                <a style="text-decoration: underline;" href="/?action=search&q=%22<?= htmlspecialchars($q) ?>%22">Chercher les thèses contenant "<?= htmlspecialchars($q) ?>"</a>
+            </p>
+        <?php endif; ?>
+
         <hr style="opacity: 0; padding-top: 32px;">
 
         <dialog id="createAlert">
@@ -97,7 +104,7 @@
                 <?php endforeach; ?>
 
                 <!-- <a class="showMoreResults" href="#">Afficher plus de résultats</a> -->
-                <?php if ($resultsNumber > 50) : ?>
+                <?php if ($resultsNumber > 50 && $decoders[0]->isLocalizedQuery() === false) : ?>
                     <section class="locateResults">
                         <h6>Trop de résultats ?</h6>
                         <p>Localisez les thèses qui ont été soutenues près de chez vous.</p>

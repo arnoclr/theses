@@ -280,6 +280,21 @@ class Searcher
         $this->params[$key] = $value;
     }
 
+    public function between(string $field, float $from, float $to): Searcher
+    {
+        // FIXME: SQL injection
+        $this->addCondition("{$field} >= {$from} AND {$field} <= {$to}");
+        return $this;
+    }
+
+    public function inBoundaries(float $lata, float $lona, float $latb, float $lonb): Searcher
+    {
+        $this->leftJoin('establishments', 'establishments.identifiant_idref = theses.etab_id_ref');
+        $this->between("SUBSTRING_INDEX(Géolocalisation, ',', 1)", $lata, $latb);
+        $this->between("SUBSTRING_INDEX(Géolocalisation, ',', -1)", $lona, $lonb);
+        return $this;
+    }
+
     private function getEstablishmentCode(string $establishment)
     {
         $statement = $this->pdo->prepare("SELECT code_etab FROM `establishments` WHERE name = :name");

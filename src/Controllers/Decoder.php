@@ -9,6 +9,7 @@ class Decoder
     private $pdo;
     private $q;
     private $filteredq;
+    private $notExactMatchSentence;
     private $searcher;
     private $filters;
     private $autoLocalized = false;
@@ -30,7 +31,7 @@ class Decoder
 
         // cut spaces and keep words between quotes
         $queryParts = preg_split('/\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/', $this->q);
-        $notExactMatchSentence = "";
+        $this->notExactMatchSentence = "";
 
         foreach ($queryParts as $queryPart) {
             if ($this->isFilter($queryPart)) {
@@ -41,12 +42,17 @@ class Decoder
                 if ($this->isQuoted($queryPart)) {
                     $searcher->exactMatch($this->removeQuotes($queryPart));
                 } else {
-                    $notExactMatchSentence .= $queryPart . " ";
+                    $this->notExactMatchSentence .= $queryPart . " ";
                 }
             }
         }
 
-        $this->addLocationIfOneIsInRequest();
+        $bounds = $this->getRequestBoundaries();
+
+        if ($bounds !== null) {
+            $this->autoLocalized = true;
+            $searcher->inBoundaries($bounds[0], $bounds[1], $bounds[2], $bounds[3]);
+        }
 
         if ($this->getFilter('tri') === 'recent') {
             $searcher->orderBy('date_year', 'DESC');
@@ -87,7 +93,7 @@ class Decoder
             $searcher->near($lat, $lon, $radiusKm);
         }
 
-        $searcher->search($notExactMatchSentence);
+        $searcher->search($this->notExactMatchSentence);
 
         return $searcher;
     }
@@ -102,42 +108,25 @@ class Decoder
         return $this->filters[$key] ?? false;
     }
 
-    private function addLocationIfOneIsInRequest(): void
+    private function getRequestBoundaries(): ?array
     {
-        $url = "https://nominatim.openstreetmap.org/search?format=json&email=webmaster.theses@arno.cl&q=" . urlencode($this->filteredq);
+        $url = "https://nominatim.openstreetmap.org/search?format=json&email=webmaster.theses@arno.cl&q=" . urlencode($this->notExactMatchSentence);
         $content = getOrCache($url, 60 * 24 * 7, function () use ($url) {
             return @file_get_contents($url);
         });
         if ($content != false) {
             $json = json_decode($content, true);
             if (empty($json)) {
-                return;
+                return null;
             } else {
                 $best_match = $json[0];
                 if ($best_match['importance'] > 0.5) {
                     $bounds = $best_match['boundingbox'];
-                    $this->filters['lat'] = $best_match['lat'];
-                    $this->filters['lon'] = $best_match['lon'];
-                    $this->filters['rayon'] = $this->getRadiusKmFromBoundaries($bounds[0], $bounds[2], $bounds[1], $bounds[3]);
-                    $this->autoLocalized = true;
+                    return [floatval($bounds[0]), floatval($bounds[2]), floatval($bounds[1]), floatval($bounds[3])];
                 }
             }
         }
-    }
-
-    private function getRadiusKmFromBoundaries($lata, $lona, $latb, $lonb): int
-    {
-        $earth_radius = 6371;
-        $lat1 = deg2rad($lata);
-        $lon1 = deg2rad($lona);
-        $lat2 = deg2rad($latb);
-        $lon2 = deg2rad($lonb);
-        $dlat = $lat2 - $lat1;
-        $dlon = $lon2 - $lon1;
-        $a = sin($dlat / 2) * sin($dlat / 2) + cos($lat1) * cos($lat2) * sin($dlon / 2) * sin($dlon / 2);
-        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-        $d = $earth_radius * $c;
-        return $d;
+        return null;
     }
 
     private function isQuoted(string $str): bool
@@ -181,6 +170,16 @@ class Decoder
     public function queryContainExactMatchExpression(): bool
     {
         return preg_match('/"[\s\S]+"/', $this->filteredq);
+    }
+
+    public function isLocalizedQuery(): bool
+    {
+        return $this->autoLocalized === true || $this->getFilter('lat') !== false;
+    }
+
+    public function isAutolocalizedQuery(): bool
+    {
+        return $this->autoLocalized === true;
     }
 
     public function displayableFilters(): array
@@ -237,9 +236,6 @@ class Decoder
             }
 
             $filters[] = $filter;
-        }
-        if ($this->autoLocalized === true) {
-            $filters[] = "{$this->filteredq} ~{$this->getRadiusKm()} km";
         }
 
         return $filters;
