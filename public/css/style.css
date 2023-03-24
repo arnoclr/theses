@@ -303,12 +303,12 @@ button.link {
     color: inherit;
 }
 
-.searchResult .subjects span {
-    color: inherit;
+.subjects a {
+    text-decoration: underline;
 }
 
-.searchResult .subjects a:hover span {
-    text-decoration: underline;
+.searchResult .subjects span {
+    color: inherit;
 }
 
 .searchResult.big {

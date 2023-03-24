@@ -94,6 +94,7 @@ class These
         $haystack = self::removeAccents($haystack);
         $needle = mb_strtolower($needle, "UTF-8");
         $needle = self::removeAccents($needle);
+        $needle = self::removeSpecialChars($needle);
         if ($needle === "") return false;
         return strpos($haystack, $needle) !== false;
     }

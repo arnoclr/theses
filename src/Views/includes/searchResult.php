@@ -20,7 +20,7 @@
                 <ul class="subjects">
                     <?php foreach (\App\Model\These::getSubjects($these) as $subject) : ?>
                         <li>
-                            <?php if (\App\Model\These::containExactMatch($q, $subject)) : ?>
+                            <?php if (\App\Model\These::containExactMatch($subject, $q)) : ?>
                                 <b><?= $subject ?></b>
                             <?php else : ?>
                                 <span><?= $subject ?></span>
