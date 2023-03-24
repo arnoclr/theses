@@ -82,12 +82,39 @@ class These
         return strpos($summary, $query) !== false;
     }
 
+    private static function removeAccents(string $string): string
+    {
+        return strtr(utf8_decode($string), utf8_decode('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ'), 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
+    }
+
     public static function containExactMatch(string $haystack, string $needle): bool
     {
         $haystack = trim($haystack);
         $haystack = mb_strtolower($haystack, "UTF-8");
+        $haystack = self::removeAccents($haystack);
         $needle = mb_strtolower($needle, "UTF-8");
+        $needle = self::removeAccents($needle);
+        if ($needle === "") return false;
         return strpos($haystack, $needle) !== false;
+    }
+
+    public static function canBeDisplayedHasBigResult(string $haystack, string $needle): bool
+    {
+        // check if all words are in order in the haystack
+        // ignore words with less than 3 characters
+        $wordsOfSentence = explode(" ", $haystack);
+        $wordsOfNeedle = array_filter(explode(" ", $needle), function ($word) {
+            return strlen($word) > 2;
+        });
+        foreach ($wordsOfSentence as $word) {
+            if (count($wordsOfNeedle) === 0) {
+                return true;
+            }
+            if (self::containExactMatch($word, $wordsOfNeedle[0] ?? "")) {
+                array_shift($wordsOfNeedle);
+            }
+        }
+        return false;
     }
 
     public static function highlightSummaryWith(string $summary, string $query, int $maxLength = 220): string
