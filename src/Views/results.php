@@ -46,37 +46,6 @@
                 </nav>
             </form>
         </dialog>
-
-        <?php if ($establishmentData) : ?>
-            <header class="establishment">
-                <div>
-                    <h2><?= $establishmentData->{'Libellé'} ?></h2>
-                    <small><?= $establishmentData->Commune ?>, <?= $establishmentData->Département ?></small>
-                    <a href="<?= $establishmentData->{"Page Wikipédia en français"} ?>"><?= $establishmentData->{"Page Wikipédia en français"} ?></a>
-
-                    <?php if ($establishmentData->{'nom_court'} !== "" || $establishmentData->{'Libellé'} !== "") : ?>
-                        <form class="snippet" action="/" method="get" id="estabSearchForm">
-                            <input id="estabSearchInput" type="search" placeholder="Chercher des thèses soutenues à <?= $establishmentData->{'Libellé'} ?>">
-                            <input id="estabHiddenInput" type="hidden" name="q" value="">
-                            <input type="hidden" name="action" value="search">
-                            <input type="submit" value="Rechercher">
-                        </form>
-                        <script>
-                            const f = document.getElementById('estabSearchForm');
-                            f.addEventListener('submit', (e) => {
-                                e.preventDefault();
-                                const i = document.getElementById('estabSearchInput');
-                                const h = document.getElementById('estabHiddenInput');
-                                h.value = i.value + ` a:"<?= $establishmentData->{'nom_court'} !== "" ? $establishmentData->{'nom_court'} : $establishmentData->{'Libellé'} ?>"`;
-                                f.submit();
-                            });
-                        </script>
-                    <?php endif; ?>
-                </div>
-
-                <img height="200" src="https://dev.virtualearth.net/REST/v1/Imagery/Map/Road/<?= $establishmentData->{"Géolocalisation"} ?>/16?mapSize=1200,200&pp=<?= $establishmentData->{"Géolocalisation"} ?>;66&mapLayer=Basemap,Buildings&key=AiSO_FZNso9JJnrkixZ6T3d142q2DnTBLhQDVuZXeGFAI_gcnTD11M7JwvhevmzA" alt="">
-            </header>
-        <?php endif; ?>
     </div>
 
     <?php if ($resultsNumber == 0) : ?>
@@ -139,6 +108,12 @@
             </ul>
 
             <aside class="graphs">
+                <?php if ($establishmentData) : ?>
+                    <article>
+                        <?php require "src/Views/includes/establishment.php"; ?>
+                    </article>
+                <?php endif; ?>
+
                 <article>
                     <h5>Evolution dans le temps</h5>
                     <?php require "src/Views/includes/timeline.php"; ?>

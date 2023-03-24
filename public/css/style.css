@@ -359,9 +359,12 @@ button.link {
     all: unset;
     display: block;
     padding-bottom: 32px;
-    display: grid;
-    grid-template-columns: 540px 1fr;
-    gap: 32px;
+}
+
+.establishment .grid {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
 }
 
 .establishment h2 {
@@ -376,10 +379,8 @@ button.link {
     color: #777;
 }
 
-.establishment img {
-    width: 100%;
-    object-fit: cover;
-    border-radius: 8px;
+.establishment .map {
+    padding-bottom: 22px;
 }
 
 .establishment a {
@@ -397,6 +398,7 @@ button.link {
 form.snippet {
     display: flex;
     gap: 4px;
+    max-width: 420px;
 }
 
 form.snippet input[type=submit] {
