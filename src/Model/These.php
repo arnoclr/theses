@@ -98,12 +98,19 @@ class These
         return strpos($haystack, $needle) !== false;
     }
 
+    public static function removeSpecialChars($string): string
+    {
+        return str_replace('"', "", $string);
+    }
+
     public static function canBeDisplayedHasBigResult(string $haystack, string $needle): bool
     {
         // check if all words are in order in the haystack
         // ignore words with less than 3 characters
         $wordsOfSentence = explode(" ", $haystack);
-        $wordsOfNeedle = array_filter(explode(" ", $needle), function ($word) {
+        $needle = self::removeSpecialChars($needle);
+        $wordsOfNeedle = explode(" ", $needle);
+        $wordsOfNeedle = array_filter($wordsOfNeedle, function ($word) {
             return strlen($word) > 2;
         });
         foreach ($wordsOfSentence as $word) {
