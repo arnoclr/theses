@@ -353,7 +353,7 @@ button.link {
     display: block;
     padding: 12px 16px;
     border-radius: 4px;
-    background-color: var(--secondary-container);
+    background-color: var(--inverse-on-surface);
     color: #000;
     font-size: 18px;
     text-decoration: underline;
