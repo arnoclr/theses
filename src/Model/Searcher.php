@@ -73,6 +73,16 @@ class Searcher
         return $this;
     }
 
+    public function whereIn(string $col, array $values): Searcher
+    {
+        // FIXME: binding seems not working
+        $randomBind = uniqid();
+        $this->addCondition("`$col` IN (:$randomBind)");
+        $valuesAsString = "'" . join("', '", $values) . "'";
+        $this->addParam($randomBind, $valuesAsString);
+        return $this;
+    }
+
     public function search(string $q): Searcher
     {
         if ($q == "") {
@@ -135,13 +145,20 @@ class Searcher
 
     public function near(float $lat, float $lon, int $radiusKm = 25): Searcher
     {
-        $this->leftJoin('establishments', 'establishments.identifiant_idref = theses.etab_id_ref');
         $LAT = "SUBSTRING_INDEX(Géolocalisation, ',', 1)";
         $LON = "SUBSTRING_INDEX(Géolocalisation, ',', -1)";
-        // $this->select(["*", "$LAT AS lat", "$LON AS lon"]);
-        $this->addCondition("SQRT(POW(69.1 * ($LAT - :lat), 2) + POW(69.1 * (:lon - $LON) * COS($LAT / 57.3), 2)) < $radiusKm");
-        $this->addParam('lat', $lat);
-        $this->addParam('lon', $lon);
+        $establishmentsIDs = (new Searcher($this->pdo))
+            ->select(['identifiant_idref'])
+            ->from('establishments')
+            ->where('identifiant_idref', '!=', '');
+        $establishmentsIDs->addCondition("SQRT(POW(69.1 * ($LAT - :lat), 2) + POW(69.1 * (:lon - $LON) * COS($LAT / 57.3), 2)) < $radiusKm");
+        $establishmentsIDs->addParam('lat', $lat);
+        $establishmentsIDs->addParam('lon', $lon);
+        $establishmentsIDs = $establishmentsIDs->get();
+        $ids = array_map(function ($e) {
+            return $e->identifiant_idref;
+        }, $establishmentsIDs);
+        $this->addCondition("etab_id_ref IN ('" . implode("','", $ids) . "')");
         return $this;
     }
 
@@ -295,9 +312,17 @@ class Searcher
 
     public function inBoundaries(float $lata, float $lona, float $latb, float $lonb): Searcher
     {
-        $this->leftJoin('establishments', 'establishments.identifiant_idref = theses.etab_id_ref');
-        $this->between("SUBSTRING_INDEX(Géolocalisation, ',', 1)", $lata, $latb);
-        $this->between("SUBSTRING_INDEX(Géolocalisation, ',', -1)", $lona, $lonb);
+        $establishmentsIDs = (new Searcher($this->pdo))
+            ->select(['identifiant_idref'])
+            ->from('establishments')
+            ->where('identifiant_idref', '!=', '')
+            ->between("SUBSTRING_INDEX(Géolocalisation, ',', 1)", $lata, $latb)
+            ->between("SUBSTRING_INDEX(Géolocalisation, ',', -1)", $lona, $lonb)
+            ->get();
+        $ids = array_map(function ($e) {
+            return $e->identifiant_idref;
+        }, $establishmentsIDs);
+        $this->addCondition("etab_id_ref IN ('" . implode("','", $ids) . "')");
         return $this;
     }
 

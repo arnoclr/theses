@@ -53,6 +53,8 @@ class Decoder
         if ($bounds !== null) {
             $this->autoLocalized = true;
             $searcher->inBoundaries($bounds[0], $bounds[1], $bounds[2], $bounds[3]);
+        } else {
+            $searcher->search($this->notExactMatchSentence);
         }
 
         if ($this->getFilter('tri') === 'recent') {
@@ -101,8 +103,6 @@ class Decoder
             return $searcher;
         }
 
-        $searcher->search($this->notExactMatchSentence);
-
         return $searcher;
     }
 
@@ -128,7 +128,7 @@ class Decoder
                 return null;
             } else {
                 $best_match = $json[0];
-                if ($best_match['importance'] > 0.5) {
+                if ($best_match['importance'] > 0.7) {
                     $bounds = $best_match['boundingbox'];
                     return [floatval($bounds[0]), floatval($bounds[2]), floatval($bounds[1]), floatval($bounds[3])];
                 }

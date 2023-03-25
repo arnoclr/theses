@@ -27,6 +27,9 @@ if (count($comparisons) > 4) {
 foreach ($comparisons as $pos => $q) {
     $decoder = new Decoder($pdo, trim($q));
 
+
+    // dd($decoder->decode()->_debug());
+
     $moreAccurate[] = $decoder->decode()->limit($resultsNumberForComparison)->get();
 
     if ($pos === 0) {
@@ -49,10 +52,6 @@ foreach ($comparisons as $pos => $q) {
         $subjectsCount[] = These::subjectsCount($decoder->decode()->get());
     } catch (\Exception $e) {
         $subjectsCount[] = [];
-    }
-
-    if (false) { // $at
-        $moreAccurate[$pos] = $searcher->from('theses')->fromEstablishment($establishmentData)->limit(8)->get();
     }
 
     $regionalArray[] = Charts::getRegionalArray($regions[$pos], false);
