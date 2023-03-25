@@ -33,6 +33,18 @@
             <?php endif; ?>
         </span>
     </p>
+    <?php if (\App\Model\These::hasAtLeastOneCommonWord($these->establishments, $q)) : ?>
+        <ul class="subjects">
+            <li>
+                <span>Soutenu à :</span>
+            </li>
+            <?php foreach (\App\Model\These::getEstablishments($these) as $estab) : ?>
+                <li>
+                    <b><?= $estab ?></b>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
     <ul class="subjects">
         <?php foreach (\App\Model\These::getCommonSubjects($these, $subjectsCount[$pos]) as $k => $subject) : ?>
             <?php if ($k === 0) : ?>
@@ -47,9 +59,11 @@
     </ul>
     <ul class="subjects">
         <?php if ($these->online) : ?>
-            <a href="<?= \App\Model\These::getOnlineLink($these) ?>">
-                <li>Lire en ligne</li>
-            </a>
+            <li>
+                <a href="<?= \App\Model\These::getOnlineLink($these) ?>">
+                    <span>Lire en ligne</span>
+                </a>
+            </li>
         <?php endif; ?>
     </ul>
 </article>

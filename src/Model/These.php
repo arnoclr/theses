@@ -111,6 +111,22 @@ class These
         return false;
     }
 
+    public static function hasAtLeastOneCommonWord($compare, $to): bool
+    {
+        $compare = self::removeSpecialChars($compare);
+        $to = self::removeSpecialChars($to);
+        $compare = explode(" ", $compare);
+        $to = explode(" ", $to);
+        foreach ($compare as $worda) {
+            foreach ($to as $wordb) {
+                if (self::containExactMatch($worda, $wordb)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static function removeSpecialChars($string): string
     {
         return str_replace('"', "", $string);
