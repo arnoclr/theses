@@ -53,8 +53,6 @@ class Decoder
         if ($bounds !== null) {
             $this->autoLocalized = true;
             $searcher->inBoundaries($bounds[0], $bounds[1], $bounds[2], $bounds[3]);
-        } else {
-            $searcher->search($this->notExactMatchSentence);
         }
 
         if ($this->getFilter('tri') === 'recent') {
@@ -101,6 +99,10 @@ class Decoder
         if (count($this->peoples) === 1) {
             $searcher->authorIs($this->peoples[0]->firstname, $this->peoples[0]->lastname);
             return $searcher;
+        }
+
+        if ($bounds === null) {
+            $searcher->search($this->notExactMatchSentence);
         }
 
         return $searcher;
