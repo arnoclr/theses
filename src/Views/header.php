@@ -16,15 +16,17 @@
 
 <body>
 
-    <header class="primary-container fixed js-navbar small-elevate">
+    <header class="fixed">
         <nav>
             <button class="circle transparent" data-ui="#modal-navigation-drawer">
                 <i>menu</i>
             </button>
-            <form method="get" action="/" class="field prefix plain js-nav-search">
-                <i>search</i>
-                <input type="hidden" name="action" value="search">
-                <input type="search" name="q" spellcheck="false" placeholder="Découvrir des thèses" value="<?= htmlspecialchars($q ?? '') ?>">
+            <form method="get" action="/" class="js-nav-search">
+                <label class="field prefix plain">
+                    <i>search</i>
+                    <input type="hidden" name="action" value="search">
+                    <input type="search" name="q" spellcheck="false" placeholder="Découvrir des thèses" value="<?= htmlspecialchars($q ?? '') ?>">
+                </label>
             </form>
         </nav>
     </header>

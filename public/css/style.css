@@ -13,6 +13,7 @@
 :root {
     --body: white;
     --body-width: 1200px;
+    --main-content-width: calc(var(--body-width) - 440px - 32px);
 }
 
 body {
@@ -30,13 +31,10 @@ main {
     display: unset;
 }
 
-.field.plain {
-    background-color: rgba(126, 126, 126, 0.05);
-    border-radius: 4rem;
-}
-
 .field.plain input {
     border: none;
+    background-color: rgba(126, 126, 126, 0.05);
+    border-radius: 4rem;
 }
 
 .header-container {
@@ -70,6 +68,11 @@ input[type=search] {
     z-index: 15;
 }
 
+header.fixed:before {
+    background-color: white;
+    border-bottom: 1px solid var(--tertiary-container);
+}
+
 header nav {
     position: relative;
     display: flex;
@@ -83,8 +86,12 @@ header nav button {
 }
 
 .js-nav-search {
-    width: calc(100% - 48px);
-    max-width: 580px;
+    width: var(--body-width);
+}
+
+.js-nav-search [type=search] {
+    max-width: var(--main-content-width);
+    height: 48px;
 }
 
 .js-nav-search.out {
@@ -551,7 +558,7 @@ input:focus-visible {
 .searchContent {
     width: 100%;
     display: grid;
-    grid-template-columns: calc(var(--body-width) - 440px - 32px) 440px;
+    grid-template-columns: var(--main-content-width) 440px;
     align-items: start;
     gap: 32px;
 }
@@ -625,6 +632,15 @@ dialog::backdrop {
 
     header nav {
         justify-content: flex-end;
+    }
+
+    .js-nav-search {
+        width: calc(100vw - 94px);
+    }
+
+    .js-nav-search [type=search] {
+        width: 100%;
+        max-width: 100vw;
     }
 
     .examples {
