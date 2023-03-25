@@ -16,6 +16,7 @@ $subjectsArray = [];
 $timelineData = [];
 $moreAccurate = [];
 $decoders = [];
+$wikipediaData;
 
 $resultsNumberForComparison = floor(8 / count($comparisons));
 
@@ -27,6 +28,10 @@ foreach ($comparisons as $pos => $q) {
     $decoder = new Decoder($pdo, trim($q));
 
     $moreAccurate[] = $decoder->decode()->limit($resultsNumberForComparison)->get();
+
+    if ($pos === 0) {
+        $wikipediaData = getWikipediaDataFor(These::removeSpecialChars($q));
+    }
 
     try {
         $regions[] = $decoder->decode()->groupByRegions()->get();

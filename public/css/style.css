@@ -198,9 +198,8 @@ article.white {
     height: 100%;
 }
 
-article h5 {
-    padding-top: 8px;
-    margin-left: 6px;
+article h5:first-child {
+    padding-top: 22px;
 }
 
 .flag {
@@ -558,19 +557,42 @@ input:focus-visible {
 }
 
 aside.graphs {
+    --background: var(--inverse-on-surface);
+    --border-color: transparent;
+    position: relative;
     margin: 0;
     padding: 0;
-    padding-left: 12px;
+    padding-left: 18px;
     display: flex;
     flex-direction: column;
-    border-left: 1px solid var(--on-secondary-container);
+    border-left: 1px solid var(--border-color);
+    background-color: var(--background);
+}
+
+aside.graphs.withArrow::before {
+    --size: 22px;
+    content: "";
+    position: absolute;
+    top: 48px;
+    left: calc(var(--size) / 2 * -1);
+    width: var(--size);
+    height: var(--size);
+    border-top: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+    background-color: var(--background);
+    transform: rotate(-45deg);
 }
 
 aside.graphs article {
     box-shadow: none;
-    background-color: white;
+    background-color: var(--background);
     border-radius: 0px;
     padding: 2px;
+}
+
+aside.graphs p {
+    padding-right: 8px;
+    color: var(--on-secondary-container);
 }
 
 dialog {

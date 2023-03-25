@@ -145,7 +145,13 @@
                 <?php endif; ?>
             </div>
 
-            <aside class="graphs">
+            <aside class="graphs <?= $wikipediaData ? 'withArrow' : '' ?>">
+                <?php if ($wikipediaData !== null) : ?>
+                    <article>
+                        <?php require "src/Views/includes/wikipedia.php"; ?>
+                    </article>
+                <?php endif; ?>
+
                 <?php if ($establishmentData) : ?>
                     <article>
                         <?php require "src/Views/includes/establishment.php"; ?>

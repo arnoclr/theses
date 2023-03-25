@@ -46,6 +46,36 @@ function sendEmail($to, $subject, $HTML)
     return json_decode($content, false);
 }
 
+function getWikipediaDataFor($query)
+{
+    $query = urlencode($query);
+    $params = array(
+        'action' => 'query',
+        'format' => 'json',
+        'prop' => 'extracts|pageimages',
+        'exintro' => '',
+        'explaintext' => '',
+        'exsentences' => 1,
+        'titles' => $query,
+        'pithumbsize' => 500
+    );
+    $url = 'https://fr.wikipedia.org/w/api.php?' . http_build_query($params);
+    $content = @file_get_contents($url);
+    if ($content === false) {
+        return null;
+    }
+    $content = json_decode($content, true);
+    $pages = $content['query']['pages'];
+    if (count($pages) === 0) {
+        return null;
+    }
+    $data = array_shift($pages);
+    if (isset($data['title']) === false || isset($data['extract']) === false) {
+        return null;
+    }
+    return $data;
+}
+
 function dd($obj)
 {
     echo '<pre>';
