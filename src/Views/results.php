@@ -58,28 +58,29 @@
 
     <?php if ($resultsNumber > 0) : ?>
         <div class="searchContent">
-            <ul class="searchResults">
-                <?php foreach ($moreAccurate as $pos => $query) : ?>
-                    <?php foreach ($query as $i => $these) : ?>
-                        <?php $color = count($moreAccurate) > 1 ? App\Model\Charts::getColorAt($pos) . "15" : "transparent" ?>
+            <div class="searchCol">
+                <ul class="searchResults">
+                    <?php foreach ($moreAccurate as $pos => $query) : ?>
+                        <?php foreach ($query as $i => $these) : ?>
+                            <?php $color = count($moreAccurate) > 1 ? App\Model\Charts::getColorAt($pos) . "15" : "transparent" ?>
 
-                        <?php if ($decoders[$pos]->authorName() !== null) : ?>
-                            <article class="searchResult big">
-                                <p class="text">Thèses de <mark><?= $decoders[$pos]->authorName() ?></mark></p>
-                            </article>
-                        <?php endif; ?>
+                            <?php if ($decoders[$pos]->authorName() !== null) : ?>
+                                <article class="searchResult big">
+                                    <p class="text">Thèses de <mark><?= $decoders[$pos]->authorName() ?></mark></p>
+                                </article>
+                            <?php endif; ?>
 
-                        <li style="background-color: <?= $color ?>; box-shadow: 0 0 0 10px <?= $color ?>">
+                            <?php require "src/Views/includes/coloredListItem.php"; ?>
                             <?php if ($i === 0 && count($comparisons) === 1 && \App\Model\These::canBeDisplayedHasBigResult($these->summary, $q)) : ?>
                                 <?php require "src/Views/includes/bigSearchResult.php"; ?>
                             <?php else : ?>
                                 <?php require "src/Views/includes/searchResult.php"; ?>
                             <?php endif; ?>
-                        </li>
+                            </li>
+                        <?php endforeach; ?>
                     <?php endforeach; ?>
-                <?php endforeach; ?>
+                </ul>
 
-                <!-- <a class="showMoreResults" href="#">Afficher plus de résultats</a> -->
                 <?php if ($resultsNumber > 50 && $decoders[0]->isLocalizedQuery() === false) : ?>
                     <section class="locateResults">
                         <h6>Trop de résultats ?</h6>
@@ -104,15 +105,45 @@
                     </section>
                 <?php endif; ?>
 
-                <h6>Recherches associées</h6>
-                <section class="moreSearches">
-                    <?php foreach ($subjectsArray as $data) : ?>
-                        <?php foreach (array_slice($data, 0, $resultsNumberForComparison) as $subject) : ?>
-                            <a href="/?action=search&q=%22<?= htmlspecialchars($subject["name"]) ?>%22"><?= htmlspecialchars($subject["name"]) ?></a>
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <h6>Recherches associées</h6>
+                    <section class="moreSearches">
+                        <?php foreach ($subjectsArray as $data) : ?>
+                            <?php foreach (array_slice($data, 0, $resultsNumberForComparison) as $subject) : ?>
+                                <a href="/?action=search&q=%22<?= htmlspecialchars($subject["name"]) ?>%22"><?= htmlspecialchars($subject["name"]) ?></a>
+                            <?php endforeach; ?>
                         <?php endforeach; ?>
-                    <?php endforeach; ?>
-                </section>
-            </ul>
+                    </section>
+                </div>
+
+                <ul class="searchResults appendedSearchResults" style="display: none;">
+                </ul>
+
+                <?php if ($showMoreResults === true) : ?>
+                    <div class="showMoreResults">
+                        <a href="javascript:void(0);" onclick="loadMoreResults();">Afficher plus de résultats</a>
+                    </div>
+
+                    <script>
+                        const showMoreResults = document.querySelector(".showMoreResults a");
+                        const searchResults = document.querySelector(".appendedSearchResults");
+                        let p = 1;
+
+                        function loadMoreResults() {
+                            showMoreResults.innerText = "Chargement...";
+
+                            fetch("/?action=loadMoreResults&headless=1&q=<?= urlencode($_GET['q']) ?>&p=" + p)
+                                .then(response => response.text())
+                                .then(html => {
+                                    showMoreResults.innerText = "Afficher plus de résultats";
+                                    searchResults.innerHTML += html;
+                                    searchResults.style.display = "";
+                                    p++;
+                                });
+                        }
+                    </script>
+                <?php endif; ?>
+            </div>
 
             <aside class="graphs">
                 <?php if ($establishmentData) : ?>

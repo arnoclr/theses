@@ -226,6 +226,12 @@ class Searcher
         return $this;
     }
 
+    public function offset(int $offset): Searcher
+    {
+        $this->appendRule("OFFSET $offset");
+        return $this;
+    }
+
     // GET
     public function get(): array
     {

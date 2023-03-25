@@ -224,6 +224,12 @@ button.link {
     gap: 22px;
 }
 
+.searchCol {
+    display: flex;
+    flex-direction: column;
+    gap: 42px;
+}
+
 .searchResults li {
     padding: 0;
     border: none;
@@ -389,11 +395,27 @@ button.link {
 }
 
 .showMoreResults {
-    width: fit-content;
-    padding: 12px 32px;
-    background-color: lightgray;
-    text-decoration: underline;
-    border-radius: 6px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.showMoreResults a {
+    padding: 12px 22px;
+    white-space: nowrap;
+    font-size: 18px;
+    background-color: var(--secondary-container);
+    color: var(--on-secondary-container);
+    border-radius: 50px;
+}
+
+.showMoreResults::before,
+.showMoreResults::after {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 100%;
+    background-color: var(--on-secondary-container);
 }
 
 form.snippet {

@@ -72,6 +72,8 @@ foreach ($timelineData as $timeline) {
     }, 0);
 }
 
+$showMoreResults = $resultsNumber > 8;
+
 $endAt = microtime(true);
 $time = $endAt - $startedAt;
 
