@@ -135,24 +135,26 @@
                     <?php endif; ?>
                 </article>
 
-                <article>
-                    <h5 id="regions">Par région</h5>
-                    <?php require "src/Views/includes/map.php"; ?>
-                    <?php if (count($comparisons) > 1 || isset($_GET['_q'])) : ?>
-                        <p>Plus de détails pour</p>
-                        <nav class="scroll">
-                            <?php $terms = isset($_GET['_q']) ? explode(',', $_GET['_q']) : $comparisons ?>
-                            <?php foreach ($terms as $term) : $term = trim($term); ?>
-                                <a href="/?action=search&q=<?= urlencode($term) ?>&_q=<?= urlencode(isset($_GET['_q']) ? $_GET['_q'] : $_GET['q']) ?>#regions" class="chip 
+                <?php if (count($regionalArray[0]) > 0 || count($comparisons) > 1) : ?>
+                    <article>
+                        <h5 id="regions">Par région</h5>
+                        <?php require "src/Views/includes/map.php"; ?>
+                        <?php if (count($comparisons) > 1 || isset($_GET['_q'])) : ?>
+                            <p>Plus de détails pour</p>
+                            <nav class="scroll">
+                                <?php $terms = isset($_GET['_q']) ? explode(',', $_GET['_q']) : $comparisons ?>
+                                <?php foreach ($terms as $term) : $term = trim($term); ?>
+                                    <a href="/?action=search&q=<?= urlencode($term) ?>&_q=<?= urlencode(isset($_GET['_q']) ? $_GET['_q'] : $_GET['q']) ?>#regions" class="chip 
                                 <?= count($comparisons) === 1 && \App\Model\These::containExactMatch($_GET['q'], $term) ? 'fill' : 'border' ?>
                                 "><?= htmlspecialchars($term) ?></a>
-                            <?php endforeach; ?>
-                            <?php if (count($comparisons) === 1) : ?>
-                                <a href="/?action=search&q=<?= urlencode($_GET['_q']) ?>#regions" class="chip border">Tout</a>
-                            <?php endif; ?>
-                        </nav>
-                    <?php endif; ?>
-                </article>
+                                <?php endforeach; ?>
+                                <?php if (count($comparisons) === 1) : ?>
+                                    <a href="/?action=search&q=<?= urlencode($_GET['_q']) ?>#regions" class="chip border">Tout</a>
+                                <?php endif; ?>
+                            </nav>
+                        <?php endif; ?>
+                    </article>
+                <?php endif; ?>
             </aside>
         </div>
     <?php endif; ?>
