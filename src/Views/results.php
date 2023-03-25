@@ -127,7 +127,7 @@
                     <script>
                         const showMoreResults = document.querySelector(".showMoreResults a");
                         const searchResults = document.querySelector(".appendedSearchResults");
-                        let p = 1;
+                        let p = 2;
 
                         function loadMoreResults() {
                             showMoreResults.innerText = "Chargement...";
