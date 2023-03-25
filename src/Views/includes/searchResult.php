@@ -40,7 +40,11 @@
             </li>
             <?php foreach (\App\Model\These::getEstablishments($these) as $estab) : ?>
                 <li>
-                    <b><?= $estab ?></b>
+                    <?php if (\App\Model\These::hasAtLeastOneCommonWord($estab, $q)) : ?>
+                        <b><?= $estab ?></b>
+                    <?php else : ?>
+                        <span><?= $estab ?></span>
+                    <?php endif; ?>
                 </li>
             <?php endforeach; ?>
         </ul>
