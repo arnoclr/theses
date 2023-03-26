@@ -7,6 +7,7 @@ class Searcher
     private $statement;
     private $pdo;
     private $params;
+    private $randomBinAutoIncrement = 0;
 
     public function __construct($pdo)
     {
@@ -49,7 +50,7 @@ class Searcher
     // WHERE
     public function where(string $col, string $op, string $val): Searcher
     {
-        $randomBind = uniqid();
+        $randomBind = $this->getUniqueBindName();
         $this->addCondition("`$col` $op :$randomBind");
         $this->addParam($randomBind, $val);
         return $this;
@@ -76,7 +77,7 @@ class Searcher
     public function whereIn(string $col, array $values): Searcher
     {
         // FIXME: binding seems not working
-        $randomBind = uniqid();
+        $randomBind = $this->getUniqueBindName();
         $this->addCondition("`$col` IN (:$randomBind)");
         $valuesAsString = "'" . join("', '", $values) . "'";
         $this->addParam($randomBind, $valuesAsString);
@@ -96,7 +97,7 @@ class Searcher
 
     public function exactMatch(string $terms): Searcher
     {
-        $i = uniqid();
+        $i = $this->getUniqueBindName();
         $this->addCondition("(title LIKE :q$i OR summary LIKE :q$i OR subjects LIKE :q$i)");
         $this->addParam("q$i", "%$terms%");
         return $this;
@@ -301,6 +302,12 @@ class Searcher
     private function addParam(string $key, string $value): void
     {
         $this->params[$key] = $value;
+    }
+
+    private function getUniqueBindName(): string
+    {
+        $this->randomBinAutoIncrement++;
+        return 'auto' . $this->randomBinAutoIncrement;
     }
 
     public function between(string $field, float $from, float $to): Searcher
