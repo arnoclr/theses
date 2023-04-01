@@ -1,0 +1,1 @@
+<img height="110" onload="this.parentNode.classList.add('loaded'); this.parentNode.style.height = '110px';" onerror="this.parentNode.removeChild(this)" src="<?= $src ?>" loading="lazy" alt="" />

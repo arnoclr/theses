@@ -21,6 +21,17 @@ function getOrCache($key, $minutes = 60, $closure)
     return $data;
 }
 
+function getCache(string $key)
+{
+    $filename = ROOT . '/tmp/' . sha1($key);
+    if (file_exists($filename)) {
+        $data = file_get_contents($filename);
+        $data = unserialize($data);
+        return $data;
+    }
+    return null;
+}
+
 function sendEmail($to, $subject, $HTML)
 {
     $ch = curl_init();
