@@ -53,5 +53,5 @@ $images = getOrCache("pdf.images." . $nnt, 60 * 24 * 7, function () use ($parser
 });
 
 foreach ($images as $src) {
-    require "../Views/includes/image.php";
+    require __DIR__ . "/../Views/includes/image.php";
 }
