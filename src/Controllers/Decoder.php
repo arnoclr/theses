@@ -130,7 +130,7 @@ class Decoder
                 return null;
             } else {
                 $best_match = $json[0];
-                if ($best_match['importance'] > 0.7) {
+                if ($best_match['importance'] > 0.7 && $best_match['class'] === 'boundary' && $best_match['type'] === 'administrative') {
                     $bounds = $best_match['boundingbox'];
                     return [floatval($bounds[0]), floatval($bounds[2]), floatval($bounds[1]), floatval($bounds[3])];
                 }
