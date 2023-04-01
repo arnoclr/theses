@@ -78,8 +78,8 @@ function getWikipediaDataFor($queryWithMultipleWords)
             return null;
         }
         $content = json_decode($content, true);
-        $pages = $content['query']['pages'];
-        if (count($pages) === 0) {
+        $pages = $content['query']['pages'] ?? null;
+        if ($pages === null || count($pages) === 0) {
             return null;
         }
         $data = array_shift($pages);
