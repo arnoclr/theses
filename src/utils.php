@@ -87,6 +87,35 @@ function getWikipediaDataFor($query)
     return $data;
 }
 
+function compressBase64Image(string $base64, int $height): ?string
+{
+    $content = file_get_contents($base64);
+    $image = @imagecreatefromstring($content);
+
+    if ($image === false) {
+        return null;
+    }
+
+    $width = imagesx($image);
+    $height = imagesy($image);
+
+    $new_height = 110;
+    $new_width = $width * ($new_height / $height);
+
+    $new_image = imagecreatetruecolor($new_width, $new_height);
+
+    imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+    ob_start();
+    imagejpeg($new_image, null, 75);
+    $new_image_base64 = base64_encode(ob_get_clean());
+
+    imagedestroy($image);
+    imagedestroy($new_image);
+
+    return "data:image/jpeg;base64,{$new_image_base64}";
+}
+
 function dd($obj)
 {
     echo '<pre>';

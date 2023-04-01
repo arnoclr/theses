@@ -42,8 +42,12 @@ $images = getOrCache("pdf.images." . $nnt, 60 * 24 * 7, function () use ($parser
 
         $output = [];
 
-        foreach (array_slice($images, 1, 32) as $image) {
-            $output[] = "data:image/jpg;base64," . base64_encode($image->getContent());
+        foreach (array_slice($images, 1, 12) as $image) {
+            $base64 = "data:image/jpg;base64," . base64_encode($image->getContent());
+            $compressed = compressBase64Image($base64, 110);
+            if ($compressed !== null) {
+                $output[] = $compressed;
+            }
         }
 
         return $output;
