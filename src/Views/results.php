@@ -78,10 +78,13 @@
                             <?php endif; ?>
 
                             <?php if ($i == 2) : ?>
-                                <?php require "src/Views/includes/wikipediaSubjects.php"; ?>
+                                <?php require_once "src/Views/includes/wikipediaSubjects.php"; ?>
                             <?php endif; ?>
                             </li>
                         <?php endforeach; ?>
+                        <li>
+                            <?php require_once "src/Views/includes/wikipediaSubjects.php"; ?>
+                        </li>
                     <?php endforeach; ?>
                 </ul>
 
