@@ -3,6 +3,7 @@
         <span class="date"><?= $these->date_year ?> —</span>
         <span class="summary"><?= \App\Model\These::highlightSummaryWith($these->summary, $q) ?>...</span>
     </p>
+    <?php require "src/Views/includes/imagesCarousel.php"; ?>
     <a title="<?= htmlspecialchars($these->title) ?>" href="/?action=view&tid=<?= $these->iddoc ?>&q=<?= htmlspecialchars($q) ?>">
         <header>
             <small><?= \App\Model\These::getEstabShortName($these) ?></small>

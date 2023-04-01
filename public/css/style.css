@@ -247,6 +247,25 @@ a.link {
     text-decoration: underline;
 }
 
+.subjectCard {
+    display: flex;
+    gap: 16px;
+    border: 2px solid var(--surface-variant);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.subjectCard img {
+    height: 58px;
+    width: 58px;
+    object-fit: cover;
+}
+
+.subjectCard p {
+    margin-left: 22px;
+    font-weight: 600;
+}
+
 button.link {
     all: unset;
 }

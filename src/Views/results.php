@@ -76,7 +76,10 @@
                             <?php else : ?>
                                 <?php require "src/Views/includes/searchResult.php"; ?>
                             <?php endif; ?>
-                            <?php require "src/Views/includes/imagesCarousel.php"; ?>
+
+                            <?php if ($i == 2) : ?>
+                                <?php require "src/Views/includes/wikipediaSubjects.php"; ?>
+                            <?php endif; ?>
                             </li>
                         <?php endforeach; ?>
                     <?php endforeach; ?>

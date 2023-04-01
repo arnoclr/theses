@@ -81,4 +81,13 @@ $showMoreResults = $resultsNumber > 8;
 $endAt = microtime(true);
 $time = $endAt - $startedAt;
 
+$wikipediaSubjects = [];
+
+foreach ($subjectsCount[0] as $subject => $count) {
+    $data = getWikipediaDataFor($subject);
+    if (isset($data['thumbnail'])) {
+        $wikipediaSubjects[] = $data;
+    }
+};
+
 require "src/Views/results.php";

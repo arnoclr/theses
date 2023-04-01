@@ -61,4 +61,5 @@
             </a>
         <?php endforeach; ?>
     </ul>
+    <?php require "src/Views/includes/imagesCarousel.php"; ?>
 </article>
