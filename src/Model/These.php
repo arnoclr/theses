@@ -28,7 +28,17 @@ class These
 
     public static function getOnlineLink(object $thesis): string
     {
-        return "https://theses.fr/{$thesis->nnt}/document";
+        return self::getOnlineLinkFromNNT($thesis->nnt);
+    }
+
+    public static function getOnlineLinkFromNNT(string $nnt): string
+    {
+        return "https://theses.fr/{$nnt}/document";
+    }
+
+    public static function getPDFFromHTML(string $pageContent): ?string
+    {
+        return preg_match('/href=["\']?(http[s]?:\/\/[^\n ]+\.pdf)/i', $pageContent, $matches) ? $matches[1] : null;
     }
 
     public static function flag(object $thesis): string

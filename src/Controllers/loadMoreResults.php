@@ -25,6 +25,7 @@ foreach ($comparisons as $pos => $q) {
     foreach ($theses as $these) {
         require "src/Views/includes/coloredListItem.php";
         require "src/Views/includes/searchResult.php";
+        require "src/Views/includes/imagesCarousel.php";
         echo "</li>";
     }
 }

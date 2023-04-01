@@ -1,7 +1,8 @@
 {
     "require": {
         "halaxa/json-machine": "^1.1",
-        "vlucas/phpdotenv": "^5.4"
+        "vlucas/phpdotenv": "^5.4",
+        "smalot/pdfparser": "^2.4"
     },
     "autoload": {
         "psr-4": {

@@ -76,6 +76,7 @@
                             <?php else : ?>
                                 <?php require "src/Views/includes/searchResult.php"; ?>
                             <?php endif; ?>
+                            <?php require "src/Views/includes/imagesCarousel.php"; ?>
                             </li>
                         <?php endforeach; ?>
                     <?php endforeach; ?>

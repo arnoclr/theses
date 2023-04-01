@@ -1,5 +1,5 @@
 <article class="searchResult">
-    <a title="<?= htmlspecialchars($these->title) ?>" href="/?action=view&tid=<?= $these->iddoc ?>&q=<?= htmlspecialchars($q) ?>">
+    <a title="<?= htmlspecialchars($these->title) ?>" href="<?= \App\Model\These::getOnlineLink($these) ?>">
         <header>
             <small><?= \App\Model\These::getEstabShortName($these) ?></small>
             <?php if ($these->online) : ?>
@@ -60,14 +60,5 @@
                 </li>
             </a>
         <?php endforeach; ?>
-    </ul>
-    <ul class="subjects">
-        <?php if ($these->online) : ?>
-            <li>
-                <a href="<?= \App\Model\These::getOnlineLink($these) ?>">
-                    <span>Lire en ligne</span>
-                </a>
-            </li>
-        <?php endif; ?>
     </ul>
 </article>

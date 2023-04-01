@@ -615,6 +615,31 @@ dialog {
     overscroll-behavior: contain;
 }
 
+.carousel {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 22px;
+    padding: 0;
+    overflow-y: hidden;
+    overflow-x: auto;
+    transition: height .6s ease;
+}
+
+.carousel.loaded {
+    animation: scaleIn .6s ease;
+}
+
+@keyframes scaleIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 dialog::backdrop {
     background-color: #fffa;
 }
