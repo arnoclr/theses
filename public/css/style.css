@@ -326,10 +326,13 @@ button.link {
 }
 
 .searchResult h3.ellipsis {
+    font-size: 20px;
+    white-space: break-spaces;
+    max-height: auto;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    -webkit-line-clamp: 1;
 }
 
 .searchResult kbd {
@@ -743,15 +746,6 @@ dialog::backdrop {
 
     .searchResults>li:not(:last-child) {
         border-bottom: 6px solid #f7f7f7;
-    }
-
-    .searchResult h3.ellipsis {
-        white-space: break-spaces;
-        max-height: auto;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        overflow: hidden;
     }
 }
 
