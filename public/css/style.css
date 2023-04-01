@@ -14,6 +14,34 @@
     --body: white;
     --body-width: 1200px;
     --main-content-width: calc(var(--body-width) - 440px - 32px);
+
+    --primary: #00658e;
+    --on-primary: #ffffff;
+    --primary-container: #c4e7ff;
+    --on-primary-container: #001e2e;
+    --secondary: #4f616e;
+    --on-secondary: #ffffff;
+    --secondary-container: #d2e5f4;
+    --on-secondary-container: #0b1d28;
+    --tertiary: #625a7c;
+    --on-tertiary: #ffffff;
+    --tertiary-container: #e8ddff;
+    --on-tertiary-container: #1e1735;
+    --error: #ba1b1b;
+    --error-container: #ffdad4;
+    --on-error: #ffffff;
+    --on-error-container: #410001;
+    --background: #fbfcff;
+    --on-background: #191c1e;
+    --surface: #fbfcff;
+    --on-surface: #191c1e;
+    --surface-variant: #dde3ea;
+    --on-surface-variant: #41484d;
+    --outline: #71787e;
+    --inverse-on-surface: #f0f1f4;
+    --inverse-surface: #2e3133;
+    --inverse-primary: #7fcfff;
+    --shadow: #000000;
 }
 
 body {

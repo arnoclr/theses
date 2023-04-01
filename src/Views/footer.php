@@ -9,12 +9,6 @@
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "47bf47ac7b664839bafa450605bf1741"}'></script>
 <!-- End Cloudflare Web Analytics -->
 
-<script>
-    document.addEventListener('DOMContentLoaded', async () => {
-        let theme = await ui("theme", "#29B6F6");
-    });
-</script>
-
 </body>
 
 </html>

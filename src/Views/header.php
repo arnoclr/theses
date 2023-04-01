@@ -11,7 +11,7 @@
     <meta name="msapplication-navbutton-color" content="#c4e7ff">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/beercss@2.2.11/dist/cdn/beer.min.css" integrity="sha256-lYnQDpcf+FFMWvFyNlfYM5Zis7/ENdFurMo6UK58k4E=" crossorigin="anonymous">
-    <link rel="stylesheet" href="/public/css/style.css?ac=4">
+    <link rel="stylesheet" href="/public/css/style.css?ac=5">
 </head>
 
 <body>
