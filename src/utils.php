@@ -57,34 +57,37 @@ function sendEmail($to, $subject, $HTML)
     return json_decode($content, false);
 }
 
-function getWikipediaDataFor($query)
+function getWikipediaDataFor($queryWithMultipleWords)
 {
-    $query = urlencode($query);
-    $params = array(
-        'action' => 'query',
-        'format' => 'json',
-        'prop' => 'extracts|pageimages',
-        'exintro' => '',
-        'explaintext' => '',
-        'exsentences' => 1,
-        'titles' => $query,
-        'pithumbsize' => 500
-    );
-    $url = 'https://fr.wikipedia.org/w/api.php?' . http_build_query($params);
-    $content = @file_get_contents($url);
-    if ($content === false) {
-        return null;
-    }
-    $content = json_decode($content, true);
-    $pages = $content['query']['pages'];
-    if (count($pages) === 0) {
-        return null;
-    }
-    $data = array_shift($pages);
-    if (isset($data['title']) === false || isset($data['extract']) === false) {
-        return null;
-    }
-    return $data;
+    return getOrCache($queryWithMultipleWords, 60 * 24, function () use ($queryWithMultipleWords) {
+        $query = str_replace(' ', '_', $queryWithMultipleWords);
+        $query = urlencode($query);
+        $params = array(
+            'action' => 'query',
+            'format' => 'json',
+            'prop' => 'extracts|pageimages',
+            'exintro' => '',
+            'explaintext' => '',
+            'exsentences' => 1,
+            'titles' => $query,
+            'pithumbsize' => 500
+        );
+        $url = 'https://fr.wikipedia.org/w/api.php?' . http_build_query($params);
+        $content = @file_get_contents($url);
+        if ($content === false) {
+            return null;
+        }
+        $content = json_decode($content, true);
+        $pages = $content['query']['pages'];
+        if (count($pages) === 0) {
+            return null;
+        }
+        $data = array_shift($pages);
+        if (isset($data['title']) === false || isset($data['extract']) === false) {
+            return null;
+        }
+        return $data;
+    });
 }
 
 function compressBase64Image(string $base64, int $height): ?string
