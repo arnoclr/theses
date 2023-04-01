@@ -8,6 +8,7 @@
         <?php if ($resultsNumber > 0) : ?>
             <small><?= $resultsNumber ?> résultat<?= $resultsNumber > 1 ? "s" : "" ?> en <?= number_format($time, 3) ?> secondes.
                 <a href="javascript:void(0);" onclick="document.getElementById('createAlert').showModal();">Créer une alerte</a>
+                <a href="javascript:void(0);" onclick="document.getElementById('advancedSearch').showModal();">Recherche avancée</a>
             </small>
         <?php endif; ?>
 
@@ -19,6 +20,91 @@
         <?php endif; ?>
 
         <hr style="opacity: 0; padding-top: 32px;">
+
+        <dialog id="advancedSearch">
+            <h5>Recherche avancée</h5>
+
+            <form class="advancedSearch">
+                <label>
+                    <span><b>tous</b> les mots suivants</span>
+                    <input spellcheck="false" name="all" type="text">
+                </label>
+                <label>
+                    <span>Cette <b>expression exacte</b></span>
+                    <input spellcheck="false" name="exact" type="text">
+                </label>
+                <label>
+                    <span><b>au moins un</b> des mots suivants</span>
+                    <input spellcheck="false" name="include" type="text" value="<?= htmlspecialchars($q) ?>">
+                </label>
+                <label>
+                    <span>Rechercher des thèses <b>rédigées par</b></span>
+                    <input spellcheck="false" name="by" type="text">
+                </label>
+                <small>ex: Patrick Flajolet</small>
+                <label>
+                    <span>Rechercher des thèses <b>datées</b> de</span>
+                    <input min="1980" max="<?= date("Y"); ?>" name="before" spellcheck="false" type="number">
+                    <span>&nbsp;—&nbsp;</span>
+                    <input min="1980" max="<?= date("Y"); ?>" name="after" spellcheck="false" type="number">
+                </label>
+                <small>ex: 1999</small>
+                <label>
+                    <span>Rechercher les thèses soutenues <b>près de</b></span>
+                    <input spellcheck="false" type="text" name="near">
+                </label>
+                <small>ex: Paris</small>
+
+                <nav class="right-align small-space" style="gap: 6px">
+                    <button type="button" class="border" onclick="document.getElementById('advancedSearch').close();">Annuler</button>
+                    <button>Rechercher</button>
+                </nav>
+            </form>
+
+            <script>
+                const advancedSearchForm = document.querySelector(".advancedSearch");
+
+                advancedSearchForm.addEventListener("submit", (e) => {
+                    e.preventDefault();
+
+                    let query = "";
+                    const formData = new FormData(advancedSearchForm);
+
+                    if (formData.get("all") !== "") {
+                        const words = formData.get("all").split(" ");
+                        words.forEach(word => {
+                            query += `+"${word}"`;
+                        });
+                    }
+
+                    if (formData.get('exact') !== "") {
+                        query += `+"${formData.get('exact')}"`;
+                    }
+
+                    if (formData.get('include') !== "") {
+                        query += `+${formData.get('include')}`;
+                    }
+
+                    if (formData.get('by') !== "") {
+                        query += `+par:"${formData.get('by')}"`;
+                    }
+
+                    if (formData.get('before') !== "") {
+                        query += `+avant:${formData.get('before')}`;
+                    }
+
+                    if (formData.get('after') !== "") {
+                        query += `+apres:${formData.get('after')}`;
+                    }
+
+                    if (formData.get('near') !== "") {
+                        query += `+vers:"${formData.get('near')}"`;
+                    }
+
+                    window.location.href = `/?action=search&q=${query}`;
+                });
+            </script>
+        </dialog>
 
         <dialog id="createAlert">
             <h5>Créer une alerte</h5>
