@@ -14,6 +14,8 @@ class Decoder
     private $filters;
     private $peoples;
     private $autoLocalized = false;
+    private $bounds = null;
+    private $mapLicence = "";
 
     public function __construct($pdo, $q)
     {
@@ -52,6 +54,7 @@ class Decoder
 
         if ($bounds !== null) {
             $this->autoLocalized = true;
+            $this->bounds = $bounds;
             $searcher->inBoundaries($bounds[0], $bounds[1], $bounds[2], $bounds[3]);
         }
 
@@ -118,6 +121,21 @@ class Decoder
         return $this->filters[$key] ?? false;
     }
 
+    public function getMapBoundaries(): ?array
+    {
+        return $this->bounds;
+    }
+
+    public function getMapLicence(): string
+    {
+        return $this->mapLicence;
+    }
+
+    public function getEstablishments(): array
+    {
+        return $this->searcher->establishmentsInBoundaries($this->bounds[0], $this->bounds[1], $this->bounds[2], $this->bounds[3]);
+    }
+
     private function getRequestBoundaries(): ?array
     {
         $url = "https://nominatim.openstreetmap.org/search?format=json&email=webmaster.theses@arno.cl&q=" . urlencode($this->notExactMatchSentence);
@@ -132,6 +150,7 @@ class Decoder
                 $best_match = $json[0];
                 if ($best_match['importance'] > 0.7 && $best_match['class'] === 'boundary' && $best_match['type'] === 'administrative') {
                     $bounds = $best_match['boundingbox'];
+                    $this->mapLicence = $best_match['licence'];
                     return [floatval($bounds[0]), floatval($bounds[2]), floatval($bounds[1]), floatval($bounds[3])];
                 }
             }

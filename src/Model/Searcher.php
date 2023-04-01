@@ -317,18 +317,22 @@ class Searcher
         return $this;
     }
 
-    public function inBoundaries(float $lata, float $lona, float $latb, float $lonb): Searcher
+    public function establishmentsInBoundaries(float $lata, float $lona, float $latb, float $lonb): array
     {
-        $establishmentsIDs = (new Searcher($this->pdo))
-            ->select(['identifiant_idref'])
+        return (new Searcher($this->pdo))
+            ->select(['identifiant_idref', 'Géolocalisation', 'Libellé'])
             ->from('establishments')
             ->where('identifiant_idref', '!=', '')
             ->between("SUBSTRING_INDEX(Géolocalisation, ',', 1)", $lata, $latb)
             ->between("SUBSTRING_INDEX(Géolocalisation, ',', -1)", $lona, $lonb)
             ->get();
+    }
+
+    public function inBoundaries(float $lata, float $lona, float $latb, float $lonb): Searcher
+    {
         $ids = array_map(function ($e) {
             return $e->identifiant_idref;
-        }, $establishmentsIDs);
+        }, $this->establishmentsInBoundaries($lata, $lona, $latb, $lonb));
         $this->addCondition("etab_id_ref IN ('" . implode("','", $ids) . "')");
         return $this;
     }

@@ -5,6 +5,14 @@
 <script src="https://cdn.jsdelivr.net/npm/highcharts@10.2.1/modules/treemap.js" integrity="sha256-j2e9AEDzc8/OqAsv+iN9+e67ShJHPQDG4aIY72UUlV0=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/highcharts@10.2.1/modules/accessibility.js" integrity="sha256-g/1GLtH375t2ujOxbduirT8QY45oJ4d742NfV337KE8=" crossorigin="anonymous"></script>
 <script src="https://captcheck.netsyms.com/captcheck.min.js"></script>
+
+<!-- map -->
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.min.css">
+<!-- <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' /> -->
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+<script src="https://unpkg.com/mapbox-gl-leaflet/leaflet-mapbox-gl.js"></script>
+
 <!-- Cloudflare Web Analytics -->
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "47bf47ac7b664839bafa450605bf1741"}'></script>
 <!-- End Cloudflare Web Analytics -->

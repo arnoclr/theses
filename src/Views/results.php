@@ -5,19 +5,10 @@
 <main>
 
     <div class="context">
-        <?php if ($resultsNumber > 0) : ?>
-            <small><?= $resultsNumber ?> résultat<?= $resultsNumber > 1 ? "s" : "" ?> en <?= number_format($time, 3) ?> secondes.
-                <a href="javascript:void(0);" onclick="document.getElementById('createAlert').showModal();">Créer une alerte</a>
-                <a href="javascript:void(0);" onclick="document.getElementById('advancedSearch').showModal();">Recherche avancée</a>
-            </small>
-        <?php endif; ?>
-
-        <?php if ($decoders[0]->isAutolocalizedQuery()) : ?>
-            <p style="font-style: italic; font-size: 18px; color: #1a0dab">
-                <span style="color: red;">Résulats localisés. </span>
-                <a style="text-decoration: underline;" href="/?action=search&q=%22<?= htmlspecialchars($q) ?>%22">Chercher les thèses contenant "<?= htmlspecialchars($q) ?>"</a>
-            </p>
-        <?php endif; ?>
+        <small><?= $resultsNumber ?> résultat<?= $resultsNumber > 1 ? "s" : "" ?> en <?= number_format($time, 3) ?> secondes.
+            <a href="javascript:void(0);" onclick="document.getElementById('createAlert').showModal();">Créer une alerte</a>
+            <a href="javascript:void(0);" onclick="document.getElementById('advancedSearch').showModal();">Recherche avancée</a>
+        </small>
 
         <hr style="opacity: 0; padding-top: 32px;">
 
@@ -134,17 +125,13 @@
         </dialog>
     </div>
 
-    <?php if ($resultsNumber == 0) : ?>
-        <div>
-            <h2>Oups</h2>
-            <p>Aucun résultat d'a été trouvé pour <?= htmlspecialchars($_GET['q']) ?></p>
-            <p><b>Essayez de retirer certains filtres ou d'élargir votre recherche</b></p>
-        </div>
-    <?php endif; ?>
-
-    <?php if ($resultsNumber > 0) : ?>
+    <?php if ($resultsNumber > 0 || count($decoders[0]->getEstablishments()) > 0) : ?>
         <div class="searchContent">
             <div class="searchCol">
+                <?php if ($decoders[0]->isAutolocalizedQuery()) : ?>
+                    <?php require "src/Views/includes/streetmap.php"; ?>
+                <?php endif; ?>
+
                 <ul class="searchResults">
                     <?php foreach ($moreAccurate as $pos => $query) : ?>
                         <?php foreach ($query as $i => $these) : ?>
@@ -251,19 +238,21 @@
                     </article>
                 <?php endif; ?>
 
-                <article>
-                    <h5>Evolution dans le temps</h5>
-                    <?php require "src/Views/includes/timeline.php"; ?>
+                <?php if ($resultsNumber > 0) : ?>
+                    <article>
+                        <h5>Evolution dans le temps</h5>
+                        <?php require "src/Views/includes/timeline.php"; ?>
 
-                    <?php if (count($comparisons) === 1) : ?>
-                        <p>Comparer avec</p>
-                        <nav class="scroll">
-                            <?php foreach ($subjectsArray[0] as $subject) : ?>
-                                <a href="/?action=search&q=<?= urlencode($q) ?>, %22<?= urlencode($subject["name"]) ?>%22" class="chip border"><?= htmlspecialchars($subject["name"]) ?></a>
-                            <?php endforeach; ?>
-                        </nav>
-                    <?php endif; ?>
-                </article>
+                        <?php if (count($comparisons) === 1) : ?>
+                            <p>Comparer avec</p>
+                            <nav class="scroll">
+                                <?php foreach ($subjectsArray[0] as $subject) : ?>
+                                    <a href="/?action=search&q=<?= urlencode($q) ?>, %22<?= urlencode($subject["name"]) ?>%22" class="chip border"><?= htmlspecialchars($subject["name"]) ?></a>
+                                <?php endforeach; ?>
+                            </nav>
+                        <?php endif; ?>
+                    </article>
+                <?php endif; ?>
 
                 <?php if (count($regionalArray[0]) > 0 || count($comparisons) > 1) : ?>
                     <article>
@@ -286,6 +275,12 @@
                     </article>
                 <?php endif; ?>
             </aside>
+        </div>
+    <?php else : ?>
+        <div>
+            <h2>Oups</h2>
+            <p>Aucun résultat d'a été trouvé pour <?= htmlspecialchars($_GET['q']) ?></p>
+            <p><b>Essayez de retirer certains filtres ou d'élargir votre recherche</b></p>
         </div>
     <?php endif; ?>
 </main>
