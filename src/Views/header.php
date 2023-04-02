@@ -11,16 +11,13 @@
     <meta name="msapplication-navbutton-color" content="#c4e7ff">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/beercss@2.2.11/dist/cdn/beer.min.css" integrity="sha256-lYnQDpcf+FFMWvFyNlfYM5Zis7/ENdFurMo6UK58k4E=" crossorigin="anonymous">
-    <link rel="stylesheet" href="/public/css/style.css?ac=7">
+    <link rel="stylesheet" href="/public/css/style.css?ac=8">
 </head>
 
 <body>
 
     <header class="fixed">
         <nav>
-            <button class="circle transparent" data-ui="#modal-navigation-drawer">
-                <i>menu</i>
-            </button>
             <form method="get" action="/" class="js-nav-search">
                 <label class="field prefix plain">
                     <i>search</i>
@@ -30,20 +27,3 @@
             </form>
         </nav>
     </header>
-
-    <div class="modal left" id="modal-navigation-drawer">
-        <header class="fixed">
-            <nav>
-                <h5 class="max">Theses</h5>
-            </nav>
-        </header>
-        <a href="/" class="row round">
-            <span>Accueil</span>
-        </a>
-        <a href="https://github.com/arnoclr/theses" class="row round">
-            <span>Code source</span>
-        </a>
-        <a href="https://www.data.gouv.fr/fr/datasets/theses-soutenues-en-france-depuis-1985/" class="row round">
-            <span>Données publiques</span>
-        </a>
-    </div>

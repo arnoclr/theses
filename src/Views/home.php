@@ -1,46 +1,41 @@
 <header class="primary-container header-container center-align">
     <h2 class="header-title">Cherchez parmi l'ensemble des <b class="bold">thèses de doctorat</b> soutenues en France depuis 1985</h2>
-    <form method="get" action="/" class="field suffix extra plain js-main-search out">
+    <form method="get" action="/" class="field suffix extra plain js-main-search">
         <input type="hidden" name="action" value="search">
         <input name="q" type="search" spellcheck="false" placeholder="Saisir un terme de recherche ou un thème">
         <i>search</i>
     </form>
+    <?php require "src/Views/includes/timeline.php"; ?>
 </header>
 
 <div class="demo-card">
     <div class="demo-card-inner">
         <p class="example-text">Exemples de recherches</p>
-        <div class="examples">
-            <a href="/?action=search&q=Marché+de+Rungis">
-                <article class="no-elevate white no-padding">
-                    <img width="300" src="/public/img/examples/map.jpg" alt="Carte des régions de france">
-                    <div class="padding">
-                        <p>Carte des régions pour Marché de Rungis</p>
-                    </div>
-                </article>
-            </a>
-            <a href="/?action=search&q=Trafic+aérien+entre+2000+et+2008">
-                <article class="no-elevate white no-padding">
-                    <img width="300" src="/public/img/examples/timeline.jpg" alt="évolution au cours du temps">
-                    <div class="padding">
-                        <p>Trafic aérien entre 2000 et 2008</p>
-                    </div>
-                </article>
-            </a>
-            <a href="/?action=search&q=par+Fabien+Girard">
-                <article class="no-elevate white no-padding">
-                    <img width="300" src="/public/img/examples/author.jpg" alt="trier par auteur">
-                    <div class="padding">
-                        <p>Thèses soutenues par Fabien Girard</p>
-                    </div>
-                </article>
-            </a>
-        </div>
-        <br><br>
-        <a href="/?action=search&q=<?= $randomTitle ?>" class="button">J'ai de la chance</a>
 
-        <h4 style="margin-top: 42px; margin-bottom: 32px;">Stats globales</h4>
+        <nav class="scroll" style="flex-flow: row wrap; margin-bottom: 32px">
+            <a class="subjectCard" href="/?action=search&q=Paris">
+                <p>Thèses soutenues à Paris</p>
+                <img height="120" src="/public/img/examples/map.jpg?v=2" alt="Map Paris">
+            </a>
+            <a class="subjectCard" href="/?action=search&q=bourse+avant%3A2008">
+                <p>Sur la bourse, avant 2008</p>
+                <img height="120" src="/public/img/examples/bourse.jfif" alt="Bourse">
+            </a>
+            <a class="subjectCard" href="/?action=search&q=Capitalisme,Communisme">
+                <p>Comparer le nombre de thèses portant sur le capitalisme et le communisme</p>
+                <img height="120" src="/public/img/examples/capcom.jpg" alt="Timeline de comparaison">
+            </a>
+            <a class="subjectCard" href="/?action=search&q=développement+de+la+tomate">
+                <p>Photos du développement de la tomate</p>
+                <img height="120" src="/public/img/examples/devtom.jfif" alt="Pousse de la tomate">
+            </a>
+            <a class="subjectCard" href="/?action=search&q=vaccin+tri%3Arecent">
+                <p>Thèses les plus récentes concernant les vaccins</p>
+                <img height="120" src="/public/img/examples/vaccin.jpg" alt="Vaccin">
+            </a>
+        </nav>
 
+        <p style="margin-bottom: 22px;">Stats globales</p>
         <ul class="stats">
             <li>
                 <span class="numeric"><?= $thesesCount ?></span>
@@ -50,48 +45,40 @@
                 <span class="numeric"><?= $peopleCount ?></span>
                 <span>personnes concernées</span>
             </li>
+            <li>
+                <span class="numeric"><?= $etabsCount ?></span>
+                <span>etablissements</span>
+            </li>
         </ul>
-
-        <article class="white no-elevate">
-            <h5>Evolution dans le temps</h5>
-            <?php require "src/Views/includes/timeline.php"; ?>
-        </article>
-        <article class="white full-height no-elevate">
-            <h5>Par région</h5>
-            <?php require "src/Views/includes/map.php"; ?>
-        </article>
-
-        <a style="margin: 32px 0;" href="https://www.data.gouv.fr/fr/datasets/theses-soutenues-en-france-depuis-1985/">Données open source issues de theses.fr, datagouv.</a>
     </div>
 </div>
 
+<style>
+    header.fixed {
+        display: none;
+    }
+
+    header #timeline {
+        position: absolute;
+        bottom: 32px;
+        left: 0;
+        width: 100%;
+        z-index: 1;
+        opacity: 0.4;
+    }
+
+    header form,
+    header h2 {
+        z-index: 2;
+    }
+
+    .field.plain {
+        background-color: var(--primary-container);
+    }
+</style>
+
 <script>
-    // searchbar elements
-    const navSearch = document.querySelector('.js-nav-search');
-    const mainSearch = document.querySelector('.js-main-search');
-    const navbar = document.querySelector('.js-navbar');
     const numerics = document.querySelectorAll('.numeric');
-
-    // hide nav searchbar
-    navSearch.classList.add('out');
-    mainSearch.classList.remove('out');
-    navbar.classList.remove('small-elevate');
-
-    document.addEventListener('scroll', async () => {
-        if (window.scrollY > 352) {
-            navSearch.classList.remove('out');
-            mainSearch.classList.add('out');
-        } else {
-            navSearch.classList.add('out');
-            mainSearch.classList.remove('out');
-        }
-
-        if (window.scrollY > 451) {
-            navbar.classList.add('small-elevate');
-        } else {
-            navbar.classList.remove('small-elevate');
-        }
-    });
 
     numerics.forEach(numeric => {
         const value = numeric.innerText;

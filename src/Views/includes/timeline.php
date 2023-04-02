@@ -10,7 +10,7 @@
 
                 chart: {
                     backgroundColor: null,
-                    height: 240,
+                    minHeight: 240,
                 },
 
                 title: {
