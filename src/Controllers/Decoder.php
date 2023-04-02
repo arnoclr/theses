@@ -133,6 +133,7 @@ class Decoder
 
     public function getEstablishments(): array
     {
+        if ($this->bounds === null) return [];
         return $this->searcher->establishmentsInBoundaries($this->bounds[0], $this->bounds[1], $this->bounds[2], $this->bounds[3]);
     }
 

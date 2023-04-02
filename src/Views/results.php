@@ -128,7 +128,7 @@
     <?php if ($resultsNumber > 0 || count($decoders[0]->getEstablishments()) > 0) : ?>
         <div class="searchContent">
             <div class="searchCol">
-                <?php if ($decoders[0]->isAutolocalizedQuery()) : ?>
+                <?php if ($decoders[0]->getMapBoundaries() !== null) : ?>
                     <?php require "src/Views/includes/streetmap.php"; ?>
                 <?php endif; ?>
 
