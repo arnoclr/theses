@@ -284,3 +284,9 @@
         </div>
     <?php endif; ?>
 </main>
+
+<style>
+    #timeline {
+        height: 240px;
+    }
+</style>
