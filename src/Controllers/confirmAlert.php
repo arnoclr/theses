@@ -1,5 +1,7 @@
 <?php
 
+require "src/utils/alerts.php";
+
 $email = $_GET['email'];
 $token = $_GET['token'];
 $sessionData = $_SESSION['alertToken_' . $email] ?? false;
@@ -28,7 +30,13 @@ $pdo->prepare('INSERT INTO alerts (email, q, unsubscribe_token, created_at) VALU
         'token' => bin2hex(random_bytes(32)),
     ]);
 
+$id = $pdo->lastInsertId();
+
+$inserted = $pdo->query('SELECT * FROM alerts WHERE id = ' . $id)->fetch();
+
 unset($_SESSION['alertToken_' . $email]);
+
+sendAlert($inserted);
 
 $title = "Alerte créée";
 $hint = "Vous recevrez un email chaque fois qu'une nouvelle thèse correspondant à votre recherche sera publiée.";
