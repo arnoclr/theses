@@ -226,18 +226,22 @@
             </div>
 
             <aside class="graphs <?= $wikipediaData ? 'withArrow' : '' ?>">
-                <span style="margin-top: 22px;">
-                    <span style="font-size: 38px; color: var(--primary); display: contents;">
-                        <?= round($onlineCount / $resultsNumber * 100, 1) ?>%
-                    </span>
-                    <span style="font-size: 16px; display: contents;">de thèses en ligne</span>
-                </span>
-
                 <?php if ($wikipediaData !== null) : ?>
                     <article>
                         <?php require "src/Views/includes/wikipedia.php"; ?>
                     </article>
                 <?php endif; ?>
+
+                <span style="margin-top: 22px;">
+                    <span style="font-size: 38px; color: var(--primary); display: contents;">
+                        <?= round($onlineCount / $resultsNumber * 100, 1) ?>%
+                    </span>
+                    <span style="font-size: 16px; display: contents;">de thèses en ligne</span>
+                    <br>
+                    <?php if ($onlineCount !== $resultsNumber) : ?>
+                        <a style="font-style: italic; text-decoration: underline; color: #787878;" href="/?action=search&q=<?= htmlspecialchars($q) ?>+:enligne">Voir uniquement les thèses en disponibles en ligne</a>
+                    <?php endif; ?>
+                </span>
 
                 <?php if ($establishmentData) : ?>
                     <article>
