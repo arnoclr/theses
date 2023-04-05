@@ -226,6 +226,13 @@
             </div>
 
             <aside class="graphs <?= $wikipediaData ? 'withArrow' : '' ?>">
+                <span style="margin-top: 22px;">
+                    <span style="font-size: 38px; color: var(--primary); display: contents;">
+                        <?= round($onlineCount / $resultsNumber * 100, 1) ?>%
+                    </span>
+                    <span style="font-size: 16px; display: contents;">de thèses en ligne</span>
+                </span>
+
                 <?php if ($wikipediaData !== null) : ?>
                     <article>
                         <?php require "src/Views/includes/wikipedia.php"; ?>

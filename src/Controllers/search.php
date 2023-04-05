@@ -54,6 +54,12 @@ foreach ($comparisons as $pos => $q) {
         $subjectsCount[] = [];
     }
 
+    try {
+        $onlineCount = $decoder->decode()->online()->count();
+    } catch (\Exception $e) {
+        $onlineCount = 0;
+    }
+
     $regionalArray[] = Charts::getRegionalArray($regions[$pos], false);
     $subjectsArray[] = Charts::getSubjectsSeries($subjectsCount[$pos], false);
     $timelineData[] = Charts::getYearsList($years[$pos]);
