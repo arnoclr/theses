@@ -134,6 +134,11 @@
         z-index: 2;
     }
 
+    header h2 {
+        margin-top: 56px;
+        margin-bottom: 22px;
+    }
+
     .field.plain {
         background-color: #f6fbff;
         border-radius: 5px;
