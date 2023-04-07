@@ -86,7 +86,9 @@
                             }
                         },
                     <?php endforeach; ?>
-                ]
+                ],
+
+                ...window.overrideTimelineSettings || {}
             });
         };
 

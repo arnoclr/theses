@@ -1,10 +1,67 @@
-<header class="primary-container header-container center-align">
+<header class="secondary-container header-container center-align">
     <h2 class="header-title">Cherchez parmi l'ensemble des <b class="bold">thèses de doctorat</b> soutenues en France depuis 1985</h2>
     <form method="get" action="/" class="field suffix extra plain js-main-search">
         <input type="hidden" name="action" value="search">
         <input name="q" type="search" spellcheck="false" placeholder="Saisir un terme de recherche ou un thème">
         <i>search</i>
     </form>
+    <script>
+        window.overrideTimelineSettings = {
+            chart: {
+                type: 'area',
+                style: {
+                    filter: 'alpha(opacity=1)',
+                    opacity: 1,
+                    background: 'transparent'
+                },
+                animation: {
+                    enabled: true,
+                    duration: 3000,
+                    easing: 'ease'
+                },
+            },
+
+            yAxis: {
+                gridLineWidth: 0,
+                title: {
+                    enabled: false
+                },
+                labels: {
+                    enabled: false
+                }
+            },
+
+            xAxis: {
+                title: {
+                    enabled: false
+                },
+                labels: {
+                    enabled: false
+                }
+            },
+
+            plotOptions: {
+                line: {
+                    lineWidth: 10,
+                    fillColor: 'transparent',
+                },
+                series: {
+                    label: {
+                        connectorAllowed: false
+                    },
+                    states: {
+                        hover: {
+                            enabled: false
+                        }
+                    },
+                    marker: {
+                        enabled: false
+                    },
+                    pointStart: 1985
+                }
+            },
+        }
+    </script>
     <?php require "src/Views/includes/timeline.php"; ?>
 </header>
 
@@ -58,11 +115,16 @@
         display: none;
     }
 
+    header {
+        overflow-y: hidden;
+    }
+
     header #timeline {
         position: absolute;
-        bottom: 32px;
+        bottom: -32px;
         left: 0;
-        width: 100%;
+        right: 0;
+        top: 0;
         z-index: 1;
         opacity: 0.4;
     }
@@ -73,7 +135,10 @@
     }
 
     .field.plain {
-        background-color: var(--primary-container);
+        background-color: #f6fbff;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.05);
     }
 </style>
 
