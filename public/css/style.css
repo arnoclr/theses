@@ -361,6 +361,10 @@ button.link {
     column-gap: 18px;
 }
 
+.searchResult ol {
+    padding-left: 18px;
+}
+
 .subjects:last-child {
     margin-bottom: 12px;
 }
@@ -391,6 +395,7 @@ button.link {
 
 .searchResult mark {
     background-color: transparent;
+    font-weight: 600;
 }
 
 .searchResult.big .text {

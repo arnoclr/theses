@@ -179,9 +179,27 @@ class These
             return strlen($word) > 2;
         });
         $wordsGroup = implode("|", $words);
+        $wordsGroup = preg_quote($wordsGroup, "/");
         $regex = "/(({$wordsGroup})[ |\w{1,3}]*({$wordsGroup})|\b({$wordsGroup})\b)/iu";
         $text = preg_replace($regex, "<mark>$1</mark>", $text);
         return $text;
+    }
+
+    public static function getTableOfContents($text)
+    {
+        $points = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'];
+        $output = [];
+        $i = 0;
+        $start = $points[$i];
+        $end = $points[$i + 1];
+        $matches = [];
+        while (preg_match("/\W{$start}\)(.+?)({$end}\)|;|\.)/i", $text, $matches)) {
+            $output[] = trim($matches[1]);
+            $i++;
+            $start = $end;
+            $end = $points[$i + 1];
+        }
+        return $output;
     }
 
     public static function getEstabShortName(object $thesis): string

@@ -15,6 +15,7 @@
         </span>
         <span class="summary">
             <!-- TODO: Si la requete est un des sujets, on affiche la liste des sujets avec en gras le sujet en question -->
+            <?php $tableOfContents = App\Model\These::getTableOfContents($these->summary) ?>
             <?php if (\App\Model\These::containSubject($these, $q)) : ?>
                 Sujets mentionnés :
                 <ul class="subjects">
@@ -28,8 +29,14 @@
                         </li>
                     <?php endforeach; ?>
                 </ul>
+            <?php elseif (count($tableOfContents) > 0) : ?>
+                <ol>
+                    <?php foreach ($tableOfContents as $toc) : ?>
+                        <li><?= $toc ?></li>
+                    <?php endforeach; ?>
+                </ol>
             <?php else : ?>
-                <?= mb_substr($these->summary, 0, 160, "UTF-8") ?>...
+                <?= \App\Model\These::highlightSummaryWith($these->summary, $q) ?>
             <?php endif; ?>
         </span>
     </p>
