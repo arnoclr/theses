@@ -393,7 +393,7 @@ button.link {
     color: #000;
 }
 
-.searchResult mark {
+.searchResult:not(.big) mark {
     background-color: transparent;
     font-weight: 600;
 }

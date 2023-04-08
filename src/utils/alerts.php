@@ -34,12 +34,14 @@ function sendAlert(object $alert): bool
         return true;
     }
 
+    $escaped = htmlspecialchars($alert->q);
+
     $send = sendEmail(
         $alert->email,
         $thesesCount . " nouvelle(s) thèse(s) pour «{$alert->q}»",
         <<<HTML
         Bonjour,<br><br>
-        Voici les dernières thèses pour «{$alert->q}» :<br><br>
+        Voici les dernières thèses pour «{$escaped}» :<br><br>
         <table width="532" style="border: 1px solid #DDD; background-color: #F7F7F7;" cellpadding="12" cellspacing="0">
             <tr>
                 <th align="left">

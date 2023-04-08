@@ -34,9 +34,10 @@ $_SESSION['alertToken_' . $email] = [
 ];
 
 $host = $_SERVER['HTTP_HOST'];
+$escaped = htmlspecialchars($q);
 
 $send = sendEmail($email, "Confirmez votre alerte pour {$q}", <<<HTML
-        <p>Vous avez demandé la création d'une alerte pour {$q}. Finalisez l'activation en cliquant sur le lien.</p>
+        <p>Vous avez demandé la création d'une alerte pour «{$escaped}». Finalisez l'activation en cliquant sur le lien.</p>
         <a href="http://{$host}/?action=confirmAlert&v=1&email={$email}&token={$token}">ACTIVER L'ALERTE</a>
         <br>
         <br>
